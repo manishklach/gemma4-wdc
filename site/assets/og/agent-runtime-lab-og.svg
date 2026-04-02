@@ -1,0 +1,16 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" rx="28" fill="#F4F7FB"/>
+  <rect x="42" y="42" width="1116" height="546" rx="28" fill="#FFFFFF" stroke="#D7E0EB" stroke-width="2"/>
+  <text x="86" y="136" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="24">Agent Runtime Lab</text>
+  <text x="86" y="224" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="58" font-weight="600">Shared execution and</text>
+  <text x="86" y="292" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="58" font-weight="600">semantic deduplication</text>
+  <text x="86" y="360" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="58" font-weight="600">for concurrent agent systems</text>
+  <text x="86" y="438" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="28">Branch-aware runtime infrastructure for coding agents, research branches,</text>
+  <text x="86" y="476" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="28">bounded admission windows, shared execution units, and observability.</text>
+  <rect x="816" y="142" width="272" height="230" rx="24" fill="#E8F1FC" stroke="#A7C5EA" stroke-width="2"/>
+  <text x="852" y="206" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="22">semantic overlap</text>
+  <text x="852" y="254" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="22">admission window</text>
+  <text x="852" y="302" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="22">SEU</text>
+  <text x="852" y="350" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="22">result fan-out</text>
+  <text x="852" y="398" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="22">observability</text>
+</svg>

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://manishklach.github.io/agent-runtime-lab/sitemap.xml
+

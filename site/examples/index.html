@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Examples | Agent Runtime Lab</title>
+    <meta name="description" content="Examples for Shared Execution Runtime, including coding-agent repo scans, repo analysis, and support-oriented document overlap scenarios." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://manishklach.github.io/agent-runtime-lab/examples/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://manishklach.github.io/agent-runtime-lab/examples/" />
+    <meta property="og:title" content="Examples | Agent Runtime Lab" />
+    <meta property="og:description" content="Concrete coding-agent and research-agent examples for branch-aware shared execution." />
+    <meta property="og:image" content="https://manishklach.github.io/agent-runtime-lab/assets/og/agent-runtime-lab-og.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Examples | Agent Runtime Lab" />
+    <meta name="twitter:description" content="Coding-agent, repo-analysis, and support-oriented examples for shared execution runtime behavior." />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body data-page="examples">
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="../">Agent Runtime Lab</a>
+        <nav aria-label="Primary">
+          <a href="../architecture/">Architecture</a>
+          <a href="../benchmarks/">Benchmarks</a>
+          <a href="../examples/">Examples</a>
+          <a href="https://github.com/manishklach/agent-runtime-lab">Repository</a>
+        </nav>
+      </div>
+    </header>
+    <main id="content">
+      <section class="subpage-hero container">
+        <p class="eyebrow">Examples</p>
+        <h1>Concrete scenarios that show why shared execution matters for coding agents first.</h1>
+        <p class="lead">The examples are small, screenshot-friendly, and intentionally legible. They are designed to connect the runtime thesis to actual branch-heavy workloads rather than abstract agent claims.</p>
+      </section>
+      <section class="section container">
+        <div class="grid three">
+          <article class="card">
+            <h2>Coding agents demo</h2>
+            <p>Overlapping repo scan questions from parallel coding branches collapse into one shared execution unit while separate code search remains separate.</p>
+            <p><a href="https://github.com/manishklach/agent-runtime-lab/blob/main/examples/coding_agents_demo/README.md">Open the coding-agent walkthrough</a></p>
+          </article>
+          <article class="card">
+            <h2>Repo analysis demo</h2>
+            <p>Shows how branch-aware runtime behavior applies to repo-understanding agents and code-search tasks over the same codebase slice.</p>
+            <p><a href="https://github.com/manishklach/agent-runtime-lab/blob/main/examples/repo_analysis_demo/README.md">Open the repo analysis walkthrough</a></p>
+          </article>
+          <article class="card">
+            <h2>Support ops demo</h2>
+            <p>Document extraction and API fan-out scenarios show that the runtime thesis generalizes without diluting the coding-agent focus.</p>
+            <p><a href="https://github.com/manishklach/agent-runtime-lab/blob/main/examples/support_ops_demo/README.md">Open the support ops walkthrough</a></p>
+          </article>
+        </div>
+      </section>
+      <section class="section container">
+        <div class="grid two">
+          <article class="card visual-card">
+            <img src="../assets/screenshots/coding-agent-overlap.svg" alt="Coding-agent example showing shared execution unit formation from overlapping repo scan tasks." />
+          </article>
+          <article class="card">
+            <h2>Why the coding-agent angle matters</h2>
+            <p>Parallel branch execution is increasingly normal for coding agents. Once that happens, repeated repo scans, repeated code search, repeated dependency tracing, and repeated test planning stop being isolated tool calls and become runtime-level duplicated subwork.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <strong>Agent Runtime Lab</strong>
+          <p>Example scenarios for the GitHub Pages microsite.</p>
+        </div>
+        <nav aria-label="Footer">
+          <a href="../">Home</a>
+          <a href="../architecture/">Architecture</a>
+          <a href="../benchmarks/">Benchmarks</a>
+          <a href="https://github.com/manishklach/agent-runtime-lab/tree/main/examples">Example sources</a>
+        </nav>
+        <p class="copyright">Copyright <span data-year></span> Agent Runtime Lab.</p>
+      </div>
+    </footer>
+    <script src="../script.js"></script>
+  </body>
+</html>

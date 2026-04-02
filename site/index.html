@@ -3,97 +3,265 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Agent Runtime Lab</title>
+    <title>Agent Runtime Lab | Shared Execution and Semantic Deduplication for Concurrent Agent Systems</title>
+    <meta
+      name="description"
+      content="Agent Runtime Lab is a systems project exploring shared execution, semantic deduplication, bounded admission windows, and runtime observability for concurrent agent systems, coding agents, and multi-agent research workflows."
+    />
+    <meta
+      name="keywords"
+      content="agent runtime, multi-agent systems, coding agents, semantic deduplication, shared execution, branch-aware runtime, concurrent agent systems, agent orchestration runtime, agent infrastructure, runtime observability for agents"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://manishklach.github.io/agent-runtime-lab/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://manishklach.github.io/agent-runtime-lab/" />
+    <meta property="og:site_name" content="Agent Runtime Lab" />
+    <meta property="og:title" content="Agent Runtime Lab — Shared Execution and Semantic Deduplication for Concurrent Agent Systems" />
+    <meta
+      property="og:description"
+      content="A systems project exploring branch-aware runtime infrastructure for multi-agent coding and research workflows, including semantic overlap detection, bounded admission windows, shared execution units, and benchmarked prototype flows."
+    />
+    <meta property="og:image" content="https://manishklach.github.io/agent-runtime-lab/assets/og/agent-runtime-lab-og.svg" />
+    <meta property="og:image:alt" content="Agent Runtime Lab social preview showing branch-aware shared execution for concurrent agent systems." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Agent Runtime Lab — Shared Execution and Semantic Deduplication for Concurrent Agent Systems" />
+    <meta
+      name="twitter:description"
+      content="Shared execution, branch-aware deduplication, and runtime observability for concurrent agent systems, with a benchmarked prototype focused on coding and research workloads."
+    />
+    <meta name="twitter:image" content="https://manishklach.github.io/agent-runtime-lab/assets/og/agent-runtime-lab-og.svg" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": "Agent Runtime Lab",
+        "codeRepository": "https://github.com/manishklach/agent-runtime-lab",
+        "license": "https://github.com/manishklach/agent-runtime-lab/blob/main/LICENSE",
+        "url": "https://manishklach.github.io/agent-runtime-lab/",
+        "description": "Open-source systems project exploring shared execution, semantic deduplication, bounded admission windows, and runtime observability for concurrent agent systems.",
+        "programmingLanguage": ["Python", "HTML", "CSS", "JavaScript"],
+        "keywords": "agent runtime, multi-agent systems, coding agents, shared execution, semantic deduplication, runtime observability"
+      }
+    </script>
   </head>
-  <body>
-    <main class="page">
-      <section class="hero">
+  <body data-page="home">
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="./">Agent Runtime Lab</a>
+        <nav aria-label="Primary">
+          <a href="./architecture/">Architecture</a>
+          <a href="./benchmarks/">Benchmarks</a>
+          <a href="./examples/">Examples</a>
+          <a href="https://github.com/manishklach/agent-runtime-lab">Repository</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="content">
+      <section class="hero container">
         <div class="hero-copy">
-          <p class="eyebrow">Agent Runtime Lab</p>
-          <h1>One concrete runtime answer to duplicated subwork in concurrent agent systems.</h1>
+          <p class="eyebrow">Branch-Aware Runtime Infrastructure</p>
+          <h1>Shared execution, semantic deduplication, and runtime observability for concurrent agent systems.</h1>
           <p class="lead">
-            Shared Execution Runtime detects semantic overlap across branch-local tasks, opens a bounded non-resetting admission window, collapses matching work into a shared execution unit, executes once, fans out the result, and measures the savings.
+            As agent systems move from single-threaded chat toward concurrent branch execution, duplicated subwork becomes a real systems bottleneck. Agent Runtime Lab explores one concrete runtime answer: detect semantic overlap, hold tasks briefly in a bounded admission window, execute shared work once, and fan out the result across branches.
           </p>
           <div class="actions">
-            <a href="../README.md">Read the README</a>
-            <a href="../runtime/shared_execution/README.md" class="secondary">Run the demo</a>
-            <a href="../docs/architecture.md" class="secondary">Understand the architecture</a>
+            <a href="https://github.com/manishklach/agent-runtime-lab">View Repository</a>
+            <a href="./architecture/" class="secondary">Explore Architecture</a>
+            <a href="./benchmarks/" class="secondary">See Benchmarks</a>
           </div>
         </div>
         <div class="hero-card">
-          <img src="../diagrams/before_after.svg" alt="Before and after runtime diagram" />
+          <img src="./assets/diagrams/before_after.svg" alt="Before and after diagram showing repeated branch-local work collapsing into one shared execution unit." />
         </div>
       </section>
 
-      <section class="grid two">
-        <article class="card">
-          <p class="label">Problem</p>
-          <h2>Parallel agent branches increasingly repeat semantically overlapping work.</h2>
-          <p>As systems move from single-threaded chat toward concurrent branch execution, duplicated repo scans, repeated code search, repeated evidence extraction, and repeated API operations become a runtime bottleneck.</p>
-        </article>
-        <article class="card">
-          <p class="label">Core Idea</p>
+      <section class="section container" id="bottleneck">
+        <div class="section-intro">
+          <p class="eyebrow">The Bottleneck</p>
+          <h2>Parallel branches repeatedly pay for semantically overlapping work.</h2>
+        </div>
+        <div class="grid two">
+          <article class="card">
+            <h3>Where duplication shows up</h3>
+            <p>Repo scan, code search, dependency tracing, document extraction, retrieval, SQL, and API tasks often recur across neighboring agent branches even when the underlying work is materially the same.</p>
+          </article>
+          <article class="card">
+            <h3>Why current stacks miss it</h3>
+            <p>Byte-level caching is too strict, while generic batching is too blunt. Many stacks still lack a runtime layer dedicated to semantic subtask collapse before backend work has already started.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section container" id="core-idea">
+        <div class="section-intro">
+          <p class="eyebrow">Core Idea</p>
           <h2>Detect overlap early, delay briefly, execute once, fan out explicitly.</h2>
-          <p>This repo explores a branch-aware runtime layer rather than another app shell. The emphasis is on task fingerprinting, admission control, shared execution units, and observability.</p>
-        </article>
+        </div>
+        <div class="flow-grid">
+          <article class="flow-card"><strong>1.</strong><span>Task ingestion</span></article>
+          <article class="flow-card"><strong>2.</strong><span>Semantic fingerprinting</span></article>
+          <article class="flow-card"><strong>3.</strong><span>Bounded admission window</span></article>
+          <article class="flow-card"><strong>4.</strong><span>Shared execution unit</span></article>
+          <article class="flow-card"><strong>5.</strong><span>Result fan-out</span></article>
+          <article class="flow-card"><strong>6.</strong><span>Observability and metrics</span></article>
+        </div>
+        <div class="card visual-card">
+          <img src="./assets/diagrams/timing_window.svg" alt="Admission window diagram showing that the first task starts the timer and later matching arrivals do not reset it." />
+        </div>
       </section>
 
-      <section class="card architecture">
+      <section class="section container" id="architecture-preview">
         <div class="section-head">
           <div>
-            <p class="label">Architecture</p>
-            <h2>How Shared Execution Runtime works</h2>
+            <p class="eyebrow">Architecture</p>
+            <h2>Shared Execution Runtime in one view</h2>
           </div>
-          <a href="../docs/architecture.md" class="text-link">Open architecture doc</a>
+          <a class="text-link" href="./architecture/">Open architecture page</a>
         </div>
-        <img src="../diagrams/architecture.svg" alt="Architecture diagram" />
-      </section>
-
-      <section class="grid two">
-        <article class="card">
-          <p class="label">Coding-Agent Scenario</p>
-          <h2>Repo-understanding branches converge on the same SEU.</h2>
-          <p>Multiple coding-agent branches asking overlapping repo-scan questions can subscribe to one shared execution unit instead of launching duplicated scans independently.</p>
-          <img src="./assets/screenshots/coding-agent-overlap.svg" alt="Coding agent overlap screenshot" />
-        </article>
-        <article class="card">
-          <p class="label">Runtime State</p>
-          <h2>SEU state, subscriber membership, and result fan-out stay visible.</h2>
-          <p>The local UI is designed for inspection, not showmanship. It makes pending windows, subscriber lists, and collapse reasons easy to read in screenshots.</p>
-          <img src="./assets/screenshots/seu-dashboard.svg" alt="SEU dashboard screenshot" />
+        <article class="card visual-card">
+          <img src="./assets/diagrams/architecture.svg" alt="Architecture diagram showing incoming tasks, semantic matching, admission control, shared execution units, result fan-out, and observability." />
         </article>
       </section>
 
-      <section class="card benchmark">
+      <section class="section container" id="coding-agents">
         <div class="section-head">
           <div>
-            <p class="label">Benchmark Preview</p>
-            <h2>Preliminary local results from the benchmark harness</h2>
+            <p class="eyebrow">Coding-Agent Scenario</p>
+            <h2>Repo-understanding branches converge on one shared execution unit.</h2>
           </div>
-          <a href="../benchmarks/README.md" class="text-link">See benchmark scenarios</a>
+          <a class="text-link" href="./examples/">See example walkthroughs</a>
         </div>
-        <img src="../diagrams/benchmark_preview.svg" alt="Benchmark preview diagram" />
+        <div class="grid two">
+          <article class="card">
+            <p>Multiple coding-agent branches inspect the same repository slice. One branch asks for a repo scan, another asks a near-duplicate code understanding question, and a third plans test or dependency analysis against the same boundary.</p>
+            <p>Shared Execution Runtime can collapse the overlapping scan work into one SEU so the backend work runs once while each subscriber branch keeps its own local control flow.</p>
+          </article>
+          <article class="card visual-card">
+            <img src="./assets/screenshots/coding-agent-overlap.svg" alt="Illustration of two branch-local coding agent repo scans collapsing into a single shared execution unit." />
+          </article>
+        </div>
       </section>
 
-      <section class="grid three">
-        <article class="card">
-          <p class="label">Run The Demo</p>
-          <p>Start the FastAPI backend, serve the lightweight frontend, and trigger the coding overlap, NL overlap, and false-collapse safety scenarios.</p>
-        </article>
-        <article class="card">
-          <p class="label">Repository Structure</p>
-          <p>README, docs, runtime module, benchmarks, examples, diagrams, and a static microsite all point at the same systems thesis.</p>
-        </article>
-        <article class="card">
-          <p class="label">Roadmap</p>
-          <p>Next steps focus on explainable collapse decisions, distributed coordination, branch-aware state reuse, and trajectory replay.</p>
-        </article>
+      <section class="section container" id="benchmarks">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Benchmarks</p>
+            <h2>Transparent, preliminary, and easy to inspect.</h2>
+          </div>
+          <a class="text-link" href="./benchmarks/">Benchmark methodology and results</a>
+        </div>
+        <div class="grid two">
+          <article class="card">
+            <p>The current harness compares naive execution against shared execution across coding repo scans, document research, API fan-out, and false-collapse safety scenarios. The numbers below come from the current local prototype and are labeled accordingly.</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Scenario</th>
+                  <th>Tasks</th>
+                  <th>SEUs</th>
+                  <th>Saved</th>
+                  <th>Dedup</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>coding_repo_scan</td><td>3</td><td>2</td><td>1</td><td>1.5x</td></tr>
+                <tr><td>document_research</td><td>3</td><td>2</td><td>1</td><td>1.5x</td></tr>
+                <tr><td>api_fanout</td><td>3</td><td>2</td><td>1</td><td>1.5x</td></tr>
+                <tr><td>false_collapse_safety</td><td>4</td><td>4</td><td>0</td><td>1.0x</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article class="card visual-card">
+            <img src="./assets/diagrams/benchmark_preview.svg" alt="Benchmark summary diagram comparing tasks, shared execution units, saved executions, and false-collapse behavior across scenario families." />
+          </article>
+        </div>
+      </section>
+
+      <section class="section container" id="demo">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Demo / Prototype</p>
+            <h2>A local prototype for inspecting SEU state, subscriber fan-out, and collapse decisions.</h2>
+          </div>
+          <a class="text-link" href="https://github.com/manishklach/agent-runtime-lab/blob/main/runtime/shared_execution/README.md">Run the local demo</a>
+        </div>
+        <div class="grid two">
+          <article class="card visual-card">
+            <img src="./assets/screenshots/seu-dashboard.svg" alt="Local prototype dashboard showing runtime metrics, shared execution units, collapse decisions, and subscriber state." />
+          </article>
+          <article class="card">
+            <p>The prototype is local and intentionally lightweight. It demonstrates task ingestion, semantic overlap detection, a bounded non-resetting admission window, shared execution units, result fan-out, and runtime observability.</p>
+            <p>It is a research-quality prototype and not a production-ready distributed runtime.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section container" id="why-it-matters">
+        <div class="section-intro">
+          <p class="eyebrow">Why This Matters</p>
+          <h2>Concurrent branch execution needs runtime primitives, not just better prompts.</h2>
+        </div>
+        <div class="grid three">
+          <article class="card">
+            <h3>Lower duplicated backend work</h3>
+            <p>Shared execution reduces repeated repo scans, repeated extraction, repeated API activity, and other backend load across neighboring branches.</p>
+          </article>
+          <article class="card">
+            <h3>Better fit for coding agents</h3>
+            <p>Branch-heavy repo analysis, code search, and test planning are exactly the workloads where semantic overlap becomes operationally expensive.</p>
+          </article>
+          <article class="card">
+            <h3>Stronger observability</h3>
+            <p>The runtime exposes why tasks collapsed, which tasks became subscribers, and where false-collapse safety held the line.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section container" id="roadmap">
+        <div class="section-intro">
+          <p class="eyebrow">Roadmap</p>
+          <h2>Deliberate next steps, not feature sprawl.</h2>
+        </div>
+        <div class="grid three">
+          <article class="card">
+            <h3>Distributed coordination</h3>
+            <p>Move SEU ownership and admission control beyond a local single-process runtime.</p>
+          </article>
+          <article class="card">
+            <h3>Branch-aware intermediate state reuse</h3>
+            <p>Extend beyond full result fan-out toward reusable partial execution products.</p>
+          </article>
+          <article class="card">
+            <h3>Explainable decisions and replay</h3>
+            <p>Add explicit why-collapsed paths, verifier hooks for coding agents, and trajectory replay for analysis.</p>
+          </article>
+        </div>
       </section>
     </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <strong>Agent Runtime Lab</strong>
+          <p>Prototype and research-oriented systems project for shared execution, semantic deduplication, and runtime observability in concurrent agent systems.</p>
+        </div>
+        <nav aria-label="Footer">
+          <a href="https://github.com/manishklach/agent-runtime-lab">Repository</a>
+          <a href="https://github.com/manishklach/agent-runtime-lab/tree/main/docs">Docs</a>
+          <a href="https://github.com/manishklach/agent-runtime-lab/tree/main/benchmarks">Benchmarks</a>
+          <a href="https://github.com/manishklach/agent-runtime-lab/tree/main/examples">Examples</a>
+        </nav>
+        <p class="copyright">Copyright <span data-year></span> Agent Runtime Lab.</p>
+      </div>
+    </footer>
     <script src="./script.js"></script>
   </body>
 </html>

@@ -1,8 +1,3 @@
-document.querySelectorAll('a[href$=".md"]').forEach((link) => {
-  link.addEventListener("click", (event) => {
-    if (window.location.protocol === "file:") {
-      event.preventDefault();
-    }
-  });
+document.querySelectorAll("[data-year]").forEach((node) => {
+  node.textContent = new Date().getFullYear();
 });
-

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Architecture | Agent Runtime Lab</title>
+    <meta name="description" content="Architecture of Shared Execution Runtime, including task fingerprinting, bounded admission windows, shared execution units, result fan-out, and runtime observability." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://manishklach.github.io/agent-runtime-lab/architecture/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://manishklach.github.io/agent-runtime-lab/architecture/" />
+    <meta property="og:title" content="Architecture | Agent Runtime Lab" />
+    <meta property="og:description" content="Shared Execution Runtime architecture for branch-aware semantic deduplication in concurrent agent systems." />
+    <meta property="og:image" content="https://manishklach.github.io/agent-runtime-lab/assets/og/agent-runtime-lab-og.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Architecture | Agent Runtime Lab" />
+    <meta name="twitter:description" content="Task fingerprints, admission windows, shared execution units, and result fan-out for concurrent agent systems." />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body data-page="architecture">
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="../">Agent Runtime Lab</a>
+        <nav aria-label="Primary">
+          <a href="../architecture/">Architecture</a>
+          <a href="../benchmarks/">Benchmarks</a>
+          <a href="../examples/">Examples</a>
+          <a href="https://github.com/manishklach/agent-runtime-lab">Repository</a>
+        </nav>
+      </div>
+    </header>
+    <main id="content">
+      <section class="subpage-hero container">
+        <p class="eyebrow">Architecture</p>
+        <h1>Shared Execution Runtime is a runtime layer, not another agent shell.</h1>
+        <p class="lead">Its job is to catch semantic overlap before backend work begins, collapse matching tasks into a shared execution unit, and make the whole decision path observable.</p>
+      </section>
+      <section class="section container">
+        <article class="card visual-card">
+          <img src="../assets/diagrams/architecture.svg" alt="Architecture diagram for Agent Runtime Lab showing task ingestion, semantic matching, admission control, shared execution units, fan-out, and metrics." />
+        </article>
+      </section>
+      <section class="section container">
+        <div class="grid two">
+          <article class="card">
+            <h2>Core components</h2>
+            <ul class="plain-list">
+              <li><strong>Task ingestion API:</strong> accepts typed tasks with branch and resource metadata.</li>
+              <li><strong>Task fingerprinting:</strong> builds an exact structural hash and semantic comparison text.</li>
+              <li><strong>Admission window:</strong> bounded and non-resetting, started by the first arrival.</li>
+              <li><strong>Shared execution unit:</strong> owns subscribers, execution state, and result fan-out.</li>
+              <li><strong>Observability:</strong> exposes tasks received, SEUs created, executions saved, and false-collapse behavior.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h2>Data flow</h2>
+            <ol class="plain-list">
+              <li>Tasks arrive from concurrent branches.</li>
+              <li>The runtime computes a task fingerprint and resource scope.</li>
+              <li>Pending SEUs are checked for exact structural matches first.</li>
+              <li>Semantic overlap is only considered after exact matching fails.</li>
+              <li>Matching tasks become subscribers during the admission window.</li>
+              <li>When the window expires, the SEU executes once and fans the result out.</li>
+            </ol>
+          </article>
+        </div>
+      </section>
+      <section class="section container">
+        <article class="card visual-card">
+          <img src="../assets/diagrams/timing_window.svg" alt="Timing diagram of the bounded non-resetting admission window used by Shared Execution Runtime." />
+        </article>
+      </section>
+      <section class="section container">
+        <div class="grid two">
+          <article class="card">
+            <h2>Why this is credible for coding agents</h2>
+            <p>Repo-understanding branches often repeat the same structural work with slightly different phrasing. This runtime is aimed squarely at that class of workload: repo scan, code search, dependency tracing, and test planning across neighboring branches.</p>
+          </article>
+          <article class="card">
+            <h2>Prototype limits</h2>
+            <p>The current implementation is in-memory and local. It demonstrates the mechanics clearly, but it does not yet solve distributed coordination, persistence, or live production tool integration.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <strong>Agent Runtime Lab</strong>
+          <p>Architecture page for the GitHub Pages microsite.</p>
+        </div>
+        <nav aria-label="Footer">
+          <a href="../">Home</a>
+          <a href="../benchmarks/">Benchmarks</a>
+          <a href="../examples/">Examples</a>
+          <a href="https://github.com/manishklach/agent-runtime-lab/tree/main/docs">Repo docs</a>
+        </nav>
+        <p class="copyright">Copyright <span data-year></span> Agent Runtime Lab.</p>
+      </div>
+    </footer>
+    <script src="../script.js"></script>
+  </body>
+</html>
+

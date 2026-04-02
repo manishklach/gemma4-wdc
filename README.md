@@ -8,6 +8,8 @@ Agent Runtime Lab explores one concrete systems answer to that bottleneck. Its f
 
 ![Architecture Overview](./diagrams/before_after.svg)
 
+Project site: [manishklach.github.io/agent-runtime-lab](https://manishklach.github.io/agent-runtime-lab/)
+
 ## Why This Exists
 
 Concurrent branch execution changes the cost profile of agent systems. Once planners, coding agents, and research agents begin operating in parallel, duplication stops looking like a prompt problem and starts looking like a runtime problem.
@@ -133,6 +135,24 @@ python run_benchmarks.py
 ```
 
 The latest summary is written to [benchmarks/results/latest_summary.json](./benchmarks/results/latest_summary.json) and a readable artifact is stored at [benchmarks/results/summary.md](./benchmarks/results/summary.md).
+
+### GitHub Pages Site
+
+The public microsite is a static GitHub Pages artifact rooted at [`site/`](./site). It includes:
+
+- a Pages-safe self-contained asset tree
+- multi-page architecture, benchmark, and example entry points
+- canonical URLs, Open Graph tags, Twitter card tags, `robots.txt`, `sitemap.xml`, and a custom `404.html`
+- a deploy workflow at [`.github/workflows/pages.yml`](./.github/workflows/pages.yml)
+
+To preview it locally:
+
+```bash
+cd site
+python -m http.server 8080
+```
+
+Then open `http://localhost:8080`.
 
 ## Repository Structure
 
