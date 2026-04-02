@@ -6,22 +6,22 @@ gemma4-wdc is a laptop-first prototype of a local, offline multi-agent system wh
 
 The project explores a simple systems thesis: as local agentic workflows become practical, one of the next bottlenecks is duplicated downstream work across concurrent agents. gemma4-wdc demonstrates how shared SQL, API, document, and code-analysis tasks can be detected, collapsed into shared execution units, and fanned out across agents on consumer hardware.
 
-![gemma4-wdc shared execution flow](./diagrams/before_after.svg)
-
-## What It Does
-
-- Multiple local or simulated agents emit tool tasks independently.
-- Middleware detects semantic overlap across those tasks.
-- A bounded admission window captures duplicate work before execution.
-- One shared execution serves multiple subscribers.
-- Dashboard and benchmarks make the savings visible.
-
 **Quick links**
 
 - [Live Site](https://manishklach.github.io/gemma4-wdc/)
 - [Architecture](./docs/architecture.md)
 - [Benchmarks](./benchmarks/README.md)
 - [Run Locally](#run-locally)
+
+![gemma4-wdc shared execution flow](./diagrams/before_after.svg)
+
+## What It Does
+
+- Multiple local or simulated agents emit tool tasks independently.
+- Middleware detects semantic overlap across those tasks.
+- A bounded non-resetting admission window captures duplicate work before execution.
+- One shared execution unit serves multiple subscribers.
+- Dashboard and benchmarks make the savings visible.
 
 ## Architecture Preview
 
@@ -34,6 +34,10 @@ It is most relevant to coding-agent and research-agent workflows where overlappi
 Local multi-agent systems are getting easier to run. Even on modest hardware, we can already simulate or partially realize agent teams that branch, plan, search, inspect code, extract evidence, and call tools in parallel.
 
 What still gets wasted is the backend work underneath those branches. Multiple locally rational agents can independently ask for the same repo scan, the same document extraction pass, or the same analytics query. Gemma4-WDC exists to demonstrate that this is a middleware problem as much as a model problem.
+
+## Laptop-First Prototype
+
+gemma4-wdc is designed as a consumer-hardware proof of concept. The goal is to make the middleware thesis visible on a single machine, not to imply cluster-scale runtime behavior.
 
 ## Current Scope
 
@@ -53,7 +57,7 @@ It is explicitly not:
 
 Simulation mode is first-class. Hybrid mode with one real local model is optional. The repository is designed to demonstrate the systems thesis on consumer hardware, not to present a production multi-node cluster.
 
-## Key Properties
+## How It Works
 
 gemma4-wdc receives structured tool tasks from multiple agents or branches:
 
@@ -79,26 +83,7 @@ multi-agent tasks
 
 ![Admission window timing diagram](./diagrams/timing_window.svg)
 
-## Demo Scenarios
-
-- `SQL overlap demo`
-  Multiple agents ask materially similar analytics questions and one execution serves several branches.
-- `API overlap demo`
-  Similar backend requests collapse into one shared execution path.
-- `Document research demo`
-  Research agents extract overlapping evidence from the same corpus.
-- `Coding-agent demo`
-  Parallel planner, coder, and reviewer branches inspect the same local repo and collapse overlapping repo-understanding work.
-- `Unique-task counterexample`
-  Similar-looking tasks stay separate when correctness should win over aggressive collapse.
-
-Screenshot assets:
-
-![Coding-agent overlap screenshot placeholder](./site/assets/screenshots/coding-agent-overlap.svg)
-![Dashboard screenshot placeholder](./site/assets/screenshots/seu-dashboard.svg)
-![Benchmark summary screenshot placeholder](./site/assets/screenshots/benchmark-results.svg)
-
-## Laptop-First Operation
+## Simulation Mode
 
 Simulation mode is the default and the primary deliverable.
 
@@ -119,34 +104,29 @@ Hybrid mode keeps most agents simulated while allowing one optional real local m
 
 If no real model is available, the project is still complete in simulation mode.
 
-## Run Locally
+## Demo Scenarios
 
-### Simulation Mode
+- `SQL overlap demo`
+  Multiple agents ask materially similar analytics questions and one execution serves several branches.
+- `API overlap demo`
+  Similar backend requests collapse into one shared execution path.
+- `Document research demo`
+  Research agents extract overlapping evidence from the same corpus.
+- `Coding-agent demo`
+  Parallel planner, coder, and reviewer branches inspect the same local repo and collapse overlapping repo-understanding work.
+- `Unique-task counterexample`
+  Similar-looking tasks stay separate when correctness should win over aggressive collapse.
 
-```bash
-cd runtime/shared_execution/backend
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-```
+Representative visuals:
 
-In a second terminal:
+- Coding-agent overlap
+  ![Illustration of overlapping coding-agent repo scans collapsing into one shared execution unit.](./site/assets/screenshots/coding-agent-overlap.svg)
+- Local dashboard
+  ![Dashboard view showing task stream, shared execution units, and deduplication metrics.](./site/assets/screenshots/seu-dashboard.svg)
+- Benchmark summary
+  ![Benchmark summary visual comparing requested tasks, actual executions, and executions saved across scenarios.](./site/assets/screenshots/benchmark-results.svg)
 
-```bash
-cd runtime/shared_execution/frontend
-python -m http.server 4173
-```
-
-Then open `http://localhost:4173` and run the built-in demo scenarios.
-
-### Hybrid Mode
-
-Hybrid mode currently means: run the same stack, but wire one local model adapter into the task-generation path while keeping the rest of the agents simulated.
-
-For now, the repository includes the interface and positioning for this mode, but a stronger real-model path is still a next-step item rather than a polished default experience.
-
-## Benchmarks
+## Benchmark Presentation
 
 These numbers are preliminary and come from the current local harness using mock executors and hand-authored scenarios. They are here to show runtime behavior clearly, not to overclaim production performance.
 
@@ -173,6 +153,33 @@ Outputs:
 - machine-readable summary: [benchmarks/results/latest_summary.json](./benchmarks/results/latest_summary.json)
 - readable summary: [benchmarks/results/summary.md](./benchmarks/results/summary.md)
 
+## Run Locally
+
+### Simulation Mode
+
+```powershell
+cd runtime/shared_execution/backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+In a second terminal:
+
+```powershell
+cd runtime/shared_execution/frontend
+python -m http.server 4173
+```
+
+Then open `http://localhost:4173` and run the built-in demo scenarios.
+
+### Hybrid Mode
+
+Hybrid mode currently means: run the same stack, but wire one local model adapter into the task-generation path while keeping the rest of the agents simulated.
+
+For now, the repository includes the interface and positioning for this mode, but a stronger real-model path is still a next-step item rather than a polished default experience.
+
 ### GitHub Pages Site
 
 The public microsite is rooted at [`site/`](./site) and includes:
@@ -194,7 +201,7 @@ Then open `http://localhost:8080`.
 ## Repo Structure
 
 ```text
-agent-runtime-lab/
+gemma4-wdc/
   README.md
   docs/
   diagrams/
