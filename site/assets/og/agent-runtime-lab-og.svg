@@ -1,26 +1,53 @@
 <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="80" y1="20" x2="1080" y2="620" gradientUnits="userSpaceOnUse">
+    <linearGradient id="bg" x1="88" y1="40" x2="1112" y2="606" gradientUnits="userSpaceOnUse">
       <stop stop-color="#FBFDFF"/>
       <stop offset="1" stop-color="#EEF4FB"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F7FAFE"/>
     </linearGradient>
     <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
       <stop stop-color="#2D7DD2"/>
       <stop offset="1" stop-color="#174EA6"/>
     </linearGradient>
   </defs>
-  <rect width="1200" height="630" rx="28" fill="url(#bg)"/>
-  <rect x="38" y="38" width="1124" height="554" rx="28" fill="white" stroke="#D8E2EE" stroke-width="2"/>
-  <text x="84" y="122" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="24">gemma4-wdc</text>
-  <text x="84" y="202" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="60" font-weight="600">Local multi-agent execution</text>
-  <text x="84" y="270" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="60" font-weight="600">with middleware-level</text>
-  <text x="84" y="338" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="60" font-weight="600">deduplication</text>
-  <text x="84" y="416" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="28">Laptop-first prototype for overlapping tool tasks, bounded admission windows,</text>
-  <text x="84" y="454" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="28">shared execution units, result fan-out, and benchmark-aware observability.</text>
-  <rect x="812" y="140" width="276" height="228" rx="24" fill="url(#accent)"/>
-  <text x="848" y="200" fill="white" font-family="IBM Plex Sans, Arial" font-size="24" font-weight="600">agents</text>
-  <text x="848" y="246" fill="#DCEBFF" font-family="IBM Plex Sans, Arial" font-size="24">overlap</text>
-  <text x="848" y="292" fill="#DCEBFF" font-family="IBM Plex Sans, Arial" font-size="24">admission window</text>
-  <text x="848" y="338" fill="#DCEBFF" font-family="IBM Plex Sans, Arial" font-size="24">shared execution</text>
-  <text x="848" y="384" fill="#DCEBFF" font-family="IBM Plex Sans, Arial" font-size="24">fan-out + metrics</text>
+  <rect width="1200" height="630" rx="32" fill="url(#bg)"/>
+  <rect x="36" y="36" width="1128" height="558" rx="30" fill="url(#card)" stroke="#D8E2EE" stroke-width="2"/>
+
+  <text x="84" y="110" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="24">gemma4-wdc</text>
+  <text x="84" y="188" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="58" font-weight="600">Local multi-agent execution</text>
+  <text x="84" y="252" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="58" font-weight="600">with middleware-level</text>
+  <text x="84" y="316" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="58" font-weight="600">deduplication</text>
+  <text x="84" y="388" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="26">Laptop-first prototype for semantic overlap detection, bounded admission windows,</text>
+  <text x="84" y="424" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="26">shared execution units, result fan-out, and benchmark-aware observability.</text>
+
+  <rect x="84" y="474" width="172" height="42" rx="21" fill="#EAF2FD" stroke="#D4E1F1"/>
+  <text x="112" y="501" fill="#174EA6" font-family="IBM Plex Mono, Arial" font-size="18">local runtime</text>
+  <rect x="270" y="474" width="188" height="42" rx="21" fill="#EAF2FD" stroke="#D4E1F1"/>
+  <text x="296" y="501" fill="#174EA6" font-family="IBM Plex Mono, Arial" font-size="18">shared execution</text>
+  <rect x="472" y="474" width="202" height="42" rx="21" fill="#EAF2FD" stroke="#D4E1F1"/>
+  <text x="498" y="501" fill="#174EA6" font-family="IBM Plex Mono, Arial" font-size="18">semantic overlap</text>
+
+  <rect x="760" y="118" width="336" height="390" rx="28" fill="url(#accent)"/>
+  <rect x="790" y="154" width="116" height="66" rx="16" fill="#F5FAFF" fill-opacity="0.16" stroke="#DDEAFF" stroke-opacity="0.4"/>
+  <rect x="790" y="242" width="116" height="66" rx="16" fill="#F5FAFF" fill-opacity="0.16" stroke="#DDEAFF" stroke-opacity="0.4"/>
+  <rect x="790" y="330" width="116" height="66" rx="16" fill="#F5FAFF" fill-opacity="0.16" stroke="#DDEAFF" stroke-opacity="0.4"/>
+  <text x="818" y="194" fill="white" font-family="IBM Plex Sans, Arial" font-size="20" font-weight="600">agents</text>
+  <text x="817" y="282" fill="white" font-family="IBM Plex Sans, Arial" font-size="20" font-weight="600">tasks</text>
+  <text x="810" y="370" fill="white" font-family="IBM Plex Sans, Arial" font-size="20" font-weight="600">SEU</text>
+
+  <path d="M926 187H980" stroke="#DCEBFF" stroke-width="10" stroke-linecap="round"/>
+  <path d="M926 275H980" stroke="#DCEBFF" stroke-width="10" stroke-linecap="round"/>
+  <path d="M926 363H980" stroke="#DCEBFF" stroke-width="10" stroke-linecap="round"/>
+  <path d="M992 187H1036" stroke="white" stroke-width="10" stroke-linecap="round"/>
+  <path d="M992 275H1036" stroke="white" stroke-width="10" stroke-linecap="round"/>
+  <path d="M992 363H1036" stroke="white" stroke-width="10" stroke-linecap="round"/>
+
+  <rect x="980" y="154" width="86" height="242" rx="22" fill="#F5FAFF" fill-opacity="0.12" stroke="#DDEAFF" stroke-opacity="0.45"/>
+  <text x="1000" y="214" fill="white" font-family="IBM Plex Sans, Arial" font-size="19" font-weight="600">admission</text>
+  <text x="1015" y="240" fill="white" font-family="IBM Plex Sans, Arial" font-size="19" font-weight="600">window</text>
+  <text x="1004" y="302" fill="#DCEBFF" font-family="IBM Plex Sans, Arial" font-size="19">fan-out</text>
+  <text x="1004" y="360" fill="#DCEBFF" font-family="IBM Plex Sans, Arial" font-size="19">metrics</text>
 </svg>

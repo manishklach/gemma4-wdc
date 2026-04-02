@@ -3,18 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Benchmarks | Gemma4-WDC</title>
-    <meta name="description" content="Benchmark methodology and preliminary results for Gemma4-WDC across coding-agent overlap, document research, API overlap, and false-collapse safety scenarios." />
+    <title>Benchmarks — gemma4-wdc</title>
+    <meta name="description" content="Benchmark methodology and preliminary results for gemma4-wdc across coding-agent overlap, document research, API overlap, and false-collapse safety scenarios." />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://manishklach.github.io/gemma4-wdc/benchmarks/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://manishklach.github.io/gemma4-wdc/benchmarks/" />
-    <meta property="og:title" content="Benchmarks | Gemma4-WDC" />
-    <meta property="og:description" content="Preliminary laptop-scale benchmark results for shared execution, semantic deduplication, and false-collapse safety." />
+    <meta property="og:title" content="Benchmarks — gemma4-wdc" />
+    <meta property="og:description" content="Preliminary laptop-scale benchmark results for shared execution units, semantic deduplication, and false-collapse safety." />
     <meta property="og:image" content="https://manishklach.github.io/gemma4-wdc/assets/og/agent-runtime-lab-og.svg" />
+    <meta property="og:image:alt" content="Benchmark preview for gemma4-wdc showing scenario-level tasks, executions, and saved executions." />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Benchmarks | Gemma4-WDC" />
+    <meta name="twitter:title" content="Benchmarks — gemma4-wdc" />
     <meta name="twitter:description" content="Transparent benchmark methodology and results for local multi-agent middleware." />
+    <meta name="twitter:image" content="https://manishklach.github.io/gemma4-wdc/assets/og/agent-runtime-lab-og.svg" />
+    <meta name="twitter:image:alt" content="Benchmark preview for gemma4-wdc showing scenario-level tasks, executions, and saved executions." />
     <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,7 +28,7 @@
     <a class="skip-link" href="#content">Skip to content</a>
     <header class="site-header">
       <div class="container nav-shell">
-        <a class="brand" href="../">Gemma4-WDC</a>
+        <a class="brand" href="../">gemma4-wdc</a>
         <nav aria-label="Primary">
           <a href="../architecture/">Architecture</a>
           <a href="../benchmarks/">Benchmarks</a>
@@ -41,6 +44,24 @@
         <p class="lead">The harness compares naive execution against shared execution. The numbers are intentionally modest and easy to inspect because the goal is to test the middleware thesis, not inflate hardware claims.</p>
       </section>
       <section class="section container">
+        <div class="grid four stats-grid">
+          <article class="card stat-card">
+            <span class="stat-value">14</span>
+            <span class="stat-label">tasks requested</span>
+          </article>
+          <article class="card stat-card">
+            <span class="stat-value">10</span>
+            <span class="stat-label">actual executions</span>
+          </article>
+          <article class="card stat-card">
+            <span class="stat-value">4</span>
+            <span class="stat-label">executions saved</span>
+          </article>
+          <article class="card stat-card">
+            <span class="stat-value">0.00</span>
+            <span class="stat-label">false-collapse rate</span>
+          </article>
+        </div>
         <div class="grid two">
           <article class="card">
             <h2>Scenario families</h2>
@@ -53,6 +74,7 @@
           </article>
           <article class="card">
             <h2>Current summary table</h2>
+            <div class="table-wrap">
             <table>
               <thead>
                 <tr>
@@ -71,12 +93,14 @@
                 <tr><td>false_collapse_safety</td><td>4</td><td>4</td><td>0</td><td>1.0x</td><td>0.00</td></tr>
               </tbody>
             </table>
+            </div>
           </article>
         </div>
       </section>
       <section class="section container">
         <article class="card visual-card">
-          <img src="../assets/diagrams/benchmark-summary.svg" alt="Benchmark summary chart showing tasks requested, actual executions, executions saved, and a small legend for the preliminary local harness." />
+          <img src="../assets/screenshots/benchmark-results.svg" alt="Benchmark summary view showing scenario-level task counts, actual executions, saved executions, and dedup ratios across the current local harness." />
+          <p class="media-caption">Current benchmark preview from the local harness. The chart matches the summary table and stays deliberately modest about runtime claims.</p>
         </article>
       </section>
       <section class="section container">
@@ -97,7 +121,7 @@
     <footer class="site-footer">
       <div class="container footer-grid">
         <div>
-          <strong>Gemma4-WDC</strong>
+          <strong>gemma4-wdc</strong>
           <p>Benchmark page for the GitHub Pages microsite.</p>
         </div>
         <nav aria-label="Footer">
