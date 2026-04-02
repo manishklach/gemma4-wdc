@@ -1,0 +1,44 @@
+{
+  "description": "Concurrent repo-understanding branches with overlapping scan intent.",
+  "tasks": [
+    {
+      "task_id": "repo-1",
+      "agent_id": "planner",
+      "branch_id": "branch-a",
+      "task_type": "repo_scan",
+      "resource_hint": "repo:agent-runtime-lab",
+      "payload": {
+        "repo": "agent-runtime-lab",
+        "path": "runtime/",
+        "query": "Locate where shared execution units leave the admission window and begin execution"
+      },
+      "expected_group": "runtime_scan"
+    },
+    {
+      "task_id": "repo-2",
+      "agent_id": "coder",
+      "branch_id": "branch-b",
+      "task_type": "repo_scan",
+      "resource_hint": "repo:agent-runtime-lab",
+      "payload": {
+        "repo": "agent-runtime-lab",
+        "path": "runtime/",
+        "query": "Find the code path that transitions pending shared work into execution"
+      },
+      "expected_group": "runtime_scan"
+    },
+    {
+      "task_id": "repo-3",
+      "agent_id": "tester",
+      "branch_id": "branch-c",
+      "task_type": "code_search",
+      "resource_hint": "repo:agent-runtime-lab",
+      "payload": {
+        "repo": "agent-runtime-lab",
+        "path": "benchmarks/",
+        "query": "look for benchmark harness entrypoint"
+      }
+    }
+  ]
+}
+

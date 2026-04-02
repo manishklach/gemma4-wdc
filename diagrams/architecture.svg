@@ -1,0 +1,37 @@
+<svg width="1200" height="680" viewBox="0 0 1200 680" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="680" rx="28" fill="#F5F8FC"/>
+  <rect x="50" y="72" width="220" height="118" rx="18" fill="#FFFFFF" stroke="#CBD7E6" stroke-width="2"/>
+  <text x="78" y="112" fill="#12304A" font-family="IBM Plex Sans, Arial" font-size="28" font-weight="600">Agent Branches</text>
+  <text x="78" y="150" fill="#5C6F84" font-family="IBM Plex Sans, Arial" font-size="19">coding, research, tool-use</text>
+  <rect x="326" y="72" width="220" height="118" rx="18" fill="#FFFFFF" stroke="#CBD7E6" stroke-width="2"/>
+  <text x="354" y="112" fill="#12304A" font-family="IBM Plex Sans, Arial" font-size="28" font-weight="600">Ingestion API</text>
+  <text x="354" y="150" fill="#5C6F84" font-family="IBM Plex Sans, Arial" font-size="19">typed task submissions</text>
+  <rect x="602" y="72" width="250" height="118" rx="18" fill="#FFFFFF" stroke="#CBD7E6" stroke-width="2"/>
+  <text x="630" y="112" fill="#12304A" font-family="IBM Plex Sans, Arial" font-size="28" font-weight="600">Semantic Matcher</text>
+  <text x="630" y="150" fill="#5C6F84" font-family="IBM Plex Sans, Arial" font-size="19">hash + near-duplicate scoring</text>
+  <rect x="908" y="72" width="242" height="118" rx="18" fill="#FFFFFF" stroke="#CBD7E6" stroke-width="2"/>
+  <text x="936" y="112" fill="#12304A" font-family="IBM Plex Sans, Arial" font-size="28" font-weight="600">Admission Window</text>
+  <text x="936" y="150" fill="#5C6F84" font-family="IBM Plex Sans, Arial" font-size="19">bounded, non-resetting</text>
+  <rect x="188" y="286" width="300" height="142" rx="20" fill="#FFFFFF" stroke="#CBD7E6" stroke-width="2"/>
+  <text x="220" y="332" fill="#12304A" font-family="IBM Plex Sans, Arial" font-size="32" font-weight="600">Shared Execution Unit</text>
+  <text x="220" y="372" fill="#5C6F84" font-family="IBM Plex Sans, Arial" font-size="21">subscriber registry, state machine,</text>
+  <text x="220" y="402" fill="#5C6F84" font-family="IBM Plex Sans, Arial" font-size="21">collapse reasons, result store</text>
+  <rect x="562" y="286" width="238" height="142" rx="20" fill="#FFFFFF" stroke="#CBD7E6" stroke-width="2"/>
+  <text x="594" y="334" fill="#12304A" font-family="IBM Plex Sans, Arial" font-size="32" font-weight="600">Executor</text>
+  <text x="594" y="374" fill="#5C6F84" font-family="IBM Plex Sans, Arial" font-size="21">repo scans, SQL, docs,</text>
+  <text x="594" y="404" fill="#5C6F84" font-family="IBM Plex Sans, Arial" font-size="21">API calls, research tasks</text>
+  <rect x="874" y="286" width="234" height="142" rx="20" fill="#FFFFFF" stroke="#CBD7E6" stroke-width="2"/>
+  <text x="906" y="334" fill="#12304A" font-family="IBM Plex Sans, Arial" font-size="32" font-weight="600">Observability</text>
+  <text x="906" y="374" fill="#5C6F84" font-family="IBM Plex Sans, Arial" font-size="21">saved executions, fan-out,</text>
+  <text x="906" y="404" fill="#5C6F84" font-family="IBM Plex Sans, Arial" font-size="21">dedup efficiency, safety</text>
+  <rect x="360" y="510" width="486" height="104" rx="20" fill="#E8F1FC" stroke="#A9C5EA" stroke-width="2"/>
+  <text x="394" y="554" fill="#12304A" font-family="IBM Plex Sans, Arial" font-size="30" font-weight="600">Execute once. Fan out once. Observe every collapse.</text>
+  <path d="M270 131H326" stroke="#1768AC" stroke-width="4"/>
+  <path d="M546 131H602" stroke="#1768AC" stroke-width="4"/>
+  <path d="M852 131H908" stroke="#1768AC" stroke-width="4"/>
+  <path d="M1028 190V238H338V286" stroke="#1768AC" stroke-width="4"/>
+  <path d="M488 357H562" stroke="#1768AC" stroke-width="4"/>
+  <path d="M800 357H874" stroke="#1768AC" stroke-width="4"/>
+  <path d="M675 428V510" stroke="#1768AC" stroke-width="4"/>
+</svg>
+

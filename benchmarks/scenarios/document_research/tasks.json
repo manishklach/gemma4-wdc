@@ -1,0 +1,43 @@
+{
+  "description": "Related evidence extraction requests across the same research corpus.",
+  "tasks": [
+    {
+      "task_id": "doc-1",
+      "agent_id": "research-a",
+      "branch_id": "paper-a",
+      "task_type": "doc_extract",
+      "resource_hint": "corpus:inference-papers",
+      "payload": {
+        "collection": "inference-papers",
+        "question": "Extract mentions of admission control in agent runtimes",
+        "documents": ["paper-1", "paper-2", "paper-3"]
+      },
+      "expected_group": "doc_extract_1"
+    },
+    {
+      "task_id": "doc-2",
+      "agent_id": "research-b",
+      "branch_id": "paper-b",
+      "task_type": "doc_extract",
+      "resource_hint": "corpus:inference-papers",
+      "payload": {
+        "collection": "inference-papers",
+        "question": "Find passages discussing admission control in agent runtime systems",
+        "documents": ["paper-1", "paper-2", "paper-3"]
+      },
+      "expected_group": "doc_extract_1"
+    },
+    {
+      "task_id": "doc-3",
+      "agent_id": "research-c",
+      "branch_id": "paper-c",
+      "task_type": "nl_research_task",
+      "resource_hint": "corpus:inference-papers",
+      "payload": {
+        "topic": "runtime observability",
+        "question": "Summarize runtime observability themes across the corpus",
+        "sources": ["paper-1", "paper-2", "paper-3"]
+      }
+    }
+  ]
+}

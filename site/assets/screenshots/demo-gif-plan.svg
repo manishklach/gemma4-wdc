@@ -1,0 +1,14 @@
+<svg width="1280" height="760" viewBox="0 0 1280 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="760" rx="28" fill="#F4F7FB"/>
+  <rect x="58" y="60" width="1164" height="640" rx="28" fill="#FFFFFF" stroke="#D5DFEA" stroke-width="2"/>
+  <text x="96" y="118" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="34" font-weight="600">Demo GIF capture plan</text>
+  <text x="96" y="154" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="20">Suggested 20 to 25 second capture sequence for the repo README and microsite.</text>
+  <g font-family="IBM Plex Sans, Arial" font-size="24" fill="#12304A">
+    <text x="96" y="236">1. Open the SEU dashboard with a clean runtime state.</text>
+    <text x="96" y="304">2. Trigger the coding repo-scan overlap scenario.</text>
+    <text x="96" y="372">3. Show two tasks attaching to one pending SEU during the admission window.</text>
+    <text x="96" y="440">4. Let the SEU transition to EXECUTING and then COMPLETED.</text>
+    <text x="96" y="508">5. Pan briefly to the metrics cards showing executions saved.</text>
+    <text x="96" y="576">6. Trigger the unique-task counterexample to show false-collapse safety.</text>
+  </g>
+</svg>

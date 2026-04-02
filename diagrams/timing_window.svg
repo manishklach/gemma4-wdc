@@ -1,0 +1,19 @@
+<svg width="1200" height="460" viewBox="0 0 1200 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="460" rx="28" fill="#F6F9FD"/>
+  <text x="60" y="84" fill="#12304A" font-family="IBM Plex Sans, Arial" font-size="34" font-weight="600">Bounded non-resetting admission window</text>
+  <line x1="100" y1="240" x2="1110" y2="240" stroke="#7B92AD" stroke-width="4"/>
+  <rect x="220" y="194" width="412" height="92" rx="16" fill="#DCEAFE" stroke="#1768AC" stroke-width="2"/>
+  <text x="246" y="230" fill="#1768AC" font-family="IBM Plex Sans, Arial" font-size="24" font-weight="600">Admission window</text>
+  <text x="246" y="262" fill="#4F6580" font-family="IBM Plex Sans, Arial" font-size="18">first arrival starts the timer; later arrivals do not reset it</text>
+  <circle cx="220" cy="240" r="12" fill="#1768AC"/>
+  <circle cx="364" cy="240" r="12" fill="#1768AC"/>
+  <circle cx="510" cy="240" r="12" fill="#1768AC"/>
+  <circle cx="632" cy="240" r="12" fill="#0E8A5A"/>
+  <text x="184" y="172" fill="#12304A" font-family="IBM Plex Mono, Arial" font-size="18">t0 first task</text>
+  <text x="316" y="172" fill="#12304A" font-family="IBM Plex Mono, Arial" font-size="18">t1 matching arrival</text>
+  <text x="462" y="172" fill="#12304A" font-family="IBM Plex Mono, Arial" font-size="18">t2 matching arrival</text>
+  <text x="610" y="172" fill="#12304A" font-family="IBM Plex Mono, Arial" font-size="18">execute once</text>
+  <text x="690" y="232" fill="#0E8A5A" font-family="IBM Plex Sans, Arial" font-size="24" font-weight="600">shared result fan-out</text>
+  <text x="690" y="264" fill="#4F6580" font-family="IBM Plex Sans, Arial" font-size="18">all subscribers receive one execution outcome</text>
+</svg>
+

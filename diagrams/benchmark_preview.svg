@@ -1,0 +1,44 @@
+<svg width="1280" height="760" viewBox="0 0 1280 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="760" rx="32" fill="#F5F8FC"/>
+  <text x="72" y="88" fill="#12304A" font-family="IBM Plex Sans, Arial" font-size="38" font-weight="600">Benchmark summary</text>
+  <text x="72" y="126" fill="#5C6F84" font-family="IBM Plex Sans, Arial" font-size="20">Preliminary local results from the current mock-executor harness.</text>
+  <rect x="72" y="164" width="1136" height="500" rx="24" fill="#FFFFFF" stroke="#D1DBE8" stroke-width="2"/>
+  <text x="112" y="220" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">scenario</text>
+  <text x="430" y="220" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">tasks</text>
+  <text x="560" y="220" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">seus</text>
+  <text x="680" y="220" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">saved</text>
+  <text x="820" y="220" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">dedup</text>
+  <text x="960" y="220" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">false-collapse</text>
+  <line x1="104" y1="244" x2="1176" y2="244" stroke="#E0E8F1" stroke-width="2"/>
+  <g font-family="IBM Plex Sans, Arial" font-size="24" fill="#12304A">
+    <text x="112" y="302">coding_repo_scan</text>
+    <text x="112" y="390">document_research</text>
+    <text x="112" y="478">api_fanout</text>
+    <text x="112" y="566">false_collapse_safety</text>
+  </g>
+  <g font-family="IBM Plex Mono, Arial" font-size="24" fill="#12304A">
+    <text x="442" y="302">3</text>
+    <text x="442" y="390">3</text>
+    <text x="442" y="478">3</text>
+    <text x="442" y="566">4</text>
+    <text x="566" y="302">2</text>
+    <text x="566" y="390">2</text>
+    <text x="566" y="478">2</text>
+    <text x="566" y="566">4</text>
+    <text x="690" y="302">1</text>
+    <text x="690" y="390">1</text>
+    <text x="690" y="478">1</text>
+    <text x="690" y="566">0</text>
+    <text x="822" y="302">1.5x</text>
+    <text x="822" y="390">1.5x</text>
+    <text x="822" y="478">1.5x</text>
+    <text x="822" y="566">1.0x</text>
+    <text x="998" y="302">0.00</text>
+    <text x="998" y="390">0.00</text>
+    <text x="998" y="478">0.00</text>
+    <text x="998" y="566">0.00</text>
+  </g>
+  <rect x="72" y="682" width="1136" height="40" rx="14" fill="#E8F1FC"/>
+  <text x="96" y="708" fill="#4F6580" font-family="IBM Plex Sans, Arial" font-size="18">Interpretation: the runtime saves work in the overlapping coding, research, and API scenarios while preserving zero collapse in the current safety counterexample.</text>
+</svg>
+

@@ -1,0 +1,56 @@
+{
+  "description": "Fan-out style outbound API operations where request shape overlaps strongly.",
+  "tasks": [
+    {
+      "task_id": "api-1",
+      "agent_id": "ops-a",
+      "branch_id": "incident-a",
+      "task_type": "api_call",
+      "resource_hint": "service:status-api",
+      "payload": {
+        "service": "status-api",
+        "endpoint": "/v1/incidents",
+        "method": "GET",
+        "params": {
+          "service": "compiler",
+          "region": "us-west"
+        }
+      },
+      "expected_group": "status_api"
+    },
+    {
+      "task_id": "api-2",
+      "agent_id": "ops-b",
+      "branch_id": "incident-b",
+      "task_type": "api_call",
+      "resource_hint": "service:status-api",
+      "payload": {
+        "service": "status-api",
+        "endpoint": "/v1/incidents",
+        "method": "GET",
+        "params": {
+          "service": "compiler",
+          "region": "us-west"
+        }
+      },
+      "expected_group": "status_api"
+    },
+    {
+      "task_id": "api-3",
+      "agent_id": "ops-c",
+      "branch_id": "incident-c",
+      "task_type": "api_call",
+      "resource_hint": "service:status-api",
+      "payload": {
+        "service": "status-api",
+        "endpoint": "/v1/incidents",
+        "method": "GET",
+        "params": {
+          "service": "compiler",
+          "region": "eu-central"
+        }
+      }
+    }
+  ]
+}
+

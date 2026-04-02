@@ -1,0 +1,142 @@
+{
+  "generated_at": "2026-04-02T11:18:56.882606+00:00",
+  "benchmark_version": "0.1.0",
+  "results": {
+    "api_fanout": {
+      "description": "Fan-out style outbound API operations where request shape overlaps strongly.",
+      "naive": {
+        "total_tasks": 3,
+        "total_executions": 3,
+        "executions_saved": 0,
+        "dedup_ratio": 1.0,
+        "collapse_precision": 1.0,
+        "false_collapse_rate": 0.0
+      },
+      "shared_execution_runtime": {
+        "total_tasks": 3,
+        "total_executions": 2,
+        "executions_saved": 1,
+        "dedup_ratio": 1.5,
+        "collapse_precision": 1.0,
+        "false_collapse_rate": 0.0,
+        "expected_collapsible_pairs": 1,
+        "metrics": {
+          "total_tasks_received": 3,
+          "unique_seus_created": 2,
+          "collapsed_tasks": 1,
+          "executions_completed": 2,
+          "executions_failed": 0,
+          "executions_saved": 1,
+          "deduplication_multiplier": 1.5,
+          "estimated_backend_work_saved_ms": 180,
+          "backend_work_ms": 376,
+          "false_collapse_rejections": 1,
+          "latency_mean_ms": 188,
+          "latency_p95_ms": 172
+        }
+      }
+    },
+    "coding_repo_scan": {
+      "description": "Concurrent repo-understanding branches with overlapping scan intent.",
+      "naive": {
+        "total_tasks": 3,
+        "total_executions": 3,
+        "executions_saved": 0,
+        "dedup_ratio": 1.0,
+        "collapse_precision": 1.0,
+        "false_collapse_rate": 0.0
+      },
+      "shared_execution_runtime": {
+        "total_tasks": 3,
+        "total_executions": 2,
+        "executions_saved": 1,
+        "dedup_ratio": 1.5,
+        "collapse_precision": 1.0,
+        "false_collapse_rate": 0.0,
+        "expected_collapsible_pairs": 1,
+        "metrics": {
+          "total_tasks_received": 3,
+          "unique_seus_created": 2,
+          "collapsed_tasks": 1,
+          "executions_completed": 2,
+          "executions_failed": 0,
+          "executions_saved": 1,
+          "deduplication_multiplier": 1.5,
+          "estimated_backend_work_saved_ms": 180,
+          "backend_work_ms": 374,
+          "false_collapse_rejections": 0,
+          "latency_mean_ms": 187,
+          "latency_p95_ms": 170
+        }
+      }
+    },
+    "document_research": {
+      "description": "Related evidence extraction requests across the same research corpus.",
+      "naive": {
+        "total_tasks": 3,
+        "total_executions": 3,
+        "executions_saved": 0,
+        "dedup_ratio": 1.0,
+        "collapse_precision": 1.0,
+        "false_collapse_rate": 0.0
+      },
+      "shared_execution_runtime": {
+        "total_tasks": 3,
+        "total_executions": 2,
+        "executions_saved": 1,
+        "dedup_ratio": 1.5,
+        "collapse_precision": 1.0,
+        "false_collapse_rate": 0.0,
+        "expected_collapsible_pairs": 1,
+        "metrics": {
+          "total_tasks_received": 3,
+          "unique_seus_created": 2,
+          "collapsed_tasks": 1,
+          "executions_completed": 2,
+          "executions_failed": 0,
+          "executions_saved": 1,
+          "deduplication_multiplier": 1.5,
+          "estimated_backend_work_saved_ms": 180,
+          "backend_work_ms": 373,
+          "false_collapse_rejections": 0,
+          "latency_mean_ms": 186.5,
+          "latency_p95_ms": 171
+        }
+      }
+    },
+    "false_collapse_safety": {
+      "description": "Counterexamples to ensure the runtime does not collapse materially different work.",
+      "naive": {
+        "total_tasks": 4,
+        "total_executions": 4,
+        "executions_saved": 0,
+        "dedup_ratio": 1.0,
+        "collapse_precision": 1.0,
+        "false_collapse_rate": 0.0
+      },
+      "shared_execution_runtime": {
+        "total_tasks": 4,
+        "total_executions": 4,
+        "executions_saved": 0,
+        "dedup_ratio": 1.0,
+        "collapse_precision": 1.0,
+        "false_collapse_rate": 0.0,
+        "expected_collapsible_pairs": 0,
+        "metrics": {
+          "total_tasks_received": 4,
+          "unique_seus_created": 4,
+          "collapsed_tasks": 0,
+          "executions_completed": 4,
+          "executions_failed": 0,
+          "executions_saved": 0,
+          "deduplication_multiplier": 1.0,
+          "estimated_backend_work_saved_ms": 0,
+          "backend_work_ms": 688,
+          "false_collapse_rejections": 2,
+          "latency_mean_ms": 172,
+          "latency_p95_ms": 172
+        }
+      }
+    }
+  }
+}

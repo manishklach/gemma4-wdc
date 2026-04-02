@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agent Runtime Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Agent Runtime Lab</p>
+          <h1>One concrete runtime answer to duplicated subwork in concurrent agent systems.</h1>
+          <p class="lead">
+            Shared Execution Runtime detects semantic overlap across branch-local tasks, opens a bounded non-resetting admission window, collapses matching work into a shared execution unit, executes once, fans out the result, and measures the savings.
+          </p>
+          <div class="actions">
+            <a href="../README.md">Read the README</a>
+            <a href="../runtime/shared_execution/README.md" class="secondary">Run the demo</a>
+            <a href="../docs/architecture.md" class="secondary">Understand the architecture</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <img src="../diagrams/before_after.svg" alt="Before and after runtime diagram" />
+        </div>
+      </section>
+
+      <section class="grid two">
+        <article class="card">
+          <p class="label">Problem</p>
+          <h2>Parallel agent branches increasingly repeat semantically overlapping work.</h2>
+          <p>As systems move from single-threaded chat toward concurrent branch execution, duplicated repo scans, repeated code search, repeated evidence extraction, and repeated API operations become a runtime bottleneck.</p>
+        </article>
+        <article class="card">
+          <p class="label">Core Idea</p>
+          <h2>Detect overlap early, delay briefly, execute once, fan out explicitly.</h2>
+          <p>This repo explores a branch-aware runtime layer rather than another app shell. The emphasis is on task fingerprinting, admission control, shared execution units, and observability.</p>
+        </article>
+      </section>
+
+      <section class="card architecture">
+        <div class="section-head">
+          <div>
+            <p class="label">Architecture</p>
+            <h2>How Shared Execution Runtime works</h2>
+          </div>
+          <a href="../docs/architecture.md" class="text-link">Open architecture doc</a>
+        </div>
+        <img src="../diagrams/architecture.svg" alt="Architecture diagram" />
+      </section>
+
+      <section class="grid two">
+        <article class="card">
+          <p class="label">Coding-Agent Scenario</p>
+          <h2>Repo-understanding branches converge on the same SEU.</h2>
+          <p>Multiple coding-agent branches asking overlapping repo-scan questions can subscribe to one shared execution unit instead of launching duplicated scans independently.</p>
+          <img src="./assets/screenshots/coding-agent-overlap.svg" alt="Coding agent overlap screenshot" />
+        </article>
+        <article class="card">
+          <p class="label">Runtime State</p>
+          <h2>SEU state, subscriber membership, and result fan-out stay visible.</h2>
+          <p>The local UI is designed for inspection, not showmanship. It makes pending windows, subscriber lists, and collapse reasons easy to read in screenshots.</p>
+          <img src="./assets/screenshots/seu-dashboard.svg" alt="SEU dashboard screenshot" />
+        </article>
+      </section>
+
+      <section class="card benchmark">
+        <div class="section-head">
+          <div>
+            <p class="label">Benchmark Preview</p>
+            <h2>Preliminary local results from the benchmark harness</h2>
+          </div>
+          <a href="../benchmarks/README.md" class="text-link">See benchmark scenarios</a>
+        </div>
+        <img src="../diagrams/benchmark_preview.svg" alt="Benchmark preview diagram" />
+      </section>
+
+      <section class="grid three">
+        <article class="card">
+          <p class="label">Run The Demo</p>
+          <p>Start the FastAPI backend, serve the lightweight frontend, and trigger the coding overlap, NL overlap, and false-collapse safety scenarios.</p>
+        </article>
+        <article class="card">
+          <p class="label">Repository Structure</p>
+          <p>README, docs, runtime module, benchmarks, examples, diagrams, and a static microsite all point at the same systems thesis.</p>
+        </article>
+        <article class="card">
+          <p class="label">Roadmap</p>
+          <p>Next steps focus on explainable collapse decisions, distributed coordination, branch-aware state reuse, and trajectory replay.</p>
+        </article>
+      </section>
+    </main>
+    <script src="./script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+<svg width="1280" height="760" viewBox="0 0 1280 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="760" rx="28" fill="#F4F7FB"/>
+  <rect x="42" y="44" width="1196" height="104" rx="24" fill="#FFFFFF" stroke="#D4DDE8" stroke-width="2"/>
+  <rect x="42" y="176" width="1196" height="96" rx="24" fill="#FFFFFF" stroke="#D4DDE8" stroke-width="2"/>
+  <rect x="42" y="300" width="284" height="398" rx="24" fill="#FFFFFF" stroke="#D4DDE8" stroke-width="2"/>
+  <rect x="354" y="300" width="884" height="398" rx="24" fill="#FFFFFF" stroke="#D4DDE8" stroke-width="2"/>
+  <text x="78" y="94" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="34" font-weight="600">Shared Execution Runtime UI</text>
+  <text x="78" y="126" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="20">Replace this placeholder with a local screenshot once the demo is running.</text>
+  <text x="78" y="231" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">metrics cards + scenario controls</text>
+  <text x="78" y="348" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="26" font-weight="600">Incoming task stream</text>
+  <text x="390" y="348" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="26" font-weight="600">Shared execution units</text>
+</svg>
+
