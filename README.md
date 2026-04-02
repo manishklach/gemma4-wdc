@@ -21,6 +21,12 @@ This short walkthrough shows how overlapping agent tasks are collapsed into one 
 
 ![Animated walkthrough showing concurrent task arrival, admission-window capture, subscriber attachment, shared execution, result fan-out, and metrics update.](./site/assets/demo/gemma4-wdc-demo.gif)
 
+**Live Local Demo**
+
+This real capture shows the actual local dashboard and runtime handling the coding-agent overlap scenario.
+
+[![Poster frame from the live local dashboard capture showing shared execution units, subscriber attachment, and updated metrics.](./site/assets/demo/gemma4-wdc-live-demo-poster.png)](./site/assets/demo/gemma4-wdc-live-demo.webm)
+
 ## What It Does
 
 - Multiple local or simulated agents emit tool tasks independently.

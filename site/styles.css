@@ -235,6 +235,7 @@ h3 {
 }
 
 .visual-card img,
+.visual-card video,
 .hero-card img {
   width: 100%;
   border-radius: 20px;
