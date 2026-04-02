@@ -1,14 +1,33 @@
-# Gemma4-WDC
+# gemma4-wdc
 
-Local multi-agent execution with middleware-level deduplication.
+*Local multi-agent execution with middleware-level deduplication.*
 
-Gemma4-WDC is a laptop-first prototype of a fully local, offline multi-agent runtime where Gemma-style agents emit tool tasks and a WDC-style middleware layer collapses overlapping backend work before execution. The point is not to pretend a modest Windows laptop is a cluster. The point is to make the systems thesis visible, honest, and runnable on consumer hardware.
+gemma4-wdc is a laptop-first prototype of a local, offline multi-agent system where Gemma-family agents emit overlapping tool tasks and a WDC-style middleware runtime collapses duplicate backend work before execution.
 
-As local open-weight agents become more practical, duplicated downstream work becomes a real runtime bottleneck. Parallel agent branches often ask for near-identical SQL, API, document, repo-scan, and code-search work. Gemma4-WDC explores a concrete fix: hold the first task briefly in a bounded admission window, detect overlap, execute shared work once, and fan the result back out to all subscribers.
+The project explores a simple systems thesis: as local agentic workflows become practical, one of the next bottlenecks is duplicated downstream work across concurrent agents. gemma4-wdc demonstrates how shared SQL, API, document, and code-analysis tasks can be detected, collapsed into shared execution units, and fanned out across agents on consumer hardware.
 
-![Gemma4-WDC architecture overview](./diagrams/architecture.svg)
+![gemma4-wdc shared execution flow](./diagrams/before_after.svg)
 
-Project site: [manishklach.github.io/gemma4-wdc](https://manishklach.github.io/gemma4-wdc/)
+## What It Does
+
+- Multiple local or simulated agents emit tool tasks independently.
+- Middleware detects semantic overlap across those tasks.
+- A bounded admission window captures duplicate work before execution.
+- One shared execution serves multiple subscribers.
+- Dashboard and benchmarks make the savings visible.
+
+**Quick links**
+
+- [Live Site](https://manishklach.github.io/gemma4-wdc/)
+- [Architecture](./docs/architecture.md)
+- [Benchmarks](./benchmarks/README.md)
+- [Run Locally](#run-locally)
+
+## Architecture Preview
+
+gemma4-wdc presents a local multi-agent runtime centered on middleware-level deduplication: task ingress, semantic overlap detection, bounded admission, shared execution units, and result fan-out.
+
+It is most relevant to coding-agent and research-agent workflows where overlapping repo scans, document extraction, API calls, and analytics tasks become a runtime bottleneck.
 
 ## Why This Exists
 
@@ -16,7 +35,7 @@ Local multi-agent systems are getting easier to run. Even on modest hardware, we
 
 What still gets wasted is the backend work underneath those branches. Multiple locally rational agents can independently ask for the same repo scan, the same document extraction pass, or the same analytics query. Gemma4-WDC exists to demonstrate that this is a middleware problem as much as a model problem.
 
-## Laptop-First Prototype
+## Current Scope
 
 This repository is intentionally scoped as:
 
@@ -32,17 +51,11 @@ It is explicitly not:
 - a proof of 10-node throughput
 - a claim that many heavy local model instances should run concurrently on consumer hardware
 
-## Current Scope
+Simulation mode is first-class. Hybrid mode with one real local model is optional. The repository is designed to demonstrate the systems thesis on consumer hardware, not to present a production multi-node cluster.
 
-- single-machine proof of concept
-- simulation-first execution model
-- optional one-model hybrid mode
-- local dashboard and benchmark harness
-- mock or lightweight local backends for SQL, API, document, repo scan, and research tasks
+## Key Properties
 
-## How It Works
-
-Gemma4-WDC receives structured tool tasks from multiple agents or branches:
+gemma4-wdc receives structured tool tasks from multiple agents or branches:
 
 1. a task ingress layer records the task, agent, branch, type, and resource hint
 2. a fingerprinting layer computes a canonical key, exact structural hash, and semantic comparison text
@@ -66,27 +79,6 @@ multi-agent tasks
 
 ![Admission window timing diagram](./diagrams/timing_window.svg)
 
-## Simulation Mode
-
-Simulation mode is the default and the primary deliverable.
-
-- multiple agents are simulated with structured task templates and lightweight local logic
-- the runtime behaves like a local multi-agent middleware service
-- the dashboard stays useful even without a real local model attached
-- demo scenarios and benchmarks are designed to be credible in this mode
-
-This is the mode that should make a reader believe the systems thesis.
-
-## Hybrid Mode
-
-Hybrid mode keeps most agents simulated while allowing one optional real local model adapter to participate.
-
-- one local Gemma-compatible node can propose tasks or rewrite them into structured tool calls
-- the remaining agents stay lightweight so the demo remains laptop-friendly
-- the middleware, not the model count, remains the focus
-
-If no real model is available, the project is still complete in simulation mode.
-
 ## Demo Scenarios
 
 - `SQL overlap demo`
@@ -106,20 +98,26 @@ Screenshot assets:
 ![Dashboard screenshot placeholder](./site/assets/screenshots/seu-dashboard.svg)
 ![Benchmark summary screenshot placeholder](./site/assets/screenshots/benchmark-results.svg)
 
-## Benchmark Presentation
+## Laptop-First Operation
 
-These numbers are preliminary and come from the current local harness using mock executors and hand-authored scenarios. They are here to show runtime behavior clearly, not to overclaim production performance.
+Simulation mode is the default and the primary deliverable.
 
-| Scenario | Tasks Requested | Actual Executions | Executions Saved | Dedup Ratio | False-Collapse Rate |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| `coding_repo_scan` | 3 | 2 | 1 | 1.5x | 0.00 |
-| `document_research` | 3 | 2 | 1 | 1.5x | 0.00 |
-| `api_fanout` | 3 | 2 | 1 | 1.5x | 0.00 |
-| `false_collapse_safety` | 4 | 4 | 0 | 1.0x | 0.00 |
+- multiple agents are simulated with structured task templates and lightweight local logic
+- the runtime behaves like a local multi-agent middleware service
+- the dashboard stays useful even without a real local model attached
+- demo scenarios and benchmarks are designed to be credible in this mode
 
-![Benchmark preview](./diagrams/benchmark_preview.svg)
+This is the mode that should make a reader believe the systems thesis.
 
-See [docs/benchmark-methodology.md](./docs/benchmark-methodology.md) and [benchmarks/README.md](./benchmarks/README.md) for detail.
+## Hybrid Mode
+
+Hybrid mode keeps most agents simulated while allowing one optional real local model adapter to participate.
+
+- one local Gemma-compatible node can propose tasks or rewrite them into structured tool calls
+- the remaining agents stay lightweight so the demo remains laptop-friendly
+- the middleware, not the model count, remains the focus
+
+If no real model is available, the project is still complete in simulation mode.
 
 ## Run Locally
 
@@ -148,7 +146,22 @@ Hybrid mode currently means: run the same stack, but wire one local model adapte
 
 For now, the repository includes the interface and positioning for this mode, but a stronger real-model path is still a next-step item rather than a polished default experience.
 
-### Benchmarks
+## Benchmarks
+
+These numbers are preliminary and come from the current local harness using mock executors and hand-authored scenarios. They are here to show runtime behavior clearly, not to overclaim production performance.
+
+| Scenario | Tasks Requested | Actual Executions | Executions Saved | Dedup Ratio | False-Collapse Rate |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `coding_repo_scan` | 4 | 2 | 2 | 2.0x | 0.00 |
+| `document_research` | 3 | 2 | 1 | 1.5x | 0.00 |
+| `api_fanout` | 3 | 2 | 1 | 1.5x | 0.00 |
+| `false_collapse_safety` | 4 | 4 | 0 | 1.0x | 0.00 |
+
+![Benchmark preview](./diagrams/benchmark_preview.svg)
+
+See [docs/benchmark-methodology.md](./docs/benchmark-methodology.md) and [benchmarks/README.md](./benchmarks/README.md) for detail.
+
+### Benchmark Harness
 
 ```bash
 cd benchmarks
