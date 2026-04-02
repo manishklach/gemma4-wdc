@@ -66,7 +66,7 @@
       </section>
       <section class="section container">
         <article class="card visual-card">
-          <img src="../assets/diagrams/timing_window.svg" alt="Timing diagram of the bounded admission window used by Gemma4-WDC shared execution units." />
+          <img src="../assets/diagrams/admission-window.svg" alt="Admission window diagram showing the first task opening a bounded window and later matching tasks attaching before execution." />
         </article>
       </section>
       <section class="section container">
@@ -75,9 +75,8 @@
             <h2>Coding-agent focus</h2>
             <p>Repo-understanding branches are a practical place to prove the systems thesis. Several branches can ask where a state transition happens, what a module does, or where the benchmark harness lives. The middleware turns that into shared backend work instead of repeated scans.</p>
           </article>
-          <article class="card">
-            <h2>Prototype limits</h2>
-            <p>The current system is local and in-memory. It demonstrates task overlap, bounded admission, shared execution, and fan-out clearly, but it does not yet solve distributed coordination, persistence, or a strong production-grade real-model integration path.</p>
+          <article class="card visual-card">
+            <img src="../assets/diagrams/coding-agent-scenario.svg" alt="Coding-agent scenario diagram showing planner, coder, and reviewer branches collapsing into one shared repo-understanding execution." />
           </article>
         </div>
       </section>

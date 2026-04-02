@@ -1,0 +1,67 @@
+<svg width="1400" height="820" viewBox="0 0 1400 820" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="160" y1="40" x2="1220" y2="780" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBFDFF"/>
+      <stop offset="1" stop-color="#EEF4FB"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#2D7DD2"/>
+      <stop offset="1" stop-color="#174EA6"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="1400" height="820" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#17314D" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+  <rect width="1400" height="820" rx="34" fill="url(#bg)"/>
+  <rect x="34" y="34" width="1332" height="752" rx="30" fill="white" stroke="#D8E2EE" stroke-width="2" filter="url(#shadow)"/>
+  <text x="86" y="116" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="24">gemma4-wdc</text>
+  <text x="86" y="178" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="50" font-weight="600">Local multi-agent execution with middleware-level deduplication</text>
+  <text x="86" y="218" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="24">Multiple local branches emit overlapping tool tasks. The middleware holds, collapses, executes once, and fans results back out.</text>
+
+  <rect x="86" y="286" width="250" height="172" rx="24" fill="#F9FBFE" stroke="#D7E1ED" stroke-width="2"/>
+  <text x="116" y="332" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="30" font-weight="600">Agent branches</text>
+  <rect x="116" y="360" width="182" height="30" rx="15" fill="#E8F1FC"/>
+  <text x="136" y="381" fill="#1C64B3" font-family="IBM Plex Mono, Arial" font-size="16">planner / main</text>
+  <rect x="116" y="402" width="182" height="30" rx="15" fill="#EFF5FC"/>
+  <text x="136" y="423" fill="#1C64B3" font-family="IBM Plex Mono, Arial" font-size="16">coder / feature-a</text>
+  <rect x="116" y="444" width="182" height="30" rx="15" fill="#EFF5FC"/>
+  <text x="136" y="465" fill="#1C64B3" font-family="IBM Plex Mono, Arial" font-size="16">reviewer / feature-b</text>
+
+  <rect x="386" y="286" width="286" height="172" rx="24" fill="#F9FBFE" stroke="#D7E1ED" stroke-width="2"/>
+  <text x="416" y="332" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="30" font-weight="600">Overlapping tool tasks</text>
+  <rect x="416" y="362" width="220" height="32" rx="16" fill="#FFF4DF" stroke="#F1D49A"/>
+  <text x="438" y="384" fill="#926400" font-family="IBM Plex Mono, Arial" font-size="16">repo_scan runtime/app</text>
+  <rect x="416" y="404" width="220" height="32" rx="16" fill="#FFF4DF" stroke="#F1D49A"/>
+  <text x="438" y="426" fill="#926400" font-family="IBM Plex Mono, Arial" font-size="16">code_search transitions</text>
+  <rect x="416" y="446" width="220" height="32" rx="16" fill="#FFF4DF" stroke="#F1D49A"/>
+  <text x="438" y="468" fill="#926400" font-family="IBM Plex Mono, Arial" font-size="16">doc_extract benchmarks</text>
+
+  <rect x="718" y="242" width="328" height="260" rx="28" fill="url(#accent)"/>
+  <text x="752" y="302" fill="white" font-family="IBM Plex Sans, Arial" font-size="34" font-weight="600">WDC middleware layer</text>
+  <text x="752" y="346" fill="#DCEBFF" font-family="IBM Plex Sans, Arial" font-size="22">semantic overlap</text>
+  <text x="752" y="380" fill="#DCEBFF" font-family="IBM Plex Sans, Arial" font-size="22">bounded admission window</text>
+  <text x="752" y="414" fill="#DCEBFF" font-family="IBM Plex Sans, Arial" font-size="22">shared execution unit manager</text>
+  <text x="752" y="448" fill="#DCEBFF" font-family="IBM Plex Sans, Arial" font-size="22">explainable collapse decisions</text>
+
+  <rect x="1110" y="286" width="194" height="172" rx="24" fill="#F9FBFE" stroke="#D7E1ED" stroke-width="2"/>
+  <text x="1138" y="332" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="30" font-weight="600">SEU + fan-out</text>
+  <rect x="1138" y="364" width="138" height="36" rx="18" fill="#EAF4EC" stroke="#A7D2B2"/>
+  <text x="1174" y="387" fill="#1A6B4E" font-family="IBM Plex Mono, Arial" font-size="16">execute once</text>
+  <path d="M1208 408V442" stroke="#1A6B4E" stroke-width="3" stroke-linecap="round"/>
+  <path d="M1208 442C1186 460 1160 472 1138 478" stroke="#1A6B4E" stroke-width="3" stroke-linecap="round"/>
+  <path d="M1208 442C1230 460 1256 472 1278 478" stroke="#1A6B4E" stroke-width="3" stroke-linecap="round"/>
+  <text x="1142" y="504" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="18">result fan-out</text>
+
+  <rect x="196" y="566" width="1008" height="142" rx="26" fill="#F8FBFF" stroke="#D7E1ED" stroke-width="2"/>
+  <text x="232" y="622" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="32" font-weight="600">Observable savings</text>
+  <text x="232" y="662" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="21">Metrics expose tasks received, SEUs created, executions saved, dedup ratio, and safety behavior for coding-agent and research-agent workflows.</text>
+  <rect x="910" y="598" width="254" height="60" rx="18" fill="#EEF5FF" stroke="#C2D7F3"/>
+  <text x="944" y="634" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="20">dedup ratio 2.0x</text>
+
+  <path d="M336 372H386" stroke="#1D6DC0" stroke-width="5" stroke-linecap="round"/>
+  <path d="M672 372H718" stroke="#1D6DC0" stroke-width="5" stroke-linecap="round"/>
+  <path d="M1046 372H1110" stroke="#1D6DC0" stroke-width="5" stroke-linecap="round"/>
+  <path d="M1160 458L1174 448L1160 438" stroke="#1D6DC0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M372 372L358 382L358 362" fill="#1D6DC0"/>
+  <path d="M704 372L690 382L690 362" fill="#1D6DC0"/>
+</svg>

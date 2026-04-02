@@ -1,28 +1,47 @@
 <svg width="1280" height="760" viewBox="0 0 1280 760" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1280" height="760" rx="28" fill="#F4F7FB"/>
-  <rect x="48" y="52" width="1184" height="96" rx="22" fill="#FFFFFF" stroke="#D5DFEA" stroke-width="2"/>
-  <text x="84" y="98" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="34" font-weight="600">Coding-agent overlap scenario</text>
-  <text x="84" y="128" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="20">Two branch-local repo scans collapse into one shared execution unit before execution begins.</text>
-  <rect x="48" y="184" width="330" height="520" rx="24" fill="#FFFFFF" stroke="#D5DFEA" stroke-width="2"/>
-  <rect x="414" y="184" width="818" height="520" rx="24" fill="#FFFFFF" stroke="#D5DFEA" stroke-width="2"/>
-  <text x="82" y="232" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="26" font-weight="600">Incoming tasks</text>
-  <text x="448" y="232" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="26" font-weight="600">Shared execution unit</text>
-  <rect x="78" y="272" width="270" height="118" rx="18" fill="#F9FBFE" stroke="#D5DFEA"/>
-  <text x="100" y="310" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="20" font-weight="600">repo_scan / planner</text>
-  <text x="100" y="338" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="16">feature-a · runtime/</text>
-  <text x="100" y="364" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="15">decision: representative</text>
-  <rect x="78" y="412" width="270" height="118" rx="18" fill="#F9FBFE" stroke="#D5DFEA"/>
-  <text x="100" y="450" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="20" font-weight="600">repo_scan / coder</text>
-  <text x="100" y="478" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="16">feature-b · runtime/</text>
-  <text x="100" y="504" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="15">decision: semantic overlap</text>
-  <rect x="456" y="284" width="732" height="236" rx="24" fill="#F9FBFE" stroke="#1768AC" stroke-width="2"/>
-  <text x="492" y="334" fill="#1768AC" font-family="IBM Plex Sans, Arial" font-size="28" font-weight="600">SEU: repo_scan:agent-runtime-lab:runtime/</text>
-  <text x="492" y="372" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="20">Admission window open. Two subscribers from separate branches attached.</text>
-  <rect x="492" y="414" width="220" height="56" rx="14" fill="#EAF2FD" stroke="#AFC7E8"/>
-  <rect x="738" y="414" width="220" height="56" rx="14" fill="#EAF2FD" stroke="#AFC7E8"/>
-  <text x="528" y="448" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="20" font-weight="600">planner / feature-a</text>
-  <text x="774" y="448" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="20" font-weight="600">coder / feature-b</text>
-  <text x="492" y="576" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="24" font-weight="600">One execution after the admission window expires</text>
-  <text x="492" y="612" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="19">Result fan-out sends the same repo-scan output back to both subscribers.</text>
-</svg>
+  <rect width="1280" height="760" rx="30" fill="#F3F7FC"/>
+  <rect x="34" y="34" width="1212" height="692" rx="26" fill="#FFFFFF" stroke="#D8E2EE" stroke-width="2"/>
+  <rect x="58" y="58" width="1164" height="58" rx="18" fill="#F7FAFE" stroke="#D8E2EE"/>
+  <circle cx="92" cy="87" r="8" fill="#F15E5E"/>
+  <circle cx="118" cy="87" r="8" fill="#F0B13E"/>
+  <circle cx="144" cy="87" r="8" fill="#5DBB72"/>
+  <text x="180" y="95" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="24" font-weight="600">gemma4-wdc demo / coding-agent overlap</text>
 
+  <rect x="58" y="146" width="316" height="548" rx="22" fill="#FBFDFF" stroke="#D8E2EE"/>
+  <rect x="402" y="146" width="820" height="548" rx="22" fill="#FBFDFF" stroke="#D8E2EE"/>
+  <text x="88" y="190" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="26" font-weight="600">Incoming task stream</text>
+  <text x="434" y="190" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="26" font-weight="600">Shared execution unit</text>
+
+  <rect x="84" y="224" width="264" height="122" rx="18" fill="#F8FBFF" stroke="#D8E2EE"/>
+  <text x="104" y="258" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="20" font-weight="600">scan-1 · planner</text>
+  <text x="104" y="286" fill="#5C7087" font-family="IBM Plex Mono, Arial" font-size="15">feat-runtime · runtime/app</text>
+  <text x="104" y="318" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="15">decision: new SEU</text>
+
+  <rect x="84" y="366" width="264" height="122" rx="18" fill="#F8FBFF" stroke="#D8E2EE"/>
+  <text x="104" y="400" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="20" font-weight="600">scan-2 · coder</text>
+  <text x="104" y="428" fill="#5C7087" font-family="IBM Plex Mono, Arial" font-size="15">feat-bench · runtime/app</text>
+  <text x="104" y="460" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="15">decision: semantic overlap</text>
+
+  <rect x="84" y="508" width="264" height="122" rx="18" fill="#F8FBFF" stroke="#D8E2EE"/>
+  <text x="104" y="542" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="20" font-weight="600">scan-3 · reviewer</text>
+  <text x="104" y="570" fill="#5C7087" font-family="IBM Plex Mono, Arial" font-size="15">feat-review · runtime/app</text>
+  <text x="104" y="602" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="15">decision: semantic overlap</text>
+
+  <rect x="438" y="226" width="748" height="246" rx="22" fill="#F8FBFF" stroke="#1D6DC0" stroke-width="2"/>
+  <text x="468" y="270" fill="#1D6DC0" font-family="IBM Plex Sans, Arial" font-size="28" font-weight="600">SEU: repo_scan / runtime/shared_execution/backend/app</text>
+  <text x="468" y="308" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="20">Bounded admission window open. Three overlapping repo-understanding branches attached before execution.</text>
+  <rect x="468" y="340" width="250" height="44" rx="14" fill="#EEF5FF" stroke="#C3D7F1"/>
+  <rect x="732" y="340" width="204" height="44" rx="14" fill="#EEF5FF" stroke="#C3D7F1"/>
+  <rect x="950" y="340" width="204" height="44" rx="14" fill="#EEF5FF" stroke="#C3D7F1"/>
+  <text x="502" y="368" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="18" font-weight="600">planner / feat-runtime</text>
+  <text x="766" y="368" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="18" font-weight="600">coder / feat-bench</text>
+  <text x="982" y="368" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="18" font-weight="600">reviewer / feat-review</text>
+  <rect x="468" y="412" width="300" height="32" rx="16" fill="#EAF4EC" stroke="#B7DDBF"/>
+  <text x="502" y="434" fill="#1A6B4E" font-family="IBM Plex Mono, Arial" font-size="16">why collapsed: semantic overlap</text>
+
+  <rect x="438" y="506" width="748" height="156" rx="22" fill="#FBFDFF" stroke="#D8E2EE"/>
+  <text x="468" y="552" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="28" font-weight="600">Execution and result fan-out</text>
+  <text x="468" y="590" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="20">One repo-understanding pass executes after the window expires. The same result fans back out to all three subscribers.</text>
+  <rect x="930" y="536" width="220" height="86" rx="18" fill="#1D6DC0"/>
+  <text x="966" y="586" fill="white" font-family="IBM Plex Sans, Arial" font-size="24" font-weight="600">execute once</text>
+</svg>

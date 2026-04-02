@@ -1,33 +1,49 @@
 <svg width="1280" height="760" viewBox="0 0 1280 760" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1280" height="760" rx="28" fill="#F4F7FB"/>
-  <rect x="40" y="40" width="1200" height="120" rx="24" fill="#FFFFFF" stroke="#D5DFEA" stroke-width="2"/>
-  <text x="76" y="92" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="34" font-weight="600">Runtime state / SEU dashboard</text>
-  <text x="76" y="126" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="20">Metrics, admission state, subscribers, and result fan-out visible in one local view.</text>
-  <rect x="40" y="192" width="280" height="124" rx="20" fill="#FFFFFF" stroke="#D5DFEA" stroke-width="2"/>
-  <rect x="344" y="192" width="280" height="124" rx="20" fill="#FFFFFF" stroke="#D5DFEA" stroke-width="2"/>
-  <rect x="648" y="192" width="280" height="124" rx="20" fill="#FFFFFF" stroke="#D5DFEA" stroke-width="2"/>
-  <rect x="952" y="192" width="288" height="124" rx="20" fill="#FFFFFF" stroke="#D5DFEA" stroke-width="2"/>
-  <g font-family="IBM Plex Sans, Arial">
-    <text x="70" y="236" fill="#5F7084" font-size="18">tasks received</text>
-    <text x="70" y="282" fill="#102033" font-size="40" font-weight="600">3</text>
-    <text x="374" y="236" fill="#5F7084" font-size="18">SEUs created</text>
-    <text x="374" y="282" fill="#102033" font-size="40" font-weight="600">2</text>
-    <text x="678" y="236" fill="#5F7084" font-size="18">executions saved</text>
-    <text x="678" y="282" fill="#102033" font-size="40" font-weight="600">1</text>
-    <text x="982" y="236" fill="#5F7084" font-size="18">dedup ratio</text>
-    <text x="982" y="282" fill="#102033" font-size="40" font-weight="600">1.5x</text>
-  </g>
-  <rect x="40" y="348" width="1200" height="352" rx="24" fill="#FFFFFF" stroke="#D5DFEA" stroke-width="2"/>
-  <text x="76" y="396" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="28" font-weight="600">SEU detail</text>
-  <rect x="76" y="432" width="532" height="212" rx="20" fill="#F9FBFE" stroke="#AFC7E8"/>
-  <rect x="636" y="432" width="568" height="212" rx="20" fill="#F9FBFE" stroke="#AFC7E8"/>
-  <text x="108" y="478" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">status: COMPLETED</text>
-  <text x="108" y="514" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="24" font-weight="600">repo_scan SEU with two subscribers</text>
-  <text x="108" y="548" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="18">collapse reasons: representative, semantic overlap</text>
-  <text x="108" y="582" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="18">result fan-out: subscriber_count = 2</text>
-  <text x="668" y="478" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">why not collapsed?</text>
-  <text x="668" y="514" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="24" font-weight="600">code_search task kept separate</text>
-  <text x="668" y="548" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="18">different task fingerprint and different execution scope</text>
-  <text x="668" y="582" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="18">safety behavior is surfaced instead of hidden</text>
-</svg>
+  <rect width="1280" height="760" rx="30" fill="#F3F7FC"/>
+  <rect x="34" y="34" width="1212" height="692" rx="26" fill="#FFFFFF" stroke="#D8E2EE" stroke-width="2"/>
+  <rect x="58" y="58" width="1164" height="72" rx="18" fill="#F8FBFF" stroke="#D8E2EE"/>
+  <text x="88" y="104" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="30" font-weight="600">Local shared execution dashboard</text>
 
+  <rect x="58" y="158" width="1164" height="112" rx="22" fill="#FBFDFF" stroke="#D8E2EE"/>
+  <rect x="86" y="188" width="168" height="52" rx="16" fill="#EEF5FF" stroke="#C3D7F1"/>
+  <rect x="276" y="188" width="168" height="52" rx="16" fill="#EEF5FF" stroke="#C3D7F1"/>
+  <rect x="466" y="188" width="168" height="52" rx="16" fill="#EEF5FF" stroke="#C3D7F1"/>
+  <rect x="656" y="188" width="168" height="52" rx="16" fill="#EEF5FF" stroke="#C3D7F1"/>
+  <rect x="846" y="188" width="168" height="52" rx="16" fill="#EEF5FF" stroke="#C3D7F1"/>
+  <text x="114" y="210" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="15">Tasks received</text>
+  <text x="316" y="210" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="15">SEUs created</text>
+  <text x="492" y="210" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="15">Collapsed tasks</text>
+  <text x="690" y="210" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="15">Executions saved</text>
+  <text x="892" y="210" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="15">Dedup multiplier</text>
+  <g fill="#102033" font-family="IBM Plex Sans, Arial" font-size="24" font-weight="600">
+    <text x="152" y="228">4</text>
+    <text x="354" y="228">2</text>
+    <text x="558" y="228">2</text>
+    <text x="750" y="228">2</text>
+    <text x="950" y="228">2.0x</text>
+  </g>
+
+  <rect x="58" y="298" width="360" height="396" rx="22" fill="#FBFDFF" stroke="#D8E2EE"/>
+  <rect x="446" y="298" width="776" height="396" rx="22" fill="#FBFDFF" stroke="#D8E2EE"/>
+  <text x="88" y="344" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="24" font-weight="600">Incoming task stream</text>
+  <text x="476" y="344" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="24" font-weight="600">Shared execution units</text>
+
+  <rect x="84" y="370" width="308" height="94" rx="16" fill="#F8FBFF" stroke="#D8E2EE"/>
+  <rect x="84" y="480" width="308" height="94" rx="16" fill="#F8FBFF" stroke="#D8E2EE"/>
+  <rect x="84" y="590" width="308" height="72" rx="16" fill="#FFF6E4" stroke="#E9D09A"/>
+  <text x="104" y="404" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="18" font-weight="600">scan-1 / planner</text>
+  <text x="104" y="428" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="14">new SEU</text>
+  <text x="104" y="514" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="18" font-weight="600">scan-2 / coder</text>
+  <text x="104" y="538" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="14">semantic overlap</text>
+  <text x="104" y="624" fill="#915F00" font-family="IBM Plex Sans, Arial" font-size="18" font-weight="600">why collapsed? overlap above threshold</text>
+
+  <rect x="476" y="370" width="716" height="148" rx="18" fill="#F8FBFF" stroke="#1D6DC0" stroke-width="2"/>
+  <text x="504" y="410" fill="#1D6DC0" font-family="IBM Plex Sans, Arial" font-size="24" font-weight="600">seu-7d1c2a / repo_scan</text>
+  <text x="504" y="446" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="18">Status: COMPLETED · subscribers: 3 · reason: semantic overlap</text>
+  <rect x="504" y="470" width="224" height="18" rx="9" fill="#EAF4EC"/>
+  <rect x="504" y="470" width="224" height="18" rx="9" fill="#1D6DC0"/>
+
+  <rect x="476" y="544" width="716" height="118" rx="18" fill="#FBFDFF" stroke="#D8E2EE"/>
+  <text x="504" y="584" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="22" font-weight="600">Fan-out payload</text>
+  <text x="504" y="618" fill="#5C7087" font-family="IBM Plex Mono, Arial" font-size="15">result: runtime state transition map, metrics hook locations, benchmark entrypoints</text>
+</svg>

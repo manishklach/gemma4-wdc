@@ -1,0 +1,40 @@
+<svg width="1400" height="760" viewBox="0 0 1400 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1400" height="760" rx="30" fill="#F5F9FD"/>
+  <rect x="34" y="34" width="1332" height="692" rx="28" fill="white" stroke="#D8E2EE" stroke-width="2"/>
+  <text x="82" y="106" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="44" font-weight="600">Naive execution vs shared execution</text>
+  <rect x="82" y="162" width="566" height="500" rx="26" fill="#FBFDFF" stroke="#E1E8F1" stroke-width="2"/>
+  <rect x="752" y="162" width="566" height="500" rx="26" fill="#FBFDFF" stroke="#E1E8F1" stroke-width="2"/>
+  <text x="114" y="214" fill="#B04040" font-family="IBM Plex Sans, Arial" font-size="30" font-weight="600">Naive multi-agent runtime</text>
+  <text x="784" y="214" fill="#1D6DC0" font-family="IBM Plex Sans, Arial" font-size="30" font-weight="600">gemma4-wdc shared execution</text>
+
+  <rect x="118" y="262" width="184" height="56" rx="18" fill="#FFF2F2" stroke="#F0C3C3"/>
+  <rect x="118" y="340" width="184" height="56" rx="18" fill="#FFF2F2" stroke="#F0C3C3"/>
+  <rect x="118" y="418" width="184" height="56" rx="18" fill="#FFF2F2" stroke="#F0C3C3"/>
+  <text x="142" y="296" fill="#A63E3E" font-family="IBM Plex Mono, Arial" font-size="17">planner -> SQL</text>
+  <text x="142" y="374" fill="#A63E3E" font-family="IBM Plex Mono, Arial" font-size="17">coder -> repo scan</text>
+  <text x="142" y="452" fill="#A63E3E" font-family="IBM Plex Mono, Arial" font-size="17">reviewer -> repo scan</text>
+  <rect x="402" y="248" width="186" height="76" rx="20" fill="#FFF7E6" stroke="#EDD39A"/>
+  <rect x="402" y="340" width="186" height="76" rx="20" fill="#FFF7E6" stroke="#EDD39A"/>
+  <rect x="402" y="432" width="186" height="76" rx="20" fill="#FFF7E6" stroke="#EDD39A"/>
+  <text x="430" y="294" fill="#915F00" font-family="IBM Plex Sans, Arial" font-size="22" font-weight="600">execute SQL</text>
+  <text x="418" y="386" fill="#915F00" font-family="IBM Plex Sans, Arial" font-size="22" font-weight="600">execute repo scan</text>
+  <text x="418" y="478" fill="#915F00" font-family="IBM Plex Sans, Arial" font-size="22" font-weight="600">execute repo scan</text>
+  <path d="M302 290H402" stroke="#C75757" stroke-width="4" stroke-linecap="round"/>
+  <path d="M302 368H402" stroke="#C75757" stroke-width="4" stroke-linecap="round"/>
+  <path d="M302 446H402" stroke="#C75757" stroke-width="4" stroke-linecap="round"/>
+  <text x="118" y="572" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="20">Repeated backend work across neighboring branches.</text>
+
+  <rect x="786" y="262" width="184" height="56" rx="18" fill="#EEF5FF" stroke="#C3D7F1"/>
+  <rect x="786" y="340" width="184" height="56" rx="18" fill="#EEF5FF" stroke="#C3D7F1"/>
+  <rect x="786" y="418" width="184" height="56" rx="18" fill="#EEF5FF" stroke="#C3D7F1"/>
+  <text x="812" y="296" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="17">planner -> repo scan</text>
+  <text x="820" y="374" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="17">coder -> repo scan</text>
+  <text x="806" y="452" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="17">reviewer -> repo scan</text>
+  <rect x="1044" y="314" width="194" height="108" rx="22" fill="#1D6DC0"/>
+  <text x="1074" y="362" fill="white" font-family="IBM Plex Sans, Arial" font-size="26" font-weight="600">shared execution</text>
+  <text x="1082" y="394" fill="#DCEBFF" font-family="IBM Plex Sans, Arial" font-size="18">one SEU, one execution</text>
+  <path d="M970 290H1010V338H1044" stroke="#1D6DC0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M970 368H1044" stroke="#1D6DC0" stroke-width="4" stroke-linecap="round"/>
+  <path d="M970 446H1010V398H1044" stroke="#1D6DC0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="786" y="572" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="20">Semantic overlap collapses duplicate work before backend execution begins.</text>
+</svg>

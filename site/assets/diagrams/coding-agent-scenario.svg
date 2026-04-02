@@ -1,0 +1,40 @@
+<svg width="1400" height="760" viewBox="0 0 1400 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1400" height="760" rx="30" fill="#F6FAFE"/>
+  <rect x="34" y="34" width="1332" height="692" rx="28" fill="white" stroke="#D8E2EE" stroke-width="2"/>
+  <text x="82" y="104" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="24">coding-agent-scenario</text>
+  <text x="82" y="156" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="44" font-weight="600">Parallel repo-understanding branches converge on one shared execution</text>
+
+  <rect x="92" y="212" width="276" height="118" rx="22" fill="#F8FBFF" stroke="#D7E1ED" stroke-width="2"/>
+  <text x="122" y="258" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="28" font-weight="600">planner branch</text>
+  <text x="122" y="294" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="17">repo_scan runtime/app transitions</text>
+
+  <rect x="92" y="356" width="276" height="118" rx="22" fill="#F8FBFF" stroke="#D7E1ED" stroke-width="2"/>
+  <text x="122" y="402" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="28" font-weight="600">coder branch</text>
+  <text x="122" y="438" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="17">code_search execution state</text>
+
+  <rect x="92" y="500" width="276" height="118" rx="22" fill="#F8FBFF" stroke="#D7E1ED" stroke-width="2"/>
+  <text x="122" y="546" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="28" font-weight="600">reviewer branch</text>
+  <text x="122" y="582" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="17">dependency trace runtime path</text>
+
+  <rect x="456" y="286" width="428" height="258" rx="28" fill="#1D6DC0"/>
+  <text x="492" y="344" fill="white" font-family="IBM Plex Sans, Arial" font-size="34" font-weight="600">Middleware collapse</text>
+  <text x="492" y="388" fill="#DCEBFF" font-family="IBM Plex Sans, Arial" font-size="22">semantic overlap</text>
+  <text x="492" y="420" fill="#DCEBFF" font-family="IBM Plex Sans, Arial" font-size="22">bounded admission window</text>
+  <text x="492" y="452" fill="#DCEBFF" font-family="IBM Plex Sans, Arial" font-size="22">one shared execution unit</text>
+  <rect x="492" y="480" width="220" height="38" rx="19" fill="#E8F1FC"/>
+  <text x="522" y="505" fill="#1D6DC0" font-family="IBM Plex Mono, Arial" font-size="17">shared repo-understanding execution</text>
+
+  <rect x="986" y="248" width="290" height="336" rx="28" fill="#F8FBFF" stroke="#D7E1ED" stroke-width="2"/>
+  <text x="1018" y="296" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="30" font-weight="600">Result fan-out</text>
+  <rect x="1018" y="336" width="226" height="54" rx="18" fill="#EEF5FF" stroke="#C3D7F1"/>
+  <rect x="1018" y="414" width="226" height="54" rx="18" fill="#EEF5FF" stroke="#C3D7F1"/>
+  <rect x="1018" y="492" width="226" height="54" rx="18" fill="#EEF5FF" stroke="#C3D7F1"/>
+  <text x="1046" y="369" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="20" font-weight="600">planner gets scan output</text>
+  <text x="1046" y="447" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="20" font-weight="600">coder gets scan output</text>
+  <text x="1042" y="525" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="20" font-weight="600">reviewer gets scan output</text>
+
+  <path d="M368 271H456" stroke="#1D6DC0" stroke-width="4" stroke-linecap="round"/>
+  <path d="M368 415H456" stroke="#1D6DC0" stroke-width="4" stroke-linecap="round"/>
+  <path d="M368 559H456" stroke="#1D6DC0" stroke-width="4" stroke-linecap="round"/>
+  <path d="M884 415H986" stroke="#1D6DC0" stroke-width="4" stroke-linecap="round"/>
+</svg>

@@ -13,7 +13,7 @@ The project explores a simple systems thesis: as local agentic workflows become 
 - [Benchmarks](./benchmarks/README.md)
 - [Run Locally](#run-locally)
 
-![gemma4-wdc shared execution flow](./diagrams/before_after.svg)
+![Overview diagram showing multiple agents, overlapping tool tasks, WDC middleware, one shared execution unit, result fan-out, and metrics.](./diagrams/hero-overview.svg)
 
 ## What It Does
 
@@ -81,7 +81,7 @@ multi-agent tasks
   -> observability
 ```
 
-![Admission window timing diagram](./diagrams/timing_window.svg)
+![Admission window diagram showing the first task opening a bounded window, later matches attaching, and shared execution starting after expiry.](./diagrams/admission-window.svg)
 
 ## Simulation Mode
 
@@ -120,11 +120,11 @@ If no real model is available, the project is still complete in simulation mode.
 Representative visuals:
 
 - Coding-agent overlap
-  ![Illustration of overlapping coding-agent repo scans collapsing into one shared execution unit.](./site/assets/screenshots/coding-agent-overlap.svg)
+  ![Demo visual showing planner, coder, and reviewer branches collapsing into one shared repo-understanding execution.](./site/assets/screenshots/coding-agent-overlap.svg)
 - Local dashboard
-  ![Dashboard view showing task stream, shared execution units, and deduplication metrics.](./site/assets/screenshots/seu-dashboard.svg)
+  ![Demo dashboard view showing task stream, shared execution units, collapse reasoning, and deduplication metrics.](./site/assets/screenshots/seu-dashboard.svg)
 - Benchmark summary
-  ![Benchmark summary visual comparing requested tasks, actual executions, and executions saved across scenarios.](./site/assets/screenshots/benchmark-results.svg)
+  ![Benchmark summary view comparing tasks requested, actual executions, and executions saved across the current scenario set.](./site/assets/screenshots/benchmark-results.svg)
 
 ## Benchmark Presentation
 
@@ -137,7 +137,7 @@ These numbers are preliminary and come from the current local harness using mock
 | `api_fanout` | 3 | 2 | 1 | 1.5x | 0.00 |
 | `false_collapse_safety` | 4 | 4 | 0 | 1.0x | 0.00 |
 
-![Benchmark preview](./diagrams/benchmark_preview.svg)
+![Benchmark summary chart comparing requested tasks, actual executions, and saved executions for the preliminary local harness scenarios.](./diagrams/benchmark-summary.svg)
 
 See [docs/benchmark-methodology.md](./docs/benchmark-methodology.md) and [benchmarks/README.md](./benchmarks/README.md) for detail.
 

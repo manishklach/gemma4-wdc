@@ -1,42 +1,46 @@
 <svg width="1280" height="760" viewBox="0 0 1280 760" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1280" height="760" rx="28" fill="#F4F7FB"/>
-  <rect x="44" y="50" width="1192" height="124" rx="24" fill="#FFFFFF" stroke="#D5DFEA" stroke-width="2"/>
-  <text x="80" y="104" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="34" font-weight="600">Benchmark results screenshot placeholder</text>
-  <text x="80" y="136" fill="#5F7084" font-family="IBM Plex Sans, Arial" font-size="20">A clean visual stand-in for the benchmark view until real screenshots are captured.</text>
-  <rect x="44" y="206" width="1192" height="498" rx="24" fill="#FFFFFF" stroke="#D5DFEA" stroke-width="2"/>
-  <text x="86" y="258" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">scenario</text>
-  <text x="440" y="258" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">tasks</text>
-  <text x="576" y="258" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">seus</text>
-  <text x="698" y="258" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">saved</text>
-  <text x="832" y="258" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">dedup</text>
-  <text x="978" y="258" fill="#1768AC" font-family="IBM Plex Mono, Arial" font-size="18">false-collapse</text>
-  <line x1="80" y1="282" x2="1188" y2="282" stroke="#E0E8F1" stroke-width="2"/>
-  <g font-family="IBM Plex Sans, Arial" font-size="24" fill="#12304A">
-    <text x="86" y="350">coding_repo_scan</text>
-    <text x="86" y="434">document_research</text>
-    <text x="86" y="518">api_fanout</text>
-    <text x="86" y="602">false_collapse_safety</text>
+  <rect width="1280" height="760" rx="30" fill="#F3F7FC"/>
+  <rect x="34" y="34" width="1212" height="692" rx="26" fill="#FFFFFF" stroke="#D8E2EE" stroke-width="2"/>
+  <rect x="58" y="58" width="1164" height="70" rx="18" fill="#F8FBFF" stroke="#D8E2EE"/>
+  <text x="88" y="103" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="30" font-weight="600">Benchmark preview / local harness</text>
+
+  <rect x="58" y="154" width="420" height="540" rx="22" fill="#FBFDFF" stroke="#D8E2EE"/>
+  <rect x="504" y="154" width="718" height="540" rx="22" fill="#FBFDFF" stroke="#D8E2EE"/>
+  <text x="88" y="196" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="24" font-weight="600">Scenario summary</text>
+  <text x="534" y="196" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="24" font-weight="600">Requested vs executed</text>
+
+  <g font-family="IBM Plex Sans, Arial" font-size="18">
+    <text x="88" y="246" fill="#102033" font-weight="600">coding_repo_scan</text>
+    <text x="88" y="334" fill="#102033" font-weight="600">document_research</text>
+    <text x="88" y="422" fill="#102033" font-weight="600">api_fanout</text>
+    <text x="88" y="510" fill="#102033" font-weight="600">false_collapse_safety</text>
   </g>
-  <g font-family="IBM Plex Mono, Arial" font-size="24" fill="#12304A">
-    <text x="452" y="350">3</text>
-    <text x="452" y="434">3</text>
-    <text x="452" y="518">3</text>
-    <text x="452" y="602">4</text>
-    <text x="582" y="350">2</text>
-    <text x="582" y="434">2</text>
-    <text x="582" y="518">2</text>
-    <text x="582" y="602">4</text>
-    <text x="708" y="350">1</text>
-    <text x="708" y="434">1</text>
-    <text x="708" y="518">1</text>
-    <text x="708" y="602">0</text>
-    <text x="836" y="350">1.5x</text>
-    <text x="836" y="434">1.5x</text>
-    <text x="836" y="518">1.5x</text>
-    <text x="836" y="602">1.0x</text>
-    <text x="1018" y="350">0.00</text>
-    <text x="1018" y="434">0.00</text>
-    <text x="1018" y="518">0.00</text>
-    <text x="1018" y="602">0.00</text>
+  <g font-family="IBM Plex Mono, Arial" font-size="15">
+    <text x="88" y="272" fill="#5C7087">tasks 4 · execs 2 · saved 2 · 2.0x</text>
+    <text x="88" y="360" fill="#5C7087">tasks 3 · execs 2 · saved 1 · 1.5x</text>
+    <text x="88" y="448" fill="#5C7087">tasks 3 · execs 2 · saved 1 · 1.5x</text>
+    <text x="88" y="536" fill="#5C7087">tasks 4 · execs 4 · saved 0 · 1.0x</text>
   </g>
+
+  <line x1="564" y1="230" x2="1140" y2="230" stroke="#D8E2EE" stroke-width="2"/>
+  <g fill="#1D6DC0">
+    <rect x="564" y="252" width="420" height="24" rx="12"/>
+    <rect x="564" y="340" width="315" height="24" rx="12"/>
+    <rect x="564" y="428" width="315" height="24" rx="12"/>
+    <rect x="564" y="516" width="420" height="24" rx="12"/>
+  </g>
+  <g fill="#88B7F5">
+    <rect x="564" y="282" width="210" height="16" rx="8"/>
+    <rect x="564" y="370" width="210" height="16" rx="8"/>
+    <rect x="564" y="458" width="210" height="16" rx="8"/>
+    <rect x="564" y="546" width="420" height="16" rx="8"/>
+  </g>
+  <g fill="#1A7B54">
+    <rect x="998" y="252" width="104" height="24" rx="12"/>
+    <rect x="892" y="340" width="104" height="24" rx="12"/>
+    <rect x="892" y="428" width="104" height="24" rx="12"/>
+  </g>
+  <rect x="980" y="594" width="214" height="74" rx="18" fill="#F8FBFF" stroke="#D8E2EE"/>
+  <text x="1010" y="626" fill="#102033" font-family="IBM Plex Sans, Arial" font-size="18" font-weight="600">Preliminary data</text>
+  <text x="1010" y="652" fill="#5C7087" font-family="IBM Plex Sans, Arial" font-size="14">local harness · mock executors · behavior-focused</text>
 </svg>

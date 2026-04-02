@@ -79,7 +79,7 @@
           </div>
         </div>
         <div class="hero-card">
-          <img src="./assets/diagrams/architecture.svg" alt="Architecture diagram for Gemma4-WDC showing local agents, task ingress, fingerprinting, admission control, shared execution units, and result fan-out." />
+          <img src="./assets/diagrams/hero-overview.svg" alt="Overview diagram showing multiple agents, overlapping tool tasks, WDC middleware, one shared execution unit, result fan-out, and metrics." />
         </div>
       </section>
 
@@ -114,7 +114,7 @@
           <article class="flow-card"><strong>6.</strong><span>Result fan-out</span></article>
         </div>
         <div class="card visual-card">
-          <img src="./assets/diagrams/timing_window.svg" alt="Bounded admission window diagram showing that the first task starts the timer and later arrivals do not reset it." />
+          <img src="./assets/diagrams/admission-window.svg" alt="Admission window diagram showing the first task opening a bounded, non-resetting window and later matching tasks attaching before execution begins." />
         </div>
       </section>
 
@@ -132,7 +132,7 @@
             <p>Hybrid mode is optional and allows one real local model node to coexist with simulated agents without turning the project into a hardware arms race.</p>
           </article>
           <article class="card visual-card">
-            <img src="./assets/diagrams/before_after.svg" alt="Before and after diagram showing duplicated branch-local work collapsing into one shared execution unit." />
+            <img src="./assets/diagrams/before-vs-after.svg" alt="Side-by-side before-and-after diagram comparing repeated backend execution in a naive multi-agent runtime with shared execution in gemma4-wdc." />
           </article>
         </div>
       </section>
@@ -151,7 +151,7 @@
             <p>This is the right scale for a credible consumer-hardware demo: one laptop, branch-heavy local agents, and backend work that clearly should not be repeated.</p>
           </article>
           <article class="card visual-card">
-            <img src="./assets/screenshots/coding-agent-overlap.svg" alt="Coding-agent overlap illustration showing several repo-scan branches converging into one shared execution unit." />
+            <img src="./assets/diagrams/coding-agent-scenario.svg" alt="Coding-agent scenario diagram showing planner, coder, and reviewer branches converging on one shared repo-understanding execution." />
           </article>
         </div>
       </section>
@@ -186,7 +186,7 @@
             </table>
           </article>
           <article class="card visual-card">
-            <img src="./assets/diagrams/benchmark_preview.svg" alt="Benchmark summary visual comparing tasks requested, actual executions, executions saved, and safety behavior across scenario families." />
+            <img src="./assets/diagrams/benchmark-summary.svg" alt="Benchmark summary chart comparing tasks requested, actual executions, and saved executions across the current local scenarios." />
           </article>
         </div>
       </section>
