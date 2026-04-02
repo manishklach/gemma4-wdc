@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-04-02T11:18:56.882606+00:00",
-  "benchmark_version": "0.1.0",
+  "generated_at": "2026-04-02T16:59:52.399890+00:00",
+  "benchmark_version": "0.2.0",
   "results": {
     "api_fanout": {
       "description": "Fan-out style outbound API operations where request shape overlaps strongly.",
@@ -10,9 +10,10 @@
         "executions_saved": 0,
         "dedup_ratio": 1.0,
         "collapse_precision": 1.0,
-        "false_collapse_rate": 0.0
+        "false_collapse_rate": 0.0,
+        "latency_proxy_ms": 480
       },
-      "shared_execution_runtime": {
+      "gemma4_wdc": {
         "total_tasks": 3,
         "total_executions": 2,
         "executions_saved": 1,
@@ -20,6 +21,7 @@
         "collapse_precision": 1.0,
         "false_collapse_rate": 0.0,
         "expected_collapsible_pairs": 1,
+        "latency_proxy_ms": 378,
         "metrics": {
           "total_tasks_received": 3,
           "unique_seus_created": 2,
@@ -29,44 +31,46 @@
           "executions_saved": 1,
           "deduplication_multiplier": 1.5,
           "estimated_backend_work_saved_ms": 180,
-          "backend_work_ms": 376,
+          "backend_work_ms": 378,
           "false_collapse_rejections": 1,
-          "latency_mean_ms": 188,
-          "latency_p95_ms": 172
+          "latency_mean_ms": 189,
+          "latency_p95_ms": 189
         }
       }
     },
     "coding_repo_scan": {
-      "description": "Concurrent repo-understanding branches with overlapping scan intent.",
+      "description": "Concurrent coding-agent branches with overlapping repo-understanding intent.",
       "naive": {
-        "total_tasks": 3,
-        "total_executions": 3,
+        "total_tasks": 4,
+        "total_executions": 4,
         "executions_saved": 0,
         "dedup_ratio": 1.0,
         "collapse_precision": 1.0,
-        "false_collapse_rate": 0.0
+        "false_collapse_rate": 0.0,
+        "latency_proxy_ms": 640
       },
-      "shared_execution_runtime": {
-        "total_tasks": 3,
+      "gemma4_wdc": {
+        "total_tasks": 4,
         "total_executions": 2,
-        "executions_saved": 1,
-        "dedup_ratio": 1.5,
+        "executions_saved": 2,
+        "dedup_ratio": 2.0,
         "collapse_precision": 1.0,
         "false_collapse_rate": 0.0,
-        "expected_collapsible_pairs": 1,
+        "expected_collapsible_pairs": 2,
+        "latency_proxy_ms": 389,
         "metrics": {
-          "total_tasks_received": 3,
+          "total_tasks_received": 4,
           "unique_seus_created": 2,
-          "collapsed_tasks": 1,
+          "collapsed_tasks": 2,
           "executions_completed": 2,
           "executions_failed": 0,
-          "executions_saved": 1,
-          "deduplication_multiplier": 1.5,
-          "estimated_backend_work_saved_ms": 180,
-          "backend_work_ms": 374,
+          "executions_saved": 2,
+          "deduplication_multiplier": 2.0,
+          "estimated_backend_work_saved_ms": 360,
+          "backend_work_ms": 389,
           "false_collapse_rejections": 0,
-          "latency_mean_ms": 187,
-          "latency_p95_ms": 170
+          "latency_mean_ms": 194.5,
+          "latency_p95_ms": 171
         }
       }
     },
@@ -78,9 +82,10 @@
         "executions_saved": 0,
         "dedup_ratio": 1.0,
         "collapse_precision": 1.0,
-        "false_collapse_rate": 0.0
+        "false_collapse_rate": 0.0,
+        "latency_proxy_ms": 480
       },
-      "shared_execution_runtime": {
+      "gemma4_wdc": {
         "total_tasks": 3,
         "total_executions": 2,
         "executions_saved": 1,
@@ -88,6 +93,7 @@
         "collapse_precision": 1.0,
         "false_collapse_rate": 0.0,
         "expected_collapsible_pairs": 1,
+        "latency_proxy_ms": 375,
         "metrics": {
           "total_tasks_received": 3,
           "unique_seus_created": 2,
@@ -97,10 +103,10 @@
           "executions_saved": 1,
           "deduplication_multiplier": 1.5,
           "estimated_backend_work_saved_ms": 180,
-          "backend_work_ms": 373,
+          "backend_work_ms": 375,
           "false_collapse_rejections": 0,
-          "latency_mean_ms": 186.5,
-          "latency_p95_ms": 171
+          "latency_mean_ms": 187.5,
+          "latency_p95_ms": 172
         }
       }
     },
@@ -112,9 +118,10 @@
         "executions_saved": 0,
         "dedup_ratio": 1.0,
         "collapse_precision": 1.0,
-        "false_collapse_rate": 0.0
+        "false_collapse_rate": 0.0,
+        "latency_proxy_ms": 640
       },
-      "shared_execution_runtime": {
+      "gemma4_wdc": {
         "total_tasks": 4,
         "total_executions": 4,
         "executions_saved": 0,
@@ -122,6 +129,7 @@
         "collapse_precision": 1.0,
         "false_collapse_rate": 0.0,
         "expected_collapsible_pairs": 0,
+        "latency_proxy_ms": 690,
         "metrics": {
           "total_tasks_received": 4,
           "unique_seus_created": 4,
@@ -131,10 +139,10 @@
           "executions_saved": 0,
           "deduplication_multiplier": 1.0,
           "estimated_backend_work_saved_ms": 0,
-          "backend_work_ms": 688,
+          "backend_work_ms": 690,
           "false_collapse_rejections": 2,
-          "latency_mean_ms": 172,
-          "latency_p95_ms": 172
+          "latency_mean_ms": 172.5,
+          "latency_p95_ms": 173
         }
       }
     }

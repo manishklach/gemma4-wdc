@@ -1,38 +1,46 @@
 # Coding Agents Demo
 
-This walkthrough is the clearest expression of why Shared Execution Runtime matters for coding agents.
+This is the strongest demo in Gemma4-WDC because it shows a realistic laptop-scale coding workflow rather than an abstract agent claim.
 
 ## Scenario
 
-Three branch-local agents are working on the same repository:
+Four branches are working against the same local repository:
 
 - `planner`
-  asks for a repo scan to find where shared execution units transition into execution
+  asks where shared execution units move from pending to executing
 - `coder`
-  asks a near-duplicate repo scan question against the same path
+  asks a near-duplicate repo-understanding question against the same scope
+- `reviewer`
+  asks for the same transition logic from a code-review angle
 - `tester`
-  asks a separate code-search question that should remain independent
+  asks a separate benchmark-oriented code search question that should remain independent
 
-The expected outcome is:
+Expected outcome:
 
-- the two overlapping `repo_scan` tasks collapse into one shared execution unit
-- the `code_search` task executes separately
+- the three overlapping `repo_scan` tasks collapse into one SEU
+- the benchmark-oriented `code_search` task stays separate
+- the dashboard shows why the overlap collapsed and how many subscribers attached
+
+## Why It Matters
+
+Laptop-scale coding agents will branch long before they become cluster-scale. Once they do, repeated repo scans, repeated dependency tracing, and repeated structure-finding calls become duplicated backend work. This demo makes that waste visible and gives the middleware a clear job.
 
 ## Run
 
 1. Start the backend on `http://localhost:8000`.
-2. Open the frontend and click `coding repo-scan overlap`.
-3. Watch the runtime show one pending SEU with two subscribers from different branches.
-4. After the admission window expires, observe one execution and one result fan-out event.
+2. Open the frontend and click `Coding-agent overlap demo`.
+3. Watch one SEU collect multiple subscribers during the admission window.
+4. After the window expires, observe one execution and result fan-out to all three repo-scan branches.
 
 ## Direct API Version
 
 ```bash
-curl -X POST http://localhost:8000/tasks -H "Content-Type: application/json" -d "{\"task_id\":\"demo-scan-1\",\"agent_id\":\"planner\",\"branch_id\":\"feature-a\",\"task_type\":\"repo_scan\",\"resource_hint\":\"repo:agent-runtime-lab\",\"payload\":{\"repo\":\"agent-runtime-lab\",\"path\":\"runtime/\",\"query\":\"Find where pending shared work begins execution\"}}"
-curl -X POST http://localhost:8000/tasks -H "Content-Type: application/json" -d "{\"task_id\":\"demo-scan-2\",\"agent_id\":\"coder\",\"branch_id\":\"feature-b\",\"task_type\":\"repo_scan\",\"resource_hint\":\"repo:agent-runtime-lab\",\"payload\":{\"repo\":\"agent-runtime-lab\",\"path\":\"runtime/\",\"query\":\"Locate the code path that moves shared execution units from pending to executing\"}}"
-curl -X POST http://localhost:8000/tasks -H "Content-Type: application/json" -d "{\"task_id\":\"demo-code-1\",\"agent_id\":\"tester\",\"branch_id\":\"feature-c\",\"task_type\":\"code_search\",\"resource_hint\":\"repo:agent-runtime-lab\",\"payload\":{\"repo\":\"agent-runtime-lab\",\"path\":\"backend/app\",\"query\":\"metrics collector for deduplication multiplier\"}}"
+curl -X POST http://localhost:8000/tasks -H "Content-Type: application/json" -d "{\"task_id\":\"demo-scan-1\",\"agent_id\":\"planner\",\"branch_id\":\"feature-runtime\",\"task_type\":\"repo_scan\",\"resource_hint\":\"repo:Gemma4-WDC\",\"payload\":{\"repo\":\"Gemma4-WDC\",\"path\":\"runtime/shared_execution/backend/app\",\"query\":\"Find where shared execution units move from pending to executing\"}}"
+curl -X POST http://localhost:8000/tasks -H "Content-Type: application/json" -d "{\"task_id\":\"demo-scan-2\",\"agent_id\":\"coder\",\"branch_id\":\"feature-dashboard\",\"task_type\":\"repo_scan\",\"resource_hint\":\"repo:Gemma4-WDC\",\"payload\":{\"repo\":\"Gemma4-WDC\",\"path\":\"runtime/shared_execution/backend/app\",\"query\":\"Locate the transition that sends a pending shared execution unit into execution\"}}"
+curl -X POST http://localhost:8000/tasks -H "Content-Type: application/json" -d "{\"task_id\":\"demo-scan-3\",\"agent_id\":\"reviewer\",\"branch_id\":\"feature-review\",\"task_type\":\"repo_scan\",\"resource_hint\":\"repo:Gemma4-WDC\",\"payload\":{\"repo\":\"Gemma4-WDC\",\"path\":\"runtime/shared_execution/backend/app\",\"query\":\"Show the code path where the admission window ends and shared work begins executing\"}}"
+curl -X POST http://localhost:8000/tasks -H "Content-Type: application/json" -d "{\"task_id\":\"demo-code-1\",\"agent_id\":\"tester\",\"branch_id\":\"feature-bench\",\"task_type\":\"code_search\",\"resource_hint\":\"repo:Gemma4-WDC\",\"payload\":{\"repo\":\"Gemma4-WDC\",\"path\":\"benchmarks/\",\"query\":\"find benchmark harness entrypoint and summary generation\"}}"
 ```
 
-## Why This Example Matters
+## Credibility Check
 
-Coding-agent workflows increasingly branch. Once that happens, repeated repo scans and repeated search passes become a runtime-level systems cost, not just a prompt-level inefficiency.
+This demo is intentionally not pretending that many heavy models are running concurrently. The agents can be simulated and the systems value is still clear because the duplicated backend work is the thing under test.

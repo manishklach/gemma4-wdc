@@ -1,114 +1,129 @@
-# Agent Runtime Lab
+# Gemma4-WDC
 
-Shared execution and semantic subtask deduplication for concurrent agent systems.
+Local multi-agent execution with middleware-level deduplication.
 
-Modern agent systems increasingly branch. Coding agents split into parallel repo-understanding passes, research agents fork evidence gathering, and tool-using runtimes launch overlapping work from neighboring trajectories. Most stacks still lack a runtime layer that detects that overlap before the work is already in flight.
+Gemma4-WDC is a laptop-first prototype of a fully local, offline multi-agent runtime where Gemma-style agents emit tool tasks and a WDC-style middleware layer collapses overlapping backend work before execution. The point is not to pretend a modest Windows laptop is a cluster. The point is to make the systems thesis visible, honest, and runnable on consumer hardware.
 
-Agent Runtime Lab explores one concrete systems answer to that bottleneck. Its first flagship module, Shared Execution Runtime, detects semantic overlap across incoming tasks, holds the first arrival in a bounded non-resetting admission window, collapses matching work into a shared execution unit, executes once, fans out the result, and measures the savings.
+As local open-weight agents become more practical, duplicated downstream work becomes a real runtime bottleneck. Parallel agent branches often ask for near-identical SQL, API, document, repo-scan, and code-search work. Gemma4-WDC explores a concrete fix: hold the first task briefly in a bounded admission window, detect overlap, execute shared work once, and fan the result back out to all subscribers.
 
-![Architecture Overview](./diagrams/before_after.svg)
+![Gemma4-WDC architecture overview](./diagrams/architecture.svg)
 
-Project site: [manishklach.github.io/agent-runtime-lab](https://manishklach.github.io/agent-runtime-lab/)
+Project site: [manishklach.github.io/gemma4-wdc](https://manishklach.github.io/gemma4-wdc/)
 
 ## Why This Exists
 
-Concurrent branch execution changes the cost profile of agent systems. Once planners, coding agents, and research agents begin operating in parallel, duplication stops looking like a prompt problem and starts looking like a runtime problem.
+Local multi-agent systems are getting easier to run. Even on modest hardware, we can already simulate or partially realize agent teams that branch, plan, search, inspect code, extract evidence, and call tools in parallel.
 
-Existing stacks often have memoization, caching, or queue-level batching, but they usually miss the middle ground that matters for agent workloads:
+What still gets wasted is the backend work underneath those branches. Multiple locally rational agents can independently ask for the same repo scan, the same document extraction pass, or the same analytics query. Gemma4-WDC exists to demonstrate that this is a middleware problem as much as a model problem.
 
-- requests are not byte-identical
-- overlap shows up before execution, not after
-- correctness matters more than aggressive collapse
-- engineers need to understand why work did or did not merge
+## Laptop-First Prototype
 
-This repository is a prototype for that missing runtime layer.
+This repository is intentionally scoped as:
 
-## Key Properties
+- a single-machine proof of concept
+- simulation-first by default
+- practical on a modest Windows laptop or Windows plus WSL2 setup
+- optionally able to host one real local model adapter in hybrid mode
 
-- semantic subtask matching
-- task fingerprints with exact structural hash plus optional near-duplicate similarity
-- bounded non-resetting admission window
-- shared execution units (SEUs)
-- result fan-out to all subscribers
-- runtime observability and benchmark artifacts
-- false-collapse safety scenarios
+It is explicitly not:
 
-## What The Runtime Does
+- a production cluster
+- a polished enterprise control plane
+- a proof of 10-node throughput
+- a claim that many heavy local model instances should run concurrently on consumer hardware
 
-Shared Execution Runtime accepts typed tasks such as `repo_scan`, `code_search`, `test_run`, `doc_extract`, `api_call`, `sql_query`, and `nl_research_task`.
+## Current Scope
 
-For each task, the runtime:
-
-1. computes a task fingerprint
-2. searches pending candidate SEUs in the same resource scope
-3. prefers exact structural matches and only then considers semantic overlap
-4. attaches matching tasks as subscribers during the admission window
-5. executes the SEU once when the window expires
-6. stores the result and fans it out to every subscriber
-7. emits metrics for tasks received, SEUs created, executions saved, and safety rejections
-
-## Why This Matters For Coding Agents And Multi-Agent Systems
-
-The coding-agent angle is central here, not incidental. In branch-heavy coding workflows, multiple agents often re-run overlapping repo scans, dependency tracing, code search, or test-planning passes against the same codebase slice. They do this because each branch is locally rational, even when the total runtime is globally wasteful.
-
-Shared execution is a plausible runtime primitive for:
-
-- repo-understanding agents asking near-identical structural questions
-- code-search agents revisiting the same symbols or paths from different branches
-- multi-branch debugging and refactoring flows
-- repeated test execution planning against overlapping scopes
-- research/document-processing branches extracting similar evidence from the same corpus
+- single-machine proof of concept
+- simulation-first execution model
+- optional one-model hybrid mode
+- local dashboard and benchmark harness
+- mock or lightweight local backends for SQL, API, document, repo scan, and research tasks
 
 ## How It Works
 
+Gemma4-WDC receives structured tool tasks from multiple agents or branches:
+
+1. a task ingress layer records the task, agent, branch, type, and resource hint
+2. a fingerprinting layer computes a canonical key, exact structural hash, and semantic comparison text
+3. matching first tries exact structural overlap, then lightweight near-duplicate similarity where safe
+4. the first arrival opens a bounded admission window that does not reset
+5. matching tasks attach to one shared execution unit, or SEU
+6. the SEU executes once through the backend executor
+7. the result fans out to all subscribing agents
+8. metrics show tasks received, SEUs created, executions saved, dedup multiplier, and safety rejections
+
 ```text
-semantic overlap
+multi-agent tasks
+  -> ingress registry
+  -> semantic fingerprinting
   -> bounded admission window
-  -> shared execution unit (SEU)
+  -> shared execution unit
   -> execute once
   -> result fan-out
-  -> observable savings
+  -> observability
 ```
 
-![Timing Window](./diagrams/timing_window.svg)
+![Admission window timing diagram](./diagrams/timing_window.svg)
+
+## Simulation Mode
+
+Simulation mode is the default and the primary deliverable.
+
+- multiple agents are simulated with structured task templates and lightweight local logic
+- the runtime behaves like a local multi-agent middleware service
+- the dashboard stays useful even without a real local model attached
+- demo scenarios and benchmarks are designed to be credible in this mode
+
+This is the mode that should make a reader believe the systems thesis.
+
+## Hybrid Mode
+
+Hybrid mode keeps most agents simulated while allowing one optional real local model adapter to participate.
+
+- one local Gemma-compatible node can propose tasks or rewrite them into structured tool calls
+- the remaining agents stay lightweight so the demo remains laptop-friendly
+- the middleware, not the model count, remains the focus
+
+If no real model is available, the project is still complete in simulation mode.
 
 ## Demo Scenarios
 
-The local UI is built to make the runtime value legible quickly:
-
-- SQL duplicate scenario
-- NL duplicate scenario
-- coding repo-scan overlap scenario
-- unique-task counterexample
+- `SQL overlap demo`
+  Multiple agents ask materially similar analytics questions and one execution serves several branches.
+- `API overlap demo`
+  Similar backend requests collapse into one shared execution path.
+- `Document research demo`
+  Research agents extract overlapping evidence from the same corpus.
+- `Coding-agent demo`
+  Parallel planner, coder, and reviewer branches inspect the same local repo and collapse overlapping repo-understanding work.
+- `Unique-task counterexample`
+  Similar-looking tasks stay separate when correctness should win over aggressive collapse.
 
 Screenshot assets:
 
-![Coding-Agent Overlap](./site/assets/screenshots/coding-agent-overlap.svg)
-![SEU Dashboard](./site/assets/screenshots/seu-dashboard.svg)
-![Benchmark Results](./site/assets/screenshots/benchmark-results.svg)
+![Coding-agent overlap screenshot placeholder](./site/assets/screenshots/coding-agent-overlap.svg)
+![Dashboard screenshot placeholder](./site/assets/screenshots/seu-dashboard.svg)
+![Benchmark summary screenshot placeholder](./site/assets/screenshots/benchmark-results.svg)
 
-Demo GIF plan placeholder:
+## Benchmark Presentation
 
-![Demo Capture Plan](./site/assets/screenshots/demo-gif-plan.svg)
+These numbers are preliminary and come from the current local harness using mock executors and hand-authored scenarios. They are here to show runtime behavior clearly, not to overclaim production performance.
 
-## Benchmark Highlights
-
-These numbers are preliminary and come from the current local harness using mock executors and hand-authored scenarios. They are included to show behavior clearly, not to claim production-grade wins.
-
-| Scenario | Tasks Received | SEUs Created | Executions Saved | Dedup Ratio | False-Collapse Rate |
+| Scenario | Tasks Requested | Actual Executions | Executions Saved | Dedup Ratio | False-Collapse Rate |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | `coding_repo_scan` | 3 | 2 | 1 | 1.5x | 0.00 |
 | `document_research` | 3 | 2 | 1 | 1.5x | 0.00 |
 | `api_fanout` | 3 | 2 | 1 | 1.5x | 0.00 |
 | `false_collapse_safety` | 4 | 4 | 0 | 1.0x | 0.00 |
 
-![Benchmark Summary](./diagrams/benchmark_preview.svg)
+![Benchmark preview](./diagrams/benchmark_preview.svg)
 
-Benchmark details: [docs/benchmark-methodology.md](./docs/benchmark-methodology.md) and [benchmarks/README.md](./benchmarks/README.md)
+See [docs/benchmark-methodology.md](./docs/benchmark-methodology.md) and [benchmarks/README.md](./benchmarks/README.md) for detail.
 
 ## Run Locally
 
-### Backend
+### Simulation Mode
 
 ```bash
 cd runtime/shared_execution/backend
@@ -118,14 +133,20 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-### Frontend
+In a second terminal:
 
 ```bash
 cd runtime/shared_execution/frontend
 python -m http.server 4173
 ```
 
-Then open `http://localhost:4173`.
+Then open `http://localhost:4173` and run the built-in demo scenarios.
+
+### Hybrid Mode
+
+Hybrid mode currently means: run the same stack, but wire one local model adapter into the task-generation path while keeping the rest of the agents simulated.
+
+For now, the repository includes the interface and positioning for this mode, but a stronger real-model path is still a next-step item rather than a polished default experience.
 
 ### Benchmarks
 
@@ -134,18 +155,21 @@ cd benchmarks
 python run_benchmarks.py
 ```
 
-The latest summary is written to [benchmarks/results/latest_summary.json](./benchmarks/results/latest_summary.json) and a readable artifact is stored at [benchmarks/results/summary.md](./benchmarks/results/summary.md).
+Outputs:
+
+- machine-readable summary: [benchmarks/results/latest_summary.json](./benchmarks/results/latest_summary.json)
+- readable summary: [benchmarks/results/summary.md](./benchmarks/results/summary.md)
 
 ### GitHub Pages Site
 
-The public microsite is a static GitHub Pages artifact rooted at [`site/`](./site). It includes:
+The public microsite is rooted at [`site/`](./site) and includes:
 
-- a Pages-safe self-contained asset tree
-- multi-page architecture, benchmark, and example entry points
-- canonical URLs, Open Graph tags, Twitter card tags, `robots.txt`, `sitemap.xml`, and a custom `404.html`
+- a Pages-safe static asset tree
+- architecture, benchmark, and example pages
+- canonical URLs, Open Graph metadata, `robots.txt`, `sitemap.xml`, and a custom `404.html`
 - a deploy workflow at [`.github/workflows/pages.yml`](./.github/workflows/pages.yml)
 
-To preview it locally:
+To preview locally:
 
 ```bash
 cd site
@@ -154,7 +178,7 @@ python -m http.server 8080
 
 Then open `http://localhost:8080`.
 
-## Repository Structure
+## Repo Structure
 
 ```text
 agent-runtime-lab/
@@ -170,33 +194,25 @@ agent-runtime-lab/
 Key entry points:
 
 - [runtime/shared_execution/backend/app/core/runtime.py](./runtime/shared_execution/backend/app/core/runtime.py)
+- [runtime/shared_execution/backend/app/api/scenarios.py](./runtime/shared_execution/backend/app/api/scenarios.py)
 - [runtime/shared_execution/frontend/index.html](./runtime/shared_execution/frontend/index.html)
 - [examples/coding_agents_demo/README.md](./examples/coding_agents_demo/README.md)
 - [site/index.html](./site/index.html)
 
-## Trust Signals And Limitations
-
-This repository is prototype-quality and local/demo oriented. It is designed to make the runtime thesis concrete, not to present a production-ready distributed system.
-
-Current limitations:
-
-- in-memory single-process runtime
-- mock executors rather than live tool backends
-- hand-authored benchmark scenarios rather than replayed production traces
-- no distributed coordination, persistence, or streaming fan-out transport
-
-What this does not solve:
-
-- planner quality
-- tool correctness
-- long-horizon agent memory reuse
-- branch scheduling policy
-- global consistency across distributed workers
-
 ## Roadmap
 
-- near-term: explainable collapse decisions, stronger benchmark artifacts, richer coding-agent scenarios
-- mid-term: distributed coordination, branch-aware intermediate state reuse, verifier hooks for coding agents
-- longer-term: trajectory replay, state reuse across long-horizon runs, execution-aware branch scheduling
+- stronger local model adapter path for one real Gemma-family node
+- branch-aware intermediate state reuse beyond full result fan-out
+- richer coding-agent traces and replayable scenario logs
+- stronger explainability for why tasks did or did not collapse
+- eventual multi-node coordination after the single-machine thesis is fully proven
 
 See [docs/roadmap.md](./docs/roadmap.md) for the longer plan.
+
+## Limits
+
+- in-memory single-process runtime
+- mock or lightweight local backends
+- hand-authored scenarios instead of replayed production traces
+- no distributed coordination yet
+- hybrid mode is real as a concept, but the simulation-first path is still the best experience

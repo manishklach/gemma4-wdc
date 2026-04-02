@@ -7,7 +7,7 @@ from app.api.scenarios import scenario_tasks
 from app.core.runtime import SharedExecutionRuntime
 from app.models.task import TaskSubmission
 
-app = FastAPI(title="Agent Runtime Lab - Shared Execution Runtime", version="0.1.0")
+app = FastAPI(title="Gemma4-WDC - Shared Execution Runtime", version="0.2.0")
 runtime = SharedExecutionRuntime()
 
 app.add_middleware(

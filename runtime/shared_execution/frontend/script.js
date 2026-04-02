@@ -29,12 +29,12 @@ async function call(path, options = {}) {
 
 function renderMetrics(metrics) {
   const entries = [
-    ["Total tasks", metrics.total_tasks_received],
-    ["Unique SEUs", metrics.unique_seus_created],
+    ["Tasks received", metrics.total_tasks_received],
+    ["SEUs created", metrics.unique_seus_created],
     ["Collapsed tasks", metrics.collapsed_tasks],
     ["Executions saved", metrics.executions_saved],
     ["Dedup multiplier", metrics.deduplication_multiplier],
-    ["False-collapse rejections", metrics.false_collapse_rejections],
+    ["Safety rejections", metrics.false_collapse_rejections],
     ["Mean latency (ms)", metrics.latency_mean_ms],
     ["Saved backend work (ms)", metrics.estimated_backend_work_saved_ms],
   ];
@@ -54,7 +54,7 @@ function renderTasks(tasks) {
         <strong>${task.task_id}</strong>
         <span class="pill">${task.task_type}</span>
       </div>
-      <div class="meta">${task.agent_id} · ${task.branch_id}</div>
+      <div class="meta">${task.agent_id} · ${task.branch_id} · ${task.resource_hint}</div>
       <div class="decision">decision: ${decisionLabels[task.collapse_reason] || task.collapse_reason}</div>
       <pre>${JSON.stringify(task.payload, null, 2)}</pre>
     </article>
@@ -70,6 +70,10 @@ function renderSeus(seus) {
     const totalWindow = Math.max(deadline - created, 1);
     const remaining = Math.max(deadline - now, 0);
     const width = seu.status === "PENDING" ? Math.max((remaining / totalWindow) * 100, 0) : 0;
+    const reasons = Object.entries(seu.collapse_reasons)
+      .map(([taskId, reason]) => `${taskId} -> ${decisionLabels[reason] || reason}`)
+      .join(" | ");
+    const subscriberCount = seu.subscriber_details.length;
     return `
       <article class="seu-card">
         <div class="panel-head">
@@ -79,9 +83,11 @@ function renderSeus(seus) {
           </div>
           <span class="pill status-${seu.status}">${seu.status}</span>
         </div>
-        <div class="meta">representative: ${seu.representative_task_id}</div>
-        <div class="decision">collapse reasons: ${Object.entries(seu.collapse_reasons).map(([taskId, reason]) => `${taskId} -> ${decisionLabels[reason] || reason}`).join(" | ")}</div>
-        <div class="countdown"><div style="width:${width}%"></div></div>
+        <div class="meta">representative: ${seu.representative_task_id} · subscribers: ${subscriberCount}</div>
+        <div class="decision">why collapsed: ${reasons}</div>
+        <div class="countdown" title="Admission window remaining">
+          <div style="width:${width}%"></div>
+        </div>
         <div class="subscribers">
           ${seu.subscriber_details.map(sub => `<div class="subscriber"><strong>${sub.task_id}</strong><br /><small>${sub.agent_id} · ${sub.branch_id}</small></div>`).join("")}
         </div>

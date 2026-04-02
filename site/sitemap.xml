@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://manishklach.github.io/agent-runtime-lab/</loc>
+    <loc>https://manishklach.github.io/gemma4-wdc/</loc>
   </url>
   <url>
-    <loc>https://manishklach.github.io/agent-runtime-lab/architecture/</loc>
+    <loc>https://manishklach.github.io/gemma4-wdc/architecture/</loc>
   </url>
   <url>
-    <loc>https://manishklach.github.io/agent-runtime-lab/benchmarks/</loc>
+    <loc>https://manishklach.github.io/gemma4-wdc/benchmarks/</loc>
   </url>
   <url>
-    <loc>https://manishklach.github.io/agent-runtime-lab/examples/</loc>
+    <loc>https://manishklach.github.io/gemma4-wdc/examples/</loc>
   </url>
 </urlset>
-

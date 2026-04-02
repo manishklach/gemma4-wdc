@@ -1,50 +1,59 @@
 # Benchmark Methodology
 
-The benchmark harness compares a naive execution strategy against Shared Execution Runtime on small, transparent scenario families. The point is clarity and falsifiability, not headline numbers.
+The benchmark harness compares naive execution against Gemma4-WDC's deduplicated shared execution path on small, auditable scenarios. The purpose is clarity, not dramatic numbers.
 
-## Scenarios
+## Scenario Families
 
 - `coding_repo_scan`
-  Parallel coding-agent branches ask overlapping repo-understanding questions against the same codebase slice.
+  Parallel coding-agent branches ask overlapping repo-understanding questions against the same repository slice.
 - `document_research`
-  Research branches extract closely related evidence from the same document collection.
+  Research branches extract closely related evidence from the same local corpus.
 - `api_fanout`
-  Multiple agents converge on the same outbound API operation with matching request shape.
+  Several agents converge on the same outbound API work.
 - `false_collapse_safety`
-  Similar-looking tasks are intentionally constructed so they should remain separate.
+  Similar-looking tasks are intentionally designed to remain separate.
 
-## Reported Metrics
+## What Is Measured
 
-- tasks received
-- SEUs created
+- tasks requested
+- actual executions performed
 - executions saved
 - dedup ratio
 - collapse precision
 - false-collapse rate
+- mock latency proxy from the current executor path
 - raw runtime counters emitted by the prototype
 
-## What The Harness Measures
+## What The Harness Actually Tests
 
-The harness measures how often the runtime can convert parallel overlapping tasks into one shared execution unit, and whether the safety scenarios stay separate. Each scenario is hand-authored so the expected overlap groups are easy to audit.
+The harness tests whether the middleware can:
 
-## What The Harness Does Not Measure
+- detect overlap before execution starts
+- collapse matching tasks into shared execution units
+- preserve separation in safety counterexamples
+- expose results in a transparent, inspectable summary
+
+Each scenario is hand-authored so expected overlap groups remain easy to audit.
+
+## What It Does Not Test
 
 - production latency under real tool backends
-- distributed contention or lock overhead
-- planner-induced task shapes from live agent traces
+- multi-node coordination overhead
+- true concurrent heavy-model behavior on a laptop
+- planner quality from live multi-agent traces
 - long-horizon intermediate state reuse
 
 ## Interpretation Notes
 
-The benchmark outputs should be read as prototype indicators:
+- a saved execution means fewer backend calls would have been issued for the same task stream
+- a zero false-collapse rate means the current hand-authored safety cases stayed separate
+- timing is only a local proxy because executors are mocked or lightweight
+- results should be read as preliminary prototype indicators, not cluster-scale claims
 
-- a saved execution means fewer backend calls would have been issued under the same task stream
-- a zero false-collapse rate in the current harness means the hand-authored safety cases remained separate
-- the reported latencies are mock-executor timings, not production service timings
+## Limitations
 
-## Current Limitations
-
-- mock executors instead of live systems
-- scenario-driven input rather than trace replay
-- hand-authored overlap labels
+- scenario-driven rather than trace-driven
 - local single-process runtime
+- hand-labeled expected overlap groups
+- mock or lightweight executors
+- hybrid mode is not yet the benchmark center of gravity

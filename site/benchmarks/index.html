@@ -3,18 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Benchmarks | Agent Runtime Lab</title>
-    <meta name="description" content="Benchmark methodology and preliminary results for Shared Execution Runtime across coding repo scans, document research, API fan-out, and false-collapse safety scenarios." />
+    <title>Benchmarks | Gemma4-WDC</title>
+    <meta name="description" content="Benchmark methodology and preliminary results for Gemma4-WDC across coding-agent overlap, document research, API overlap, and false-collapse safety scenarios." />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <link rel="canonical" href="https://manishklach.github.io/agent-runtime-lab/benchmarks/" />
+    <link rel="canonical" href="https://manishklach.github.io/gemma4-wdc/benchmarks/" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://manishklach.github.io/agent-runtime-lab/benchmarks/" />
-    <meta property="og:title" content="Benchmarks | Agent Runtime Lab" />
-    <meta property="og:description" content="Transparent benchmark methodology and preliminary shared execution results for concurrent agent systems." />
-    <meta property="og:image" content="https://manishklach.github.io/agent-runtime-lab/assets/og/agent-runtime-lab-og.svg" />
+    <meta property="og:url" content="https://manishklach.github.io/gemma4-wdc/benchmarks/" />
+    <meta property="og:title" content="Benchmarks | Gemma4-WDC" />
+    <meta property="og:description" content="Preliminary laptop-scale benchmark results for shared execution, semantic deduplication, and false-collapse safety." />
+    <meta property="og:image" content="https://manishklach.github.io/gemma4-wdc/assets/og/agent-runtime-lab-og.svg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Benchmarks | Agent Runtime Lab" />
-    <meta name="twitter:description" content="Preliminary benchmark summary for shared execution, semantic deduplication, and false-collapse safety." />
+    <meta name="twitter:title" content="Benchmarks | Gemma4-WDC" />
+    <meta name="twitter:description" content="Transparent benchmark methodology and results for local multi-agent middleware." />
     <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,20 +25,20 @@
     <a class="skip-link" href="#content">Skip to content</a>
     <header class="site-header">
       <div class="container nav-shell">
-        <a class="brand" href="../">Agent Runtime Lab</a>
+        <a class="brand" href="../">Gemma4-WDC</a>
         <nav aria-label="Primary">
           <a href="../architecture/">Architecture</a>
           <a href="../benchmarks/">Benchmarks</a>
           <a href="../examples/">Examples</a>
-          <a href="https://github.com/manishklach/agent-runtime-lab">Repository</a>
+          <a href="https://github.com/manishklach/gemma4-wdc">Repository</a>
         </nav>
       </div>
     </header>
     <main id="content">
       <section class="subpage-hero container">
         <p class="eyebrow">Benchmarks</p>
-        <h1>Preliminary results that show behavior clearly rather than overselling performance.</h1>
-        <p class="lead">The current harness is scenario-driven and uses mock executors. That makes the benchmark numbers intentionally modest, transparent, and easy to audit.</p>
+        <h1>Behavior-first benchmark presentation for a laptop-scale prototype.</h1>
+        <p class="lead">The harness compares naive execution against shared execution. The numbers are intentionally modest and easy to inspect because the goal is to test the middleware thesis, not inflate hardware claims.</p>
       </section>
       <section class="section container">
         <div class="grid two">
@@ -46,8 +46,8 @@
             <h2>Scenario families</h2>
             <ul class="plain-list">
               <li><strong>coding_repo_scan:</strong> overlapping repo-understanding tasks from concurrent coding branches</li>
-              <li><strong>document_research:</strong> repeated evidence extraction across the same corpus</li>
-              <li><strong>api_fanout:</strong> overlapping outbound API operations</li>
+              <li><strong>document_research:</strong> repeated evidence extraction over the same corpus</li>
+              <li><strong>api_fanout:</strong> overlapping outbound API work</li>
               <li><strong>false_collapse_safety:</strong> similar-looking tasks that should remain separate</li>
             </ul>
           </article>
@@ -58,14 +58,14 @@
                 <tr>
                   <th>Scenario</th>
                   <th>Tasks</th>
-                  <th>SEUs</th>
+                  <th>Execs</th>
                   <th>Saved</th>
                   <th>Dedup</th>
                   <th>False-Collapse</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td>coding_repo_scan</td><td>3</td><td>2</td><td>1</td><td>1.5x</td><td>0.00</td></tr>
+                <tr><td>coding_repo_scan</td><td>4</td><td>2</td><td>2</td><td>2.0x</td><td>0.00</td></tr>
                 <tr><td>document_research</td><td>3</td><td>2</td><td>1</td><td>1.5x</td><td>0.00</td></tr>
                 <tr><td>api_fanout</td><td>3</td><td>2</td><td>1</td><td>1.5x</td><td>0.00</td></tr>
                 <tr><td>false_collapse_safety</td><td>4</td><td>4</td><td>0</td><td>1.0x</td><td>0.00</td></tr>
@@ -76,20 +76,20 @@
       </section>
       <section class="section container">
         <article class="card visual-card">
-          <img src="../assets/diagrams/benchmark_preview.svg" alt="Benchmark summary chart for Agent Runtime Lab showing preliminary scenario-level results." />
+          <img src="../assets/diagrams/benchmark_preview.svg" alt="Benchmark preview chart for Gemma4-WDC showing tasks requested, actual executions, saved executions, and safety behavior." />
         </article>
       </section>
       <section class="section container">
         <div class="grid two">
           <article class="card">
-            <h2>Methodology notes</h2>
-            <p>The benchmark harness compares naive execution against shared execution and reports tasks received, shared execution units created, executions saved, dedup ratio, and false-collapse rate. It is meant to be honest and inspectable, not flashy.</p>
+            <h2>Interpretation notes</h2>
+            <p>A saved execution means fewer backend calls would have been issued under the same task stream. A zero false-collapse rate means the current hand-authored safety scenarios stayed separate. Latency is only a local proxy because executors are mocked or lightweight.</p>
           </article>
           <article class="card">
             <h2>Further reading</h2>
-            <p><a href="https://github.com/manishklach/agent-runtime-lab/blob/main/docs/benchmark-methodology.md">Benchmark methodology</a></p>
-            <p><a href="https://github.com/manishklach/agent-runtime-lab/blob/main/benchmarks/results/summary.md">Readable benchmark summary</a></p>
-            <p><a href="https://github.com/manishklach/agent-runtime-lab/blob/main/benchmarks/results/latest_summary.json">Machine-readable benchmark JSON</a></p>
+            <p><a href="https://github.com/manishklach/gemma4-wdc/blob/main/docs/benchmark-methodology.md">Benchmark methodology</a></p>
+            <p><a href="https://github.com/manishklach/gemma4-wdc/blob/main/benchmarks/results/summary.md">Readable benchmark summary</a></p>
+            <p><a href="https://github.com/manishklach/gemma4-wdc/blob/main/benchmarks/results/latest_summary.json">Machine-readable benchmark JSON</a></p>
           </article>
         </div>
       </section>
@@ -97,19 +97,18 @@
     <footer class="site-footer">
       <div class="container footer-grid">
         <div>
-          <strong>Agent Runtime Lab</strong>
+          <strong>Gemma4-WDC</strong>
           <p>Benchmark page for the GitHub Pages microsite.</p>
         </div>
         <nav aria-label="Footer">
           <a href="../">Home</a>
           <a href="../architecture/">Architecture</a>
           <a href="../examples/">Examples</a>
-          <a href="https://github.com/manishklach/agent-runtime-lab/tree/main/benchmarks">Benchmark sources</a>
+          <a href="https://github.com/manishklach/gemma4-wdc/tree/main/benchmarks">Benchmark sources</a>
         </nav>
-        <p class="copyright">Copyright <span data-year></span> Agent Runtime Lab.</p>
+        <p class="copyright">Copyright <span data-year></span> Gemma4-WDC.</p>
       </div>
     </footer>
     <script src="../script.js"></script>
   </body>
 </html>
-

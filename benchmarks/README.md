@@ -4,17 +4,17 @@ The benchmark harness compares:
 
 - `naive`
   every task executes independently
-- `shared_execution_runtime`
-  tasks enter an admission window, matching tasks collapse into a shared execution unit, and the work runs once
+- `gemma4_wdc`
+  tasks enter a bounded admission window, matching tasks collapse into a shared execution unit, and the shared work executes once
 
-The scenarios are intentionally modest. They are designed to make the runtime behavior obvious, auditable, and easy to extend.
+These scenarios are intentionally modest. They are meant to be legible on a laptop and honest about what the current prototype does well.
 
-## Current Scenario Families
+## Scenario Families
 
 - `coding_repo_scan`
   overlapping repo-understanding work from concurrent coding branches
 - `document_research`
-  repeated extraction against the same document collection
+  repeated extraction against the same local corpus
 - `api_fanout`
   overlapping outbound API tasks
 - `false_collapse_safety`
@@ -22,14 +22,14 @@ The scenarios are intentionally modest. They are designed to make the runtime be
 
 ## Current Summary
 
-| Scenario | Tasks Received | SEUs Created | Executions Saved | Dedup Ratio | False-Collapse Rate |
+| Scenario | Tasks Requested | Actual Executions | Executions Saved | Dedup Ratio | False-Collapse Rate |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | `coding_repo_scan` | 3 | 2 | 1 | 1.5x | 0.00 |
 | `document_research` | 3 | 2 | 1 | 1.5x | 0.00 |
 | `api_fanout` | 3 | 2 | 1 | 1.5x | 0.00 |
 | `false_collapse_safety` | 4 | 4 | 0 | 1.0x | 0.00 |
 
-These results are preliminary and come from the current local prototype with mock executors.
+These are preliminary local prototype numbers from hand-authored scenarios and mock executors.
 
 ## Run
 
@@ -44,4 +44,3 @@ Outputs:
 - readable summary: `benchmarks/results/summary.md`
 
 Methodology: [docs/benchmark-methodology.md](../docs/benchmark-methodology.md)
-

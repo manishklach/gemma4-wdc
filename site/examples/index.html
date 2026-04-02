@@ -3,18 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Examples | Agent Runtime Lab</title>
-    <meta name="description" content="Examples for Shared Execution Runtime, including coding-agent repo scans, repo analysis, and support-oriented document overlap scenarios." />
+    <title>Examples | Gemma4-WDC</title>
+    <meta name="description" content="Gemma4-WDC examples, including coding-agent overlap, repo analysis, document research, and safety counterexamples for local multi-agent middleware." />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <link rel="canonical" href="https://manishklach.github.io/agent-runtime-lab/examples/" />
+    <link rel="canonical" href="https://manishklach.github.io/gemma4-wdc/examples/" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://manishklach.github.io/agent-runtime-lab/examples/" />
-    <meta property="og:title" content="Examples | Agent Runtime Lab" />
-    <meta property="og:description" content="Concrete coding-agent and research-agent examples for branch-aware shared execution." />
-    <meta property="og:image" content="https://manishklach.github.io/agent-runtime-lab/assets/og/agent-runtime-lab-og.svg" />
+    <meta property="og:url" content="https://manishklach.github.io/gemma4-wdc/examples/" />
+    <meta property="og:title" content="Examples | Gemma4-WDC" />
+    <meta property="og:description" content="Concrete local multi-agent examples for shared execution, coding-agent overlap, and benchmark-safe counterexamples." />
+    <meta property="og:image" content="https://manishklach.github.io/gemma4-wdc/assets/og/agent-runtime-lab-og.svg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Examples | Agent Runtime Lab" />
-    <meta name="twitter:description" content="Coding-agent, repo-analysis, and support-oriented examples for shared execution runtime behavior." />
+    <meta name="twitter:title" content="Examples | Gemma4-WDC" />
+    <meta name="twitter:description" content="Coding-agent and research-oriented example flows for local middleware deduplication." />
     <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,48 +25,48 @@
     <a class="skip-link" href="#content">Skip to content</a>
     <header class="site-header">
       <div class="container nav-shell">
-        <a class="brand" href="../">Agent Runtime Lab</a>
+        <a class="brand" href="../">Gemma4-WDC</a>
         <nav aria-label="Primary">
           <a href="../architecture/">Architecture</a>
           <a href="../benchmarks/">Benchmarks</a>
           <a href="../examples/">Examples</a>
-          <a href="https://github.com/manishklach/agent-runtime-lab">Repository</a>
+          <a href="https://github.com/manishklach/gemma4-wdc">Repository</a>
         </nav>
       </div>
     </header>
     <main id="content">
       <section class="subpage-hero container">
         <p class="eyebrow">Examples</p>
-        <h1>Concrete scenarios that show why shared execution matters for coding agents first.</h1>
-        <p class="lead">The examples are small, screenshot-friendly, and intentionally legible. They are designed to connect the runtime thesis to actual branch-heavy workloads rather than abstract agent claims.</p>
+        <h1>Concrete, screenshot-friendly scenarios that make the middleware thesis legible.</h1>
+        <p class="lead">The examples are intentionally small enough for a laptop but specific enough to feel like real work: coding-agent repo scans, document overlap, API overlap, and safety counterexamples.</p>
       </section>
       <section class="section container">
         <div class="grid three">
           <article class="card">
-            <h2>Coding agents demo</h2>
-            <p>Overlapping repo scan questions from parallel coding branches collapse into one shared execution unit while separate code search remains separate.</p>
-            <p><a href="https://github.com/manishklach/agent-runtime-lab/blob/main/examples/coding_agents_demo/README.md">Open the coding-agent walkthrough</a></p>
+            <h2>Coding-agent demo</h2>
+            <p>Parallel planner, coder, and reviewer branches inspect the same repository slice. Overlapping repo scans collapse, while separate benchmark-oriented search stays independent.</p>
+            <p><a href="https://github.com/manishklach/gemma4-wdc/blob/main/examples/coding_agents_demo/README.md">Open the coding-agent walkthrough</a></p>
           </article>
           <article class="card">
             <h2>Repo analysis demo</h2>
-            <p>Shows how branch-aware runtime behavior applies to repo-understanding agents and code-search tasks over the same codebase slice.</p>
-            <p><a href="https://github.com/manishklach/agent-runtime-lab/blob/main/examples/repo_analysis_demo/README.md">Open the repo analysis walkthrough</a></p>
+            <p>Shows how local middleware deduplication applies to repo-understanding agents working over the same codebase boundary.</p>
+            <p><a href="https://github.com/manishklach/gemma4-wdc/blob/main/examples/repo_analysis_demo/README.md">Open the repo analysis walkthrough</a></p>
           </article>
           <article class="card">
-            <h2>Support ops demo</h2>
-            <p>Document extraction and API fan-out scenarios show that the runtime thesis generalizes without diluting the coding-agent focus.</p>
-            <p><a href="https://github.com/manishklach/agent-runtime-lab/blob/main/examples/support_ops_demo/README.md">Open the support ops walkthrough</a></p>
+            <h2>Support and research demos</h2>
+            <p>Document extraction and API overlap scenarios show the systems idea generalizes without losing the coding-agent focus.</p>
+            <p><a href="https://github.com/manishklach/gemma4-wdc/blob/main/examples/support_ops_demo/README.md">Open the support walkthrough</a></p>
           </article>
         </div>
       </section>
       <section class="section container">
         <div class="grid two">
           <article class="card visual-card">
-            <img src="../assets/screenshots/coding-agent-overlap.svg" alt="Coding-agent example showing shared execution unit formation from overlapping repo scan tasks." />
+            <img src="../assets/screenshots/coding-agent-overlap.svg" alt="Gemma4-WDC coding-agent example showing several repo-scan tasks collapsing into one shared execution unit." />
           </article>
           <article class="card">
-            <h2>Why the coding-agent angle matters</h2>
-            <p>Parallel branch execution is increasingly normal for coding agents. Once that happens, repeated repo scans, repeated code search, repeated dependency tracing, and repeated test planning stop being isolated tool calls and become runtime-level duplicated subwork.</p>
+            <h2>Why this example lands</h2>
+            <p>Branch-heavy coding agents are one of the clearest places where duplicated downstream work becomes visible quickly. The repo scan demo makes that cost concrete without requiring many real model nodes or expensive hardware.</p>
           </article>
         </div>
       </section>
@@ -74,16 +74,16 @@
     <footer class="site-footer">
       <div class="container footer-grid">
         <div>
-          <strong>Agent Runtime Lab</strong>
+          <strong>Gemma4-WDC</strong>
           <p>Example scenarios for the GitHub Pages microsite.</p>
         </div>
         <nav aria-label="Footer">
           <a href="../">Home</a>
           <a href="../architecture/">Architecture</a>
           <a href="../benchmarks/">Benchmarks</a>
-          <a href="https://github.com/manishklach/agent-runtime-lab/tree/main/examples">Example sources</a>
+          <a href="https://github.com/manishklach/gemma4-wdc/tree/main/examples">Example sources</a>
         </nav>
-        <p class="copyright">Copyright <span data-year></span> Agent Runtime Lab.</p>
+        <p class="copyright">Copyright <span data-year></span> Gemma4-WDC.</p>
       </div>
     </footer>
     <script src="../script.js"></script>

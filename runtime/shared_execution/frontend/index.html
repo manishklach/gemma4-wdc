@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shared Execution Runtime</title>
+    <title>Gemma4-WDC Local Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -13,10 +13,10 @@
     <div class="shell">
       <header class="hero">
         <div>
-          <p class="eyebrow">Agent Runtime Lab</p>
-          <h1>Shared Execution Runtime</h1>
+          <p class="eyebrow">Gemma4-WDC</p>
+          <h1>Local shared execution dashboard</h1>
           <p class="lede">
-            Shared execution and semantic subtask deduplication for concurrent agent systems.
+            Laptop-first observability for simulated or hybrid local agents. Run overlapping tool tasks, watch admission windows form shared execution units, and inspect why work collapsed or stayed separate.
           </p>
         </div>
         <div class="endpoint">
@@ -26,19 +26,19 @@
       </header>
 
       <section class="controls">
-        <button data-scenario="sql_duplicate">SQL duplicate scenario</button>
-        <button data-scenario="nl_duplicate">NL duplicate scenario</button>
-        <button data-scenario="coding_overlap">Coding repo-scan overlap</button>
+        <button data-scenario="sql_duplicate">SQL overlap demo</button>
+        <button data-scenario="nl_duplicate">Document research demo</button>
+        <button data-scenario="coding_overlap">Coding-agent overlap demo</button>
         <button data-scenario="unique_counterexample">Unique-task counterexample</button>
         <button id="resetBtn" class="secondary">Reset runtime</button>
       </section>
 
       <section class="controls helper-row">
-        <span class="mono">Quick read:</span>
-        <span>submit overlapping tasks</span>
-        <span>watch the admission window</span>
-        <span>see subscribers attach to one SEU</span>
-        <span>inspect why tasks collapsed or stayed separate</span>
+        <span class="mono">Mode:</span>
+        <span>simulation-first</span>
+        <span>single-machine proof of concept</span>
+        <span>watch SEUs form during the admission window</span>
+        <span>use counterexamples to sanity-check safety</span>
       </section>
 
       <section class="metrics-grid" id="metricsGrid"></section>

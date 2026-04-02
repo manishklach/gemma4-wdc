@@ -3,18 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Architecture | Agent Runtime Lab</title>
-    <meta name="description" content="Architecture of Shared Execution Runtime, including task fingerprinting, bounded admission windows, shared execution units, result fan-out, and runtime observability." />
+    <title>Architecture | Gemma4-WDC</title>
+    <meta name="description" content="Gemma4-WDC architecture: local agent task generation, semantic fingerprinting, bounded admission windows, shared execution units, result fan-out, and observability." />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <link rel="canonical" href="https://manishklach.github.io/agent-runtime-lab/architecture/" />
+    <link rel="canonical" href="https://manishklach.github.io/gemma4-wdc/architecture/" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://manishklach.github.io/agent-runtime-lab/architecture/" />
-    <meta property="og:title" content="Architecture | Agent Runtime Lab" />
-    <meta property="og:description" content="Shared Execution Runtime architecture for branch-aware semantic deduplication in concurrent agent systems." />
-    <meta property="og:image" content="https://manishklach.github.io/agent-runtime-lab/assets/og/agent-runtime-lab-og.svg" />
+    <meta property="og:url" content="https://manishklach.github.io/gemma4-wdc/architecture/" />
+    <meta property="og:title" content="Architecture | Gemma4-WDC" />
+    <meta property="og:description" content="Architecture for a laptop-first local multi-agent runtime with shared execution and middleware-level deduplication." />
+    <meta property="og:image" content="https://manishklach.github.io/gemma4-wdc/assets/og/agent-runtime-lab-og.svg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Architecture | Agent Runtime Lab" />
-    <meta name="twitter:description" content="Task fingerprints, admission windows, shared execution units, and result fan-out for concurrent agent systems." />
+    <meta name="twitter:title" content="Architecture | Gemma4-WDC" />
+    <meta name="twitter:description" content="Task ingress, fingerprinting, admission control, shared execution units, and fan-out for local multi-agent systems." />
     <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,24 +25,24 @@
     <a class="skip-link" href="#content">Skip to content</a>
     <header class="site-header">
       <div class="container nav-shell">
-        <a class="brand" href="../">Agent Runtime Lab</a>
+        <a class="brand" href="../">Gemma4-WDC</a>
         <nav aria-label="Primary">
           <a href="../architecture/">Architecture</a>
           <a href="../benchmarks/">Benchmarks</a>
           <a href="../examples/">Examples</a>
-          <a href="https://github.com/manishklach/agent-runtime-lab">Repository</a>
+          <a href="https://github.com/manishklach/gemma4-wdc">Repository</a>
         </nav>
       </div>
     </header>
     <main id="content">
       <section class="subpage-hero container">
         <p class="eyebrow">Architecture</p>
-        <h1>Shared Execution Runtime is a runtime layer, not another agent shell.</h1>
-        <p class="lead">Its job is to catch semantic overlap before backend work begins, collapse matching tasks into a shared execution unit, and make the whole decision path observable.</p>
+        <h1>Gemma4-WDC is a middleware layer for local agents, not another agent shell.</h1>
+        <p class="lead">Its job is to catch overlap before backend work begins, group compatible tasks into shared execution units, and make the whole decision path inspectable on a laptop.</p>
       </section>
       <section class="section container">
         <article class="card visual-card">
-          <img src="../assets/diagrams/architecture.svg" alt="Architecture diagram for Agent Runtime Lab showing task ingestion, semantic matching, admission control, shared execution units, fan-out, and metrics." />
+          <img src="../assets/diagrams/architecture.svg" alt="Gemma4-WDC architecture diagram showing agents, task ingress, semantic matching, admission control, shared execution units, execution backends, and metrics." />
         </article>
       </section>
       <section class="section container">
@@ -50,40 +50,34 @@
           <article class="card">
             <h2>Core components</h2>
             <ul class="plain-list">
-              <li><strong>Task ingestion API:</strong> accepts typed tasks with branch and resource metadata.</li>
-              <li><strong>Task fingerprinting:</strong> builds an exact structural hash and semantic comparison text.</li>
-              <li><strong>Admission window:</strong> bounded and non-resetting, started by the first arrival.</li>
-              <li><strong>Shared execution unit:</strong> owns subscribers, execution state, and result fan-out.</li>
-              <li><strong>Observability:</strong> exposes tasks received, SEUs created, executions saved, and false-collapse behavior.</li>
+              <li><strong>Agent task generation:</strong> simulated or hybrid local agents emit structured tool tasks.</li>
+              <li><strong>Task ingress registry:</strong> records agent, branch, task type, resource hint, and arrival time.</li>
+              <li><strong>Fingerprinting:</strong> computes exact structural hashes and lightweight semantic comparison text.</li>
+              <li><strong>Admission control:</strong> opens a bounded, non-resetting window on first arrival.</li>
+              <li><strong>SEU manager:</strong> owns subscriber state, execution lifecycle, and result fan-out.</li>
+              <li><strong>Observability:</strong> exposes counts, savings, and safety behavior.</li>
             </ul>
           </article>
           <article class="card">
-            <h2>Data flow</h2>
-            <ol class="plain-list">
-              <li>Tasks arrive from concurrent branches.</li>
-              <li>The runtime computes a task fingerprint and resource scope.</li>
-              <li>Pending SEUs are checked for exact structural matches first.</li>
-              <li>Semantic overlap is only considered after exact matching fails.</li>
-              <li>Matching tasks become subscribers during the admission window.</li>
-              <li>When the window expires, the SEU executes once and fans the result out.</li>
-            </ol>
+            <h2>Why this architecture is laptop-first</h2>
+            <p>The architecture assumes one machine, one central FastAPI service, lightweight agents, and mock or lightweight local tool backends. Hybrid mode adds one optional real model adapter, but the design does not depend on many concurrent heavy local models.</p>
           </article>
         </div>
       </section>
       <section class="section container">
         <article class="card visual-card">
-          <img src="../assets/diagrams/timing_window.svg" alt="Timing diagram of the bounded non-resetting admission window used by Shared Execution Runtime." />
+          <img src="../assets/diagrams/timing_window.svg" alt="Timing diagram of the bounded admission window used by Gemma4-WDC shared execution units." />
         </article>
       </section>
       <section class="section container">
         <div class="grid two">
           <article class="card">
-            <h2>Why this is credible for coding agents</h2>
-            <p>Repo-understanding branches often repeat the same structural work with slightly different phrasing. This runtime is aimed squarely at that class of workload: repo scan, code search, dependency tracing, and test planning across neighboring branches.</p>
+            <h2>Coding-agent focus</h2>
+            <p>Repo-understanding branches are a practical place to prove the systems thesis. Several branches can ask where a state transition happens, what a module does, or where the benchmark harness lives. The middleware turns that into shared backend work instead of repeated scans.</p>
           </article>
           <article class="card">
             <h2>Prototype limits</h2>
-            <p>The current implementation is in-memory and local. It demonstrates the mechanics clearly, but it does not yet solve distributed coordination, persistence, or live production tool integration.</p>
+            <p>The current system is local and in-memory. It demonstrates task overlap, bounded admission, shared execution, and fan-out clearly, but it does not yet solve distributed coordination, persistence, or a strong production-grade real-model integration path.</p>
           </article>
         </div>
       </section>
@@ -91,19 +85,18 @@
     <footer class="site-footer">
       <div class="container footer-grid">
         <div>
-          <strong>Agent Runtime Lab</strong>
+          <strong>Gemma4-WDC</strong>
           <p>Architecture page for the GitHub Pages microsite.</p>
         </div>
         <nav aria-label="Footer">
           <a href="../">Home</a>
           <a href="../benchmarks/">Benchmarks</a>
           <a href="../examples/">Examples</a>
-          <a href="https://github.com/manishklach/agent-runtime-lab/tree/main/docs">Repo docs</a>
+          <a href="https://github.com/manishklach/gemma4-wdc/tree/main/docs">Repo docs</a>
         </nav>
-        <p class="copyright">Copyright <span data-year></span> Agent Runtime Lab.</p>
+        <p class="copyright">Copyright <span data-year></span> Gemma4-WDC.</p>
       </div>
     </footer>
     <script src="../script.js"></script>
   </body>
 </html>
-

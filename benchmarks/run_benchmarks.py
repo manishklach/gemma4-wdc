@@ -18,6 +18,7 @@ from app.core.runtime import SharedExecutionRuntime
 from app.models.task import TaskSubmission
 
 RESULTS_PATH = ROOT / "results" / "latest_summary.json"
+SUMMARY_PATH = ROOT / "results" / "summary.md"
 
 
 def load_scenario(path: Path) -> dict[str, Any]:
@@ -38,7 +39,7 @@ async def run_shared(tasks: list[dict[str, Any]]) -> dict[str, Any]:
     await asyncio.sleep(1.6)
     state = await runtime.state()
     actual_collapsed = state.metrics["collapsed_tasks"]
-    expected_groups = {}
+    expected_groups: dict[str, list[str]] = {}
     for task in tasks:
         group = task.get("expected_group")
         if group:
@@ -60,12 +61,9 @@ async def run_shared(tasks: list[dict[str, Any]]) -> dict[str, Any]:
                 true_positive_collapses += 1
             else:
                 false_positive_collapses += 1
-    collapse_precision = (
-        round(true_positive_collapses / actual_collapsed, 2) if actual_collapsed else 1.0
-    )
-    false_collapse_rate = (
-        round(false_positive_collapses / actual_collapsed, 2) if actual_collapsed else 0.0
-    )
+    collapse_precision = round(true_positive_collapses / actual_collapsed, 2) if actual_collapsed else 1.0
+    false_collapse_rate = round(false_positive_collapses / actual_collapsed, 2) if actual_collapsed else 0.0
+    latency_proxy_ms = state.metrics["backend_work_ms"]
     return {
         "total_tasks": len(tasks),
         "total_executions": len(state.seus),
@@ -74,11 +72,13 @@ async def run_shared(tasks: list[dict[str, Any]]) -> dict[str, Any]:
         "collapse_precision": collapse_precision,
         "false_collapse_rate": false_collapse_rate,
         "expected_collapsible_pairs": expected_collapsible_pairs,
+        "latency_proxy_ms": latency_proxy_ms,
         "metrics": state.metrics,
     }
 
 
 def run_naive(tasks: list[dict[str, Any]]) -> dict[str, Any]:
+    latency_proxy_ms = len(tasks) * 160
     return {
         "total_tasks": len(tasks),
         "total_executions": len(tasks),
@@ -86,7 +86,39 @@ def run_naive(tasks: list[dict[str, Any]]) -> dict[str, Any]:
         "dedup_ratio": 1.0,
         "collapse_precision": 1.0,
         "false_collapse_rate": 0.0,
+        "latency_proxy_ms": latency_proxy_ms,
     }
+
+
+def render_summary(result: dict[str, Any]) -> str:
+    lines = [
+        "# Benchmark Summary",
+        "",
+        "Generated from the current local benchmark run for Gemma4-WDC.",
+        "",
+        "| Scenario | Tasks Requested | Actual Executions | Executions Saved | Dedup Ratio | Latency Proxy Delta | False-Collapse Rate |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for name, summary in result["results"].items():
+        naive = summary["naive"]
+        shared = summary["gemma4_wdc"]
+        delta = naive["latency_proxy_ms"] - shared["latency_proxy_ms"]
+        lines.append(
+            f"| `{name}` | {shared['total_tasks']} | {shared['total_executions']} | {shared['executions_saved']} | "
+            f"{shared['dedup_ratio']}x | {delta} ms | {shared['false_collapse_rate']:.2f} |"
+        )
+    lines.extend(
+        [
+            "",
+            "Notes:",
+            "",
+            "- these are preliminary laptop-scale numbers from hand-authored scenarios",
+            "- latency proxy is only a local comparative signal, not a production latency claim",
+            "- mock or lightweight executors are used throughout the current harness",
+            "- the safety scenario remaining at zero saved executions is an expected positive signal",
+        ]
+    )
+    return "\n".join(lines) + "\n"
 
 
 async def benchmark() -> dict[str, Any]:
@@ -100,14 +132,15 @@ async def benchmark() -> dict[str, Any]:
         summaries[scenario_name] = {
             "description": scenario["description"],
             "naive": naive,
-            "shared_execution_runtime": shared,
+            "gemma4_wdc": shared,
         }
     result = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "benchmark_version": "0.1.0",
+        "benchmark_version": "0.2.0",
         "results": summaries,
     }
     RESULTS_PATH.write_text(json.dumps(result, indent=2), encoding="utf-8")
+    SUMMARY_PATH.write_text(render_summary(result), encoding="utf-8")
     return result
 
 

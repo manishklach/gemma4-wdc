@@ -1,15 +1,15 @@
 {
-  "description": "Concurrent repo-understanding branches with overlapping scan intent.",
+  "description": "Concurrent coding-agent branches with overlapping repo-understanding intent.",
   "tasks": [
     {
       "task_id": "repo-1",
       "agent_id": "planner",
       "branch_id": "branch-a",
       "task_type": "repo_scan",
-      "resource_hint": "repo:agent-runtime-lab",
+      "resource_hint": "repo:Gemma4-WDC",
       "payload": {
-        "repo": "agent-runtime-lab",
-        "path": "runtime/",
+        "repo": "Gemma4-WDC",
+        "path": "runtime/shared_execution/backend/app",
         "query": "Locate where shared execution units leave the admission window and begin execution"
       },
       "expected_group": "runtime_scan"
@@ -19,26 +19,38 @@
       "agent_id": "coder",
       "branch_id": "branch-b",
       "task_type": "repo_scan",
-      "resource_hint": "repo:agent-runtime-lab",
+      "resource_hint": "repo:Gemma4-WDC",
       "payload": {
-        "repo": "agent-runtime-lab",
-        "path": "runtime/",
+        "repo": "Gemma4-WDC",
+        "path": "runtime/shared_execution/backend/app",
         "query": "Find the code path that transitions pending shared work into execution"
       },
       "expected_group": "runtime_scan"
     },
     {
       "task_id": "repo-3",
-      "agent_id": "tester",
+      "agent_id": "reviewer",
       "branch_id": "branch-c",
-      "task_type": "code_search",
-      "resource_hint": "repo:agent-runtime-lab",
+      "task_type": "repo_scan",
+      "resource_hint": "repo:Gemma4-WDC",
       "payload": {
-        "repo": "agent-runtime-lab",
+        "repo": "Gemma4-WDC",
+        "path": "runtime/shared_execution/backend/app",
+        "query": "Show the code path where the admission window expires and shared execution begins"
+      },
+      "expected_group": "runtime_scan"
+    },
+    {
+      "task_id": "repo-4",
+      "agent_id": "tester",
+      "branch_id": "branch-d",
+      "task_type": "code_search",
+      "resource_hint": "repo:Gemma4-WDC",
+      "payload": {
+        "repo": "Gemma4-WDC",
         "path": "benchmarks/",
         "query": "look for benchmark harness entrypoint"
       }
     }
   ]
 }
-
