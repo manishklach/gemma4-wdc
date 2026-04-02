@@ -15,6 +15,12 @@ The project explores a simple systems thesis: as local agentic workflows become 
 
 ![Overview diagram showing multiple agents, overlapping tool tasks, WDC middleware, one shared execution unit, result fan-out, and metrics.](./diagrams/hero-overview.svg)
 
+## See the Runtime Flow
+
+This short walkthrough shows how overlapping agent tasks are collapsed into one shared execution unit.
+
+![Animated walkthrough showing concurrent task arrival, admission-window capture, subscriber attachment, shared execution, result fan-out, and metrics update.](./site/assets/demo/gemma4-wdc-demo.gif)
+
 ## What It Does
 
 - Multiple local or simulated agents emit tool tasks independently.

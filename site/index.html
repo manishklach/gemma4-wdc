@@ -83,6 +83,26 @@
         </div>
       </section>
 
+      <section class="section container" id="demo-flow">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">See the Runtime Flow</p>
+            <h2>Concurrent tasks arrive, the admission window captures overlap, one SEU executes, and metrics update.</h2>
+          </div>
+          <a class="text-link" href="https://github.com/manishklach/gemma4-wdc#see-the-runtime-flow">Open in README</a>
+        </div>
+        <div class="grid two">
+          <article class="card visual-card">
+            <img src="./assets/demo/gemma4-wdc-demo.gif" alt="Animated walkthrough of the core gemma4-wdc loop: concurrent task arrival, subscriber attachment, shared execution, result fan-out, and metrics update." />
+          </article>
+          <article class="card">
+            <p>A short walkthrough of the core gemma4-wdc loop: concurrent task arrival, admission-window capture, shared execution, result fan-out, and metrics update.</p>
+            <p>The sequence is simulation-first and laptop-scale, but it tracks the real runtime behavior the project is built to demonstrate.</p>
+            <p><a class="text-link" href="./assets/demo/gemma4-wdc-demo-storyboard.png">Open storyboard strip</a></p>
+          </article>
+        </div>
+      </section>
+
       <section class="section container" id="bottleneck">
         <div class="section-intro">
           <p class="eyebrow">The Bottleneck</p>
