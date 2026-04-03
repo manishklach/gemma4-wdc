@@ -4,13 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Architecture — gemma4-wdc</title>
-    <meta name="description" content="Architecture for gemma4-wdc: a laptop-first local multi-agent runtime with semantic overlap detection, bounded admission windows, shared execution units, result fan-out, and observability." />
+    <meta
+      name="description"
+      content="Architecture for gemma4-wdc: a laptop-first local multi-agent runtime with semantic overlap detection, bounded admission windows, shared execution units, and result fan-out."
+    />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://manishklach.github.io/gemma4-wdc/architecture/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://manishklach.github.io/gemma4-wdc/architecture/" />
     <meta property="og:title" content="Architecture — gemma4-wdc" />
-    <meta property="og:description" content="Architecture for a laptop-first local multi-agent runtime with semantic overlap detection, shared execution units, and middleware-level deduplication." />
+    <meta
+      property="og:description"
+      content="A dark-mode overview of the gemma4-wdc architecture: task ingress, semantic fingerprinting, admission windows, shared execution units, and result fan-out."
+    />
     <meta property="og:image" content="https://manishklach.github.io/gemma4-wdc/assets/og/agent-runtime-lab-og.svg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -18,15 +24,68 @@
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Architecture — gemma4-wdc" />
-    <meta name="twitter:description" content="Task ingress, fingerprinting, admission control, shared execution units, and result fan-out for local multi-agent systems." />
+    <meta
+      name="twitter:description"
+      content="Task ingress, semantic fingerprinting, admission control, shared execution units, and result fan-out for a laptop-first local multi-agent runtime."
+    />
     <meta name="twitter:image" content="https://manishklach.github.io/gemma4-wdc/assets/og/agent-runtime-lab-og.svg" />
     <meta name="twitter:image:alt" content="Architecture preview for gemma4-wdc showing local agents, admission windows, shared execution units, and result fan-out." />
     <meta name="twitter:site" content="@manishklach" />
     <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../styles.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              slate950: "#06111f",
+              slate925: "#0a1627",
+              slate900: "#0d1b2a",
+              slate850: "#122235",
+              slate800: "#1a2d45",
+              blueglow: "#39b8ff",
+              tealglow: "#37f0d1"
+            },
+            boxShadow: {
+              soft: "0 24px 80px rgba(3, 10, 23, 0.42)",
+              panel: "0 18px 48px rgba(3, 10, 23, 0.28)"
+            },
+            fontFamily: {
+              sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+              mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace']
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: dark; }
+      body {
+        background:
+          radial-gradient(circle at top left, rgba(57, 184, 255, 0.12), transparent 24%),
+          radial-gradient(circle at top right, rgba(55, 240, 209, 0.08), transparent 20%),
+          linear-gradient(180deg, #06111f 0%, #091524 36%, #0d1b2a 100%);
+      }
+      .panel {
+        background: linear-gradient(180deg, rgba(13, 27, 42, 0.88), rgba(8, 18, 33, 0.86));
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        box-shadow: 0 18px 48px rgba(3, 10, 23, 0.28);
+        backdrop-filter: blur(14px);
+      }
+      .headline-glow {
+        background: linear-gradient(92deg, #ffffff 0%, #9dd7ff 38%, #66f0d7 68%, #ffffff 100%);
+        background-size: 220% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: pulseShift 8s ease-in-out infinite;
+      }
+      @keyframes pulseShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+      html { scroll-behavior: smooth; }
+    </style>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -37,81 +96,143 @@
       }
     </script>
   </head>
-  <body data-page="architecture">
-    <a class="skip-link" href="#content">Skip to content</a>
-    <header class="site-header">
-      <div class="container nav-shell">
-        <a class="brand" href="../">gemma4-wdc</a>
-        <nav aria-label="Primary">
-          <a href="../architecture/">Architecture</a>
-          <a href="../benchmarks/">Benchmarks</a>
-          <a href="../examples/">Examples</a>
-          <a href="https://github.com/manishklach/gemma4-wdc">Repository</a>
+  <body class="min-h-screen font-sans text-slate-100 antialiased">
+    <a class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-slate-950" href="#content">Skip to content</a>
+
+    <header class="sticky top-0 z-40 border-b border-white/10 bg-slate950/80 backdrop-blur-xl">
+      <div class="mx-auto flex w-full max-w-7xl items-center justify-between gap-6 px-6 py-4 lg:px-8">
+        <a class="text-sm font-semibold tracking-[0.18em] text-slate-100 uppercase" href="../">gemma4-wdc</a>
+        <nav aria-label="Primary" class="flex flex-wrap items-center gap-5 text-sm text-slate-300">
+          <a class="text-white" href="../architecture/">Architecture</a>
+          <a class="transition hover:text-white" href="../benchmarks/">Benchmarks</a>
+          <a class="transition hover:text-white" href="../examples/">Examples</a>
+          <a class="transition hover:text-white" href="https://github.com/manishklach/gemma4-wdc">Repository</a>
         </nav>
       </div>
     </header>
+
     <main id="content">
-      <section class="subpage-hero container">
-        <p class="eyebrow">Architecture</p>
-        <h1>Gemma4-WDC is a middleware layer for local agents, not another agent shell.</h1>
-        <p class="lead">Its job is to catch overlap before backend work begins, group compatible tasks into shared execution units, and make the whole decision path inspectable on a laptop.</p>
-      </section>
-      <section class="section container">
-        <article class="card visual-card">
-          <img src="../assets/diagrams/architecture.svg" alt="Gemma4-WDC architecture diagram showing agents, task ingress, semantic matching, admission control, shared execution units, execution backends, and metrics." />
-        </article>
-      </section>
-      <section class="section container">
-        <div class="grid two">
-          <article class="card">
-            <h2>Core components</h2>
-            <ul class="plain-list">
-              <li><strong>Agent task generation:</strong> simulated or hybrid local agents emit structured tool tasks.</li>
-              <li><strong>Task ingress registry:</strong> records agent, branch, task type, resource hint, and arrival time.</li>
-              <li><strong>Fingerprinting:</strong> computes exact structural hashes and lightweight semantic comparison text.</li>
-              <li><strong>Admission control:</strong> opens a bounded, non-resetting window on first arrival.</li>
-              <li><strong>SEU manager:</strong> owns subscriber state, execution lifecycle, and result fan-out.</li>
-              <li><strong>Observability:</strong> exposes counts, savings, and safety behavior.</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h2>Why this architecture is laptop-first</h2>
-            <p>The architecture assumes one machine, one central FastAPI service, lightweight agents, and mock or lightweight local tool backends. Hybrid mode adds one optional real model adapter, but the design does not depend on many concurrent heavy local models.</p>
-          </article>
-        </div>
-      </section>
-      <section class="section container">
-        <article class="card visual-card">
-          <img src="../assets/diagrams/admission-window.svg" alt="Admission window diagram showing the first task opening a bounded window and later matching tasks attaching before execution." />
-        </article>
-      </section>
-      <section class="section container">
-        <div class="grid two">
-          <article class="card">
-            <h2>Coding-agent focus</h2>
-            <p>Repo-understanding branches are a practical place to prove the systems thesis. Several branches can ask where a state transition happens, what a module does, or where the benchmark harness lives. The middleware turns that into shared backend work instead of repeated scans.</p>
-          </article>
-          <article class="card visual-card">
-            <img src="../assets/diagrams/coding-agent-scenario.svg" alt="Coding-agent scenario diagram showing planner, coder, and reviewer branches collapsing into one shared repo-understanding execution." />
+      <section class="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 pb-12 pt-10 lg:px-8 lg:pb-16 lg:pt-14">
+        <div class="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:items-center">
+          <div class="space-y-6">
+            <div class="inline-flex items-center rounded-full border border-blueglow/30 bg-blueglow/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.28em] text-blue-100">
+              Architecture overview
+            </div>
+            <h1 class="headline-glow max-w-4xl text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+              Overlap is a runtime problem, so gemma4-wdc solves it in the runtime.
+            </h1>
+            <p class="max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">
+              gemma4-wdc sits between local agents and downstream tools. It fingerprints incoming work, opens a bounded admission window, collapses compatible tasks into shared execution units, and fans a single result back to every attached branch.
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 font-mono text-xs text-slate-200">Task ingress</span>
+              <span class="rounded-full border border-blueglow/25 bg-blueglow/10 px-4 py-2 font-mono text-xs text-blue-100">Admission window</span>
+              <span class="rounded-full border border-tealglow/25 bg-tealglow/10 px-4 py-2 font-mono text-xs text-teal-100">Shared execution units</span>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <a class="inline-flex items-center justify-center rounded-full bg-blueglow px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300" href="../">Back to home</a>
+              <a class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/25 hover:bg-white/10" href="https://github.com/manishklach/gemma4-wdc">View Repository</a>
+            </div>
+          </div>
+
+          <article class="panel rounded-3xl p-4">
+            <img
+              src="../assets/diagrams/architecture.svg"
+              alt="Architecture diagram showing agents, task ingress, semantic matching, admission control, shared execution units, execution backends, and observability."
+              class="w-full rounded-[22px] border border-white/10"
+            />
           </article>
         </div>
+      </section>
+
+      <section class="mx-auto grid w-full max-w-7xl gap-6 px-6 py-6 lg:grid-cols-2 lg:px-8">
+        <article class="panel rounded-3xl p-7">
+          <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-blue-200/80">Core components</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white">The local runtime stays narrow, observable, and honest about scope.</h2>
+          <ul class="mt-5 space-y-4 text-sm leading-7 text-slate-300">
+            <li><strong class="text-white">Agent task generation:</strong> simulated or hybrid local agents emit structured SQL, API, document, code-search, and research tasks.</li>
+            <li><strong class="text-white">Task ingress registry:</strong> every task is recorded with agent identity, branch lineage, payload, and arrival time.</li>
+            <li><strong class="text-white">Fingerprinting:</strong> exact structural hashing plus lightweight semantic matching detect overlap.</li>
+            <li><strong class="text-white">Admission control:</strong> the first compatible task opens a bounded, non-resetting admission window.</li>
+            <li><strong class="text-white">SEU manager:</strong> one shared execution unit owns subscribers, execution lifecycle, and result fan-out.</li>
+            <li><strong class="text-white">Observability:</strong> counts, savings, timings, and safety behavior stay visible throughout the run.</li>
+          </ul>
+        </article>
+        <article class="panel rounded-3xl p-7">
+          <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-blue-200/80">Laptop-first shape</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white">One machine. One middleware service. Many lightweight branches.</h2>
+          <p class="mt-4 leading-8 text-slate-300">
+            The architecture assumes a single-machine proof of concept: one local FastAPI backend, lightweight or simulated agents, and mock or lightweight tool executors. It is built to make the systems thesis legible on modest hardware rather than to imitate a cluster.
+          </p>
+          <p class="mt-4 leading-8 text-slate-300">
+            Hybrid mode can attach one real local model adapter, but the core runtime remains useful and complete in simulation mode.
+          </p>
+        </article>
+      </section>
+
+      <section class="mx-auto grid w-full max-w-7xl gap-6 px-6 py-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(360px,1.12fr)] lg:px-8">
+        <article class="panel rounded-3xl p-7">
+          <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-blue-200/80">Timing primitive</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white">The admission window is where the system earns its savings.</h2>
+          <p class="mt-4 leading-8 text-slate-300">
+            The first compatible task opens a short, bounded window in `PENDING`. Matching tasks that arrive inside that interval subscribe to the same SEU. The timer does not reset, which keeps delay bounded and behavior predictable.
+          </p>
+          <div class="mt-6 grid gap-3 sm:grid-cols-3">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-slate-400">Open</p>
+              <p class="mt-2 text-white">First arrival creates a pending SEU.</p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-slate-400">Attach</p>
+              <p class="mt-2 text-white">Matching subscribers collapse into the same execution.</p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-slate-400">Execute</p>
+              <p class="mt-2 text-white">One backend call runs when the window expires.</p>
+            </div>
+          </div>
+        </article>
+        <article class="panel rounded-3xl p-4">
+          <img
+            src="../assets/diagrams/admission-window.svg"
+            alt="Admission window timing diagram showing first arrival, matching attachments, execution start, and result fan-out."
+            class="w-full rounded-[22px] border border-white/10"
+          />
+        </article>
+      </section>
+
+      <section class="mx-auto grid w-full max-w-7xl gap-6 px-6 py-8 lg:grid-cols-[minmax(360px,1fr)_minmax(0,0.92fr)] lg:px-8">
+        <article class="panel rounded-3xl p-4">
+          <img
+            src="../assets/diagrams/coding-agent-scenario.svg"
+            alt="Coding-agent scenario diagram showing planner, coder, and reviewer branches collapsing into one shared repo-understanding execution."
+            class="w-full rounded-[22px] border border-white/10"
+          />
+        </article>
+        <article class="panel rounded-3xl p-7">
+          <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-blue-200/80">Flagship use case</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white">Coding-agent overlap makes the architecture instantly legible.</h2>
+          <p class="mt-4 leading-8 text-slate-300">
+            Repo-understanding branches are a practical place to prove the thesis. Multiple local branches can ask where state transitions happen, what a module does, or where benchmark code lives. The middleware turns repeated scans into one shared execution instead of repeated backend work.
+          </p>
+          <p class="mt-4 leading-8 text-slate-300">
+            That makes coding-agent workflows one of the strongest demonstrations for laptop-scale shared execution: the work is expensive enough to matter, and the overlap is easy to understand.
+          </p>
+          <a class="mt-6 inline-flex items-center font-mono text-sm text-blue-300 transition hover:text-white" href="../examples/">Open example scenarios →</a>
+        </article>
       </section>
     </main>
-    <footer class="site-footer">
-      <div class="container footer-grid">
-        <div>
-          <strong>gemma4-wdc</strong>
-          <p>Architecture page for the GitHub Pages microsite.</p>
+
+    <footer class="mx-auto mt-10 w-full max-w-7xl px-6 pb-10 pt-6 lg:px-8">
+      <div class="flex flex-col gap-5 rounded-3xl border border-white/10 bg-white/[0.03] px-6 py-5 text-sm text-slate-400 lg:flex-row lg:items-center lg:justify-between">
+        <div class="font-mono">© 2026 gemma4-wdc — MIT License</div>
+        <div class="flex flex-wrap gap-5">
+          <a class="transition hover:text-white" href="../">Home</a>
+          <a class="transition hover:text-white" href="../benchmarks/">Benchmarks</a>
+          <a class="transition hover:text-white" href="../examples/">Examples</a>
+          <a class="transition hover:text-white" href="https://github.com/manishklach/gemma4-wdc">Repository</a>
         </div>
-        <nav aria-label="Footer">
-          <a href="../">Home</a>
-          <a href="../benchmarks/">Benchmarks</a>
-          <a href="../examples/">Examples</a>
-          <a href="https://github.com/manishklach/gemma4-wdc/tree/main/docs">Repo docs</a>
-        </nav>
-        <p class="copyright">Copyright <span data-year></span> Gemma4-WDC.</p>
       </div>
     </footer>
-    <script src="../script.js"></script>
   </body>
 </html>

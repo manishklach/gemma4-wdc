@@ -6,7 +6,7 @@
     <title>gemma4-wdc — Local multi-agent execution with middleware-level deduplication</title>
     <meta
       name="description"
-      content="A laptop-first prototype of a local, offline multi-agent system where Gemma-family agents emit overlapping tool tasks and a WDC-style middleware runtime collapses duplicate backend work before execution."
+      content="A laptop-first middleware runtime that detects overlapping agent tasks and collapses them into a single shared execution before any backend work is duplicated."
     />
     <meta
       name="keywords"
@@ -17,30 +17,86 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://manishklach.github.io/gemma4-wdc/" />
     <meta property="og:site_name" content="gemma4-wdc" />
-    <meta property="og:title" content="gemma4-wdc — Local multi-agent execution with middleware-level deduplication" />
+    <meta property="og:title" content="gemma4-wdc — One execution. Many agents. Zero wasted work." />
     <meta
       property="og:description"
-      content="A laptop-first prototype of a local, offline multi-agent system where Gemma-family agents emit overlapping tool tasks and a WDC-style middleware runtime collapses duplicate backend work before execution."
+      content="A laptop-first middleware runtime that detects overlapping agent tasks and collapses them into a single shared execution before any backend work is duplicated."
     />
     <meta property="og:image" content="https://manishklach.github.io/gemma4-wdc/assets/og/agent-runtime-lab-og.svg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Gemma4-WDC social preview showing local multi-agent middleware with shared execution units, admission windows, and result fan-out." />
+    <meta property="og:image:alt" content="gemma4-wdc preview showing shared execution units, admission windows, and result fan-out." />
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="gemma4-wdc — Local multi-agent execution with middleware-level deduplication" />
+    <meta name="twitter:title" content="gemma4-wdc — One execution. Many agents. Zero wasted work." />
     <meta
       name="twitter:description"
-      content="Laptop-first middleware for local multi-agent systems, with simulation mode, shared execution units, benchmark previews, and runtime observability."
+      content="Laptop-first middleware for local multi-agent systems with shared execution units, bounded admission windows, and benchmark-aware observability."
     />
     <meta name="twitter:image" content="https://manishklach.github.io/gemma4-wdc/assets/og/agent-runtime-lab-og.svg" />
-    <meta name="twitter:image:alt" content="gemma4-wdc social preview with shared execution units, bounded admission windows, and result fan-out." />
+    <meta name="twitter:image:alt" content="gemma4-wdc preview showing shared execution units, admission windows, and result fan-out." />
     <meta name="twitter:site" content="@manishklach" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              slate950: "#06111f",
+              slate925: "#0a1627",
+              slate900: "#0d1b2a",
+              slate850: "#122235",
+              slate800: "#1a2d45",
+              line: "rgba(148, 163, 184, 0.18)",
+              blueglow: "#39b8ff",
+              tealglow: "#37f0d1"
+            },
+            boxShadow: {
+              soft: "0 24px 80px rgba(3, 10, 23, 0.42)",
+              panel: "0 18px 48px rgba(3, 10, 23, 0.28)"
+            },
+            fontFamily: {
+              sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+              mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace']
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root { color-scheme: dark; }
+      html { scroll-behavior: smooth; }
+      body {
+        background:
+          radial-gradient(circle at top left, rgba(57, 184, 255, 0.14), transparent 26%),
+          radial-gradient(circle at top right, rgba(55, 240, 209, 0.08), transparent 22%),
+          linear-gradient(180deg, #06111f 0%, #091524 38%, #0d1b2a 100%);
+      }
+      .headline-glow {
+        background: linear-gradient(92deg, #ffffff 0%, #9dd7ff 38%, #66f0d7 68%, #ffffff 100%);
+        background-size: 220% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: pulseShift 8s ease-in-out infinite;
+      }
+      @keyframes pulseShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+      .panel {
+        background: linear-gradient(180deg, rgba(13, 27, 42, 0.88), rgba(8, 18, 33, 0.86));
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        box-shadow: 0 18px 48px rgba(3, 10, 23, 0.28);
+        backdrop-filter: blur(14px);
+      }
+      .code-block code { white-space: pre-wrap; }
+      .benchmark-table th, .benchmark-table td {
+        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      }
+      .benchmark-table tr:last-child td { border-bottom: none; }
+    </style>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -54,323 +110,305 @@
         "keywords": "local multi-agent runtime, agent middleware, shared execution, semantic deduplication, offline agent system, coding agent infrastructure"
       }
     </script>
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "gemma4-wdc",
-        "url": "https://manishklach.github.io/gemma4-wdc/",
-        "description": "A laptop-first prototype of a local, offline multi-agent system where Gemma-family agents emit overlapping tool tasks and a WDC-style middleware runtime collapses duplicate backend work before execution."
-      }
-    </script>
   </head>
-  <body data-page="home">
-    <a class="skip-link" href="#content">Skip to content</a>
-    <header class="site-header">
-      <div class="container nav-shell">
-        <a class="brand" href="./">gemma4-wdc</a>
-        <nav aria-label="Primary">
-          <a href="./architecture/">Architecture</a>
-          <a href="./benchmarks/">Benchmarks</a>
-          <a href="./examples/">Examples</a>
-          <a href="https://github.com/manishklach/gemma4-wdc">Repository</a>
+  <body class="min-h-screen font-sans text-slate-100 antialiased">
+    <a class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-slate-950" href="#content">Skip to content</a>
+
+    <header class="sticky top-0 z-40 border-b border-white/10 bg-slate950/80 backdrop-blur-xl">
+      <div class="mx-auto flex w-full max-w-7xl items-center justify-between gap-6 px-6 py-4 lg:px-8">
+        <a class="text-sm font-semibold tracking-[0.18em] text-slate-100 uppercase" href="./">gemma4-wdc</a>
+        <nav aria-label="Primary" class="flex flex-wrap items-center gap-5 text-sm text-slate-300">
+          <a class="transition hover:text-white" href="./architecture/">Architecture</a>
+          <a class="transition hover:text-white" href="./benchmarks/">Benchmarks</a>
+          <a class="transition hover:text-white" href="./examples/">Examples</a>
+          <a class="transition hover:text-white" href="https://github.com/manishklach/gemma4-wdc">Repository</a>
         </nav>
       </div>
     </header>
 
     <main id="content">
-      <section class="hero container">
-        <div class="hero-copy">
-          <p class="eyebrow">Laptop-First Local Middleware</p>
-          <h1>Local multi-agent runtime with shared execution, bounded admission windows, and visible savings.</h1>
-          <p class="lead">
-            gemma4-wdc is a laptop-first prototype of a local, offline multi-agent system where Gemma-family agents emit overlapping SQL, API, document, repo-scan, and research tasks, and a WDC-style middleware layer collapses duplicate backend work before execution.
+      <section class="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 pb-12 pt-10 lg:px-8 lg:pb-16 lg:pt-14">
+        <div class="grid gap-8 lg:grid-cols-[minmax(0,1.02fr)_minmax(320px,0.78fr)] lg:items-start">
+          <div class="space-y-7">
+            <div class="inline-flex items-center rounded-full border border-blueglow/30 bg-blueglow/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.28em] text-blue-100">
+              Laptop-first local middleware
+            </div>
+            <div class="space-y-5">
+              <h1 class="headline-glow max-w-4xl text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+                One execution. Many agents. Zero wasted work.
+              </h1>
+              <p class="max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">
+                gemma4-wdc is a laptop-first middleware runtime that detects overlapping agent tasks and collapses them into a single shared execution before any backend work is duplicated.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 font-mono text-xs text-slate-200">Simulation-first</span>
+              <span class="rounded-full border border-tealglow/25 bg-tealglow/10 px-4 py-2 font-mono text-xs text-teal-100">0.00 false-collapse rate</span>
+              <span class="rounded-full border border-blueglow/25 bg-blueglow/10 px-4 py-2 font-mono text-xs text-blue-100">Laptop-scale</span>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <a class="inline-flex items-center justify-center rounded-full bg-blueglow px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300" href="#setup">Run Locally →</a>
+              <a class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/25 hover:bg-white/10" href="https://github.com/manishklach/gemma4-wdc">View Repository</a>
+            </div>
+          </div>
+
+          <aside class="panel rounded-3xl p-5">
+            <div class="mb-4 flex items-center justify-between">
+              <div>
+                <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-blue-200/80">Runtime snapshot</p>
+                <h2 class="mt-2 text-lg font-semibold text-white">Shared execution in motion</h2>
+              </div>
+              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-[11px] text-slate-300">live loop</span>
+            </div>
+            <div class="grid gap-3 text-sm text-slate-300 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-slate-400">Pending</p>
+                <p class="mt-2 text-xl font-semibold text-white">1 SEU</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-slate-400">Subscribers</p>
+                <p class="mt-2 text-xl font-semibold text-white">3 agents</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-slate-400">Savings</p>
+                <p class="mt-2 text-xl font-semibold text-white">2 execs</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <div class="panel overflow-hidden rounded-[28px] p-3 sm:p-4">
+          <img
+            src="./assets/demo/gemma4-wdc-demo.gif"
+            alt="Animated walkthrough showing multiple agent tasks collapsing into a single shared execution unit with result fan-out and metrics updates."
+            class="w-full rounded-[22px] border border-white/10"
+          />
+        </div>
+      </section>
+
+      <section class="mx-auto grid w-full max-w-7xl gap-6 px-6 py-6 lg:grid-cols-2 lg:px-8">
+        <article class="panel rounded-3xl p-7">
+          <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-blue-200/80">The bottleneck</p>
+          <h2 class="mt-3 text-2xl font-semibold tracking-[-0.03em] text-white">Parallel branches can independently ask for the same backend work.</h2>
+          <p class="mt-4 leading-8 text-slate-300">
+            Repo scans, code search, SQL queries, document extraction, and API calls often recur across nearby agent branches. On modest hardware, that duplicated backend work becomes a systems problem quickly.
           </p>
-          <p class="hero-note">Consumer-hardware proof of concept. Simulation-first by default. Hybrid mode is optional.</p>
-          <div class="actions">
-            <a href="https://github.com/manishklach/gemma4-wdc">View Repository</a>
-            <a href="./architecture/" class="secondary">Explore Architecture</a>
-            <a href="#demo-flow" class="secondary">See the Demo</a>
-          </div>
-          <ul class="hero-highlights" aria-label="Key capabilities">
-            <li>Concurrent local branches emit tool tasks independently.</li>
-            <li>Semantic overlap is captured inside a bounded, non-resetting admission window.</li>
-            <li>One shared execution unit serves multiple subscribers and fans results back out.</li>
-          </ul>
-        </div>
-        <div class="hero-card">
-          <div class="hero-preview">
-            <div class="media-header hero-preview-head">
-              <div>
-                <p class="media-eyebrow">Runtime Preview</p>
-                <h3>Live Local Demo</h3>
-              </div>
-            </div>
-            <video autoplay muted loop playsinline preload="metadata" poster="./assets/demo/gemma4-wdc-live-demo-poster.png" aria-label="Muted inline preview of the live local gemma4-wdc runtime showing overlapping coding-agent tasks collapsing into one shared execution unit.">
-              <source src="./assets/demo/gemma4-wdc-live-demo.webm" type="video/webm" />
-            </video>
-            <p class="media-caption hero-preview-caption"><a class="text-link" href="#demo-flow">View full demo</a></p>
-          </div>
-        </div>
+        </article>
+        <article class="panel rounded-3xl p-7">
+          <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-blue-200/80">The answer</p>
+          <h2 class="mt-3 text-2xl font-semibold tracking-[-0.03em] text-white">Detect overlap early, hold briefly, execute once, fan out cleanly.</h2>
+          <p class="mt-4 leading-8 text-slate-300">
+            gemma4-wdc adds semantic matching, a bounded admission window, and shared execution units between agents and downstream tools so equivalent work happens once and only once.
+          </p>
+        </article>
       </section>
 
-      <section class="section container" id="demo-flow">
-        <div class="section-head">
+      <section class="mx-auto w-full max-w-7xl px-6 py-8 lg:px-8">
+        <div class="mb-6 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p class="eyebrow">See the Runtime Flow</p>
-            <h2>Two complementary views of the same loop: one for instant comprehension, one from the running local system.</h2>
+            <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-blue-200/80">Core runtime loop</p>
+            <h2 class="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white">Six steps from agent intent to result fan-out.</h2>
           </div>
-          <a class="text-link" href="https://github.com/manishklach/gemma4-wdc#see-the-runtime-flow">Open in README</a>
+          <p class="max-w-2xl text-sm leading-7 text-slate-400">
+            The runtime is intentionally simple and inspectable: normalize the work, hold compatible tasks briefly, execute once, then return the result to every attached branch.
+          </p>
         </div>
-        <p class="section-kicker">The walkthrough explains the core state transitions quickly. The live capture shows the actual dashboard and runtime in motion on a laptop-scale coding-agent scenario.</p>
-        <div class="grid two media-grid">
-          <article class="card visual-card">
-            <div class="media-header">
-              <div>
-                <p class="media-eyebrow">Animated Walkthrough</p>
-                <h3>Fast conceptual pass</h3>
-              </div>
-              <span class="media-tag">8s loop</span>
-            </div>
-            <img src="./assets/demo/gemma4-wdc-demo.gif" alt="Animated walkthrough of the core gemma4-wdc loop: concurrent task arrival, subscriber attachment, shared execution, result fan-out, and metrics update." />
-            <p class="media-caption">Best for understanding admission-window capture, subscriber attachment, and result fan-out in a few seconds.</p>
+        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <article class="panel rounded-3xl p-6">
+            <p class="font-mono text-sm text-blue-300">01</p>
+            <h3 class="mt-4 text-lg font-semibold text-white">Agent task generation</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-400">Analyst, planner, coder, reviewer, and research branches emit structured tool work independently.</p>
           </article>
-          <article class="card">
-            <div class="media-header">
-              <div>
-                <p class="media-eyebrow">Live Local Demo</p>
-                <h3>Actual runtime capture</h3>
-              </div>
-              <span class="media-tag">webm</span>
-            </div>
-            <video controls playsinline preload="metadata" poster="./assets/demo/gemma4-wdc-live-demo-poster.png">
-              <source src="./assets/demo/gemma4-wdc-live-demo.webm" type="video/webm" />
-            </video>
-            <p class="media-caption">Real dashboard capture using the coding-agent overlap flow with sequential task submission so the SEU lifecycle and metrics remain legible.</p>
+          <article class="panel rounded-3xl p-6">
+            <p class="font-mono text-sm text-blue-300">02</p>
+            <h3 class="mt-4 text-lg font-semibold text-white">Task ingress</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-400">Every task is registered with agent identity, branch lineage, task type, payload, and arrival time.</p>
           </article>
-        </div>
-        <div class="grid single-card-grid">
-          <article class="card">
-            <h3>Why both assets are here</h3>
-            <p>The animated walkthrough is the faster teaching tool. The live local demo is the credibility layer: the task stream, admission window, subscriber counts, shared execution, and metrics update are all coming from the running system.</p>
-            <div class="detail-list">
-              <p><strong>Scenario:</strong> coding-agent overlap</p>
-              <p><strong>Highlights:</strong> admission window opens once, matching tasks attach, one SEU executes, metrics record saved executions</p>
-              <p><a class="text-link" href="./assets/demo/gemma4-wdc-demo-storyboard.png">Open storyboard strip</a></p>
-            </div>
+          <article class="panel rounded-3xl p-6">
+            <p class="font-mono text-sm text-blue-300">03</p>
+            <h3 class="mt-4 text-lg font-semibold text-white">Semantic fingerprinting</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-400">Exact hashes and lightweight matching heuristics determine whether new work overlaps with a pending execution unit.</p>
+          </article>
+          <article class="panel rounded-3xl p-6">
+            <p class="font-mono text-sm text-blue-300">04</p>
+            <h3 class="mt-4 text-lg font-semibold text-white">Admission window</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-400">The first compatible task opens a bounded, non-resetting window that captures matching subscribers without unbounded delay.</p>
+          </article>
+          <article class="panel rounded-3xl p-6">
+            <p class="font-mono text-sm text-blue-300">05</p>
+            <h3 class="mt-4 text-lg font-semibold text-white">Shared execution unit</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-400">One SEU owns execution state, backend invocation, subscribers, and observability for the shared work item.</p>
+          </article>
+          <article class="panel rounded-3xl p-6">
+            <p class="font-mono text-sm text-blue-300">06</p>
+            <h3 class="mt-4 text-lg font-semibold text-white">Result fan-out</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-400">A single completed backend result is fanned back to every attached branch while metrics record the saved work.</p>
           </article>
         </div>
       </section>
 
-      <section class="section container" id="bottleneck">
-        <div class="section-intro">
-          <p class="eyebrow">The Bottleneck</p>
-          <h2>Parallel agent branches can independently ask for the same downstream work.</h2>
-        </div>
-        <div class="grid two balanced-grid">
-          <article class="card">
-            <h3>Where duplication appears</h3>
-            <p>Repo scans, code search, SQL, document extraction, retrieval, and API tasks often recur across neighboring branches even when the underlying backend work is materially the same.</p>
-          </article>
-          <article class="card">
-            <h3>Why this matters locally</h3>
-            <p>On modest hardware, duplicated downstream work hurts faster. Gemma4-WDC frames this as a runtime bottleneck, not just a prompt-quality issue.</p>
-          </article>
-        </div>
+      <section class="mx-auto grid w-full max-w-7xl gap-6 px-6 py-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,1.05fr)] lg:px-8">
+        <article class="panel rounded-3xl p-7">
+          <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-blue-200/80">Architecture</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white">One local runtime, many lightweight branches.</h2>
+          <p class="mt-4 leading-8 text-slate-300">
+            Simulation mode is the default. A central FastAPI service manages shared execution units, task matching, and observability while lightweight or simulated agents make the middleware value visible on a single machine.
+          </p>
+          <p class="mt-4 leading-8 text-slate-300">
+            Hybrid mode is optional and supports one real local model adapter without turning the project into a hardware arms race.
+          </p>
+          <a class="mt-6 inline-flex items-center font-mono text-sm text-blue-300 transition hover:text-white" href="./architecture/">Explore architecture →</a>
+        </article>
+        <article class="panel rounded-3xl p-4">
+          <img
+            src="./assets/diagrams/architecture.svg"
+            alt="Architecture diagram showing agents, task ingress, fingerprinting, admission control, shared execution units, execution backends, and metrics."
+            class="w-full rounded-[22px] border border-white/10"
+          />
+        </article>
       </section>
 
-      <section class="section container" id="core-idea">
-        <div class="section-intro">
-          <p class="eyebrow">Core Idea</p>
-          <h2>Detect overlap early, delay briefly, execute once, and fan out explicitly.</h2>
-        </div>
-        <div class="core-idea-shell">
-          <div class="core-idea-copy">
-            <p class="section-kicker">The runtime is deliberately simple: normalize task intent, hold compatible work briefly, execute once, and fan the result back to every subscriber that attached during the admission window.</p>
-            <div class="flow-grid">
-              <article class="flow-card"><strong>1</strong><span>Agent task generation</span></article>
-              <article class="flow-card"><strong>2</strong><span>Task ingress</span></article>
-              <article class="flow-card"><strong>3</strong><span>Semantic fingerprinting</span></article>
-              <article class="flow-card"><strong>4</strong><span>Admission window</span></article>
-              <article class="flow-card"><strong>5</strong><span>Shared execution unit</span></article>
-              <article class="flow-card"><strong>6</strong><span>Result fan-out</span></article>
-            </div>
-          </div>
-          <div class="card visual-card process-visual">
-            <img src="./assets/diagrams/admission-window.svg" alt="Admission window diagram showing the first task opening a bounded, non-resetting window and later matching tasks attaching before execution begins." />
-            <p class="media-caption">The bounded, non-resetting admission window is the key timing primitive: matching tasks attach, but the timer does not restart.</p>
-          </div>
-        </div>
+      <section class="mx-auto grid w-full max-w-7xl gap-6 px-6 py-8 lg:grid-cols-[minmax(360px,1fr)_minmax(0,0.92fr)] lg:px-8">
+        <article class="panel rounded-3xl p-4">
+          <img
+            src="./assets/screenshots/coding-agent-overlap.svg"
+            alt="Coding-agent overlap demo showing planner, coder, and reviewer branches converging on one shared repo-understanding execution unit."
+            class="w-full rounded-[22px] border border-white/10"
+          />
+        </article>
+        <article class="panel rounded-3xl p-7">
+          <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-blue-200/80">Flagship demo</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white">Coding-agent overlap is the clearest proof point.</h2>
+          <p class="mt-4 leading-8 text-slate-300">
+            Planner, coder, and reviewer branches ask overlapping questions about runtime state transitions, repo structure, and shared execution logic. gemma4-wdc collapses that repo-understanding work into one SEU while keeping unrelated code search separate.
+          </p>
+          <p class="mt-4 leading-8 text-slate-300">
+            It is a strong consumer-hardware example because the duplicate work is obvious, the payoff is visible, and the hardware assumptions stay honest.
+          </p>
+          <a class="mt-6 inline-flex items-center font-mono text-sm text-blue-300 transition hover:text-white" href="./examples/">See example walkthroughs →</a>
+        </article>
       </section>
 
-      <section class="section container" id="architecture-preview">
-        <div class="section-head">
+      <section class="mx-auto w-full max-w-7xl px-6 py-8 lg:px-8" id="benchmarks">
+        <div class="mb-6 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p class="eyebrow">Architecture</p>
-            <h2>One central local runtime, many lightweight branches.</h2>
+            <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-blue-200/80">Benchmarks</p>
+            <h2 class="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white">Preliminary, local, and intentionally easy to audit.</h2>
           </div>
-          <a class="text-link" href="./architecture/">Open architecture page</a>
+          <p class="max-w-2xl text-sm leading-7 text-slate-400">
+            These are local-harness numbers from mock or lightweight executors. They show visible savings without pretending to prove cluster-scale throughput.
+          </p>
         </div>
-        <div class="grid two feature-grid">
-          <article class="card">
-            <p class="media-eyebrow">Runtime Shape</p>
-            <p>Simulation mode is the default. Multiple agents are lightweight or simulated, one local FastAPI backend manages SEUs, and lightweight tool backends make the runtime behavior obvious on a laptop.</p>
-            <p>Hybrid mode is optional and allows one real local model node to coexist with simulated agents without turning the project into a hardware arms race.</p>
-          </article>
-          <article class="card visual-card">
-            <img src="./assets/diagrams/architecture.svg" alt="Architecture diagram showing agent branches, task ingress, semantic fingerprinting, admission control, shared execution units, result fan-out, and observability." />
-            <p class="media-caption">One central local runtime holds tasks briefly, groups compatible work into shared execution units, and exposes the whole decision path.</p>
-          </article>
-        </div>
-      </section>
 
-      <section class="section container" id="coding-agent-demo">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Coding-Agent Demo</p>
-            <h2>The strongest example is a branch-heavy repo-understanding workflow.</h2>
-          </div>
-          <a class="text-link" href="./examples/">See example walkthroughs</a>
-        </div>
-        <div class="grid two feature-grid">
-          <article class="card">
-            <p class="media-eyebrow">Flagship Use Case</p>
-            <p>Planner, coder, and reviewer branches ask overlapping questions about where the runtime transitions shared execution units from pending to executing. Gemma4-WDC collapses those repo scans into one SEU while a benchmark-oriented code search stays separate.</p>
-            <p>This is the right scale for a credible consumer-hardware demo: one laptop, branch-heavy local agents, and backend work that clearly should not be repeated.</p>
+        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <article class="panel rounded-3xl p-6">
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-slate-400">Tasks requested</p>
+            <p class="mt-4 text-4xl font-semibold text-white">14</p>
           </article>
-          <article class="card visual-card">
-            <img src="./assets/screenshots/coding-agent-overlap.svg" alt="Coding-agent overlap view showing planner, coder, and reviewer branches attaching to one shared repo-understanding execution unit while a separate search stays independent." />
-            <p class="media-caption">The flagship use case: branch-heavy coding-agent workflows that would otherwise repeat the same repo-understanding work.</p>
+          <article class="panel rounded-3xl p-6">
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-slate-400">Actual executions</p>
+            <p class="mt-4 text-4xl font-semibold text-white">10</p>
+          </article>
+          <article class="panel rounded-3xl p-6">
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-slate-400">Executions saved</p>
+            <p class="mt-4 text-4xl font-semibold text-white">4</p>
+          </article>
+          <article class="panel rounded-3xl p-6">
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-slate-400">False-collapse rate</p>
+            <p class="mt-4 text-4xl font-semibold text-white">0.00</p>
           </article>
         </div>
-      </section>
 
-      <section class="section container" id="benchmarks">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Benchmarks</p>
-            <h2>Preliminary, transparent, and easy to audit.</h2>
-          </div>
-          <a class="text-link" href="./benchmarks/">Benchmark methodology and results</a>
-        </div>
-        <p class="section-kicker">These are local-harness numbers from mock or lightweight executors. The goal is to make shared execution behavior visible, not to imply cluster-scale throughput.</p>
-        <div class="benchmark-shell">
-          <div class="grid two benchmark-top">
-            <article class="card benchmark-copy">
-              <p class="media-eyebrow">Local Harness Summary</p>
-              <p>The harness compares naive execution against deduplicated execution for coding repo scans, document overlap, API overlap, and safety counterexamples. These are prototype numbers from mock or lightweight backends and are labeled accordingly.</p>
-              <div class="grid four stats-grid">
-                <article class="card stat-card">
-                  <span class="stat-value">14</span>
-                  <span class="stat-label">tasks requested</span>
-                </article>
-                <article class="card stat-card">
-                  <span class="stat-value">10</span>
-                  <span class="stat-label">actual executions</span>
-                </article>
-                <article class="card stat-card">
-                  <span class="stat-value">4</span>
-                  <span class="stat-label">executions saved</span>
-                </article>
-                <article class="card stat-card">
-                  <span class="stat-value">0.00</span>
-                  <span class="stat-label">false-collapse rate</span>
-                </article>
-              </div>
-            </article>
-            <article class="card visual-card benchmark-visual">
-              <img src="./assets/screenshots/benchmark-results.svg" alt="Benchmark summary view showing scenario-level task counts, actual executions, saved executions, and dedup ratios across the current local harness." />
-              <p class="media-caption">The current chart emphasizes the same numbers as the table: modest, interpretable savings and a safety case that stays separate.</p>
-            </article>
-          </div>
-          <article class="card benchmark-table-card">
-            <div class="table-head">
+        <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,0.94fr)_minmax(340px,1.06fr)]">
+          <article class="panel rounded-3xl p-7">
+            <div class="mb-5 flex items-end justify-between gap-4">
               <div>
-                <p class="media-eyebrow">Scenario Table</p>
-                <h3>Current benchmark breakdown</h3>
+                <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-blue-200/80">Scenario table</p>
+                <h3 class="mt-2 text-xl font-semibold text-white">Current benchmark breakdown</h3>
               </div>
+              <a class="font-mono text-xs text-blue-300 transition hover:text-white" href="./benchmarks/">Methodology →</a>
             </div>
-            <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Scenario</th>
-                  <th>Tasks</th>
-                  <th>Execs</th>
-                  <th>Saved</th>
-                  <th>Dedup</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>coding_repo_scan</td><td>4</td><td>2</td><td>2</td><td>2.0x</td></tr>
-                <tr><td>document_research</td><td>3</td><td>2</td><td>1</td><td>1.5x</td></tr>
-                <tr><td>api_fanout</td><td>3</td><td>2</td><td>1</td><td>1.5x</td></tr>
-                <tr><td>false_collapse_safety</td><td>4</td><td>4</td><td>0</td><td>1.0x</td></tr>
-              </tbody>
-            </table>
+            <div class="overflow-hidden rounded-2xl border border-white/10 bg-slate-950/40">
+              <table class="benchmark-table w-full text-left text-sm text-slate-300">
+                <thead class="bg-white/5 font-mono text-[11px] uppercase tracking-[0.22em] text-slate-400">
+                  <tr>
+                    <th class="px-4 py-4">Scenario</th>
+                    <th class="px-4 py-4">Tasks</th>
+                    <th class="px-4 py-4">Execs</th>
+                    <th class="px-4 py-4">Saved</th>
+                    <th class="px-4 py-4">Dedup</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="px-4 py-4 font-medium text-white">coding_repo_scan</td>
+                    <td class="px-4 py-4">4</td>
+                    <td class="px-4 py-4">2</td>
+                    <td class="px-4 py-4 text-teal-200">2</td>
+                    <td class="px-4 py-4">2.0x</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-4 font-medium text-white">document_research</td>
+                    <td class="px-4 py-4">3</td>
+                    <td class="px-4 py-4">2</td>
+                    <td class="px-4 py-4 text-teal-200">1</td>
+                    <td class="px-4 py-4">1.5x</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-4 font-medium text-white">api_fanout</td>
+                    <td class="px-4 py-4">3</td>
+                    <td class="px-4 py-4">2</td>
+                    <td class="px-4 py-4 text-teal-200">1</td>
+                    <td class="px-4 py-4">1.5x</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-4 font-medium text-white">false_collapse_safety</td>
+                    <td class="px-4 py-4">4</td>
+                    <td class="px-4 py-4">4</td>
+                    <td class="px-4 py-4 text-slate-500">0</td>
+                    <td class="px-4 py-4">1.0x</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </article>
-        </div>
-      </section>
 
-      <section class="section container" id="laptop-mode">
-        <div class="section-intro">
-          <p class="eyebrow">Laptop-First Mode</p>
-          <h2>Simulation mode is the product, not a fallback.</h2>
-        </div>
-        <div class="grid three scope-grid">
-          <article class="card">
-            <h3>Simulation mode</h3>
-            <p>Multiple lightweight agents generate realistic tool tasks so the middleware value is legible without a real local model.</p>
-          </article>
-          <article class="card">
-            <h3>Hybrid mode</h3>
-            <p>One real local Gemma-compatible adapter can join while the rest of the system stays lightweight and laptop-friendly.</p>
-          </article>
-          <article class="card">
-            <h3>Honest scope</h3>
-            <p>This is a single-machine proof of concept, not a claim of full cluster throughput or many concurrent heavy model instances.</p>
+          <article class="panel rounded-3xl p-4">
+            <img
+              src="./assets/screenshots/benchmark-results.svg"
+              alt="Benchmark summary view showing tasks, executions, saved executions, and dedup ratios across the current local harness."
+              class="w-full rounded-[22px] border border-white/10"
+            />
           </article>
         </div>
-      </section>
 
-      <section class="section container" id="roadmap">
-        <div class="section-intro">
-          <p class="eyebrow">Roadmap</p>
-          <h2>Clear next steps without pretending the hard parts are solved.</h2>
-        </div>
-        <div class="grid three">
-          <article class="card">
-            <h3>Stronger real-model path</h3>
-            <p>Make the one-node hybrid adapter easier to attach for local Gemma-family task generation or summarization.</p>
-          </article>
-          <article class="card">
-            <h3>Better replay and explainability</h3>
-            <p>Add richer task logs, why-collapsed annotations, and more explicit safety reasoning in the dashboard.</p>
-          </article>
-          <article class="card">
-            <h3>Future multi-node work</h3>
-            <p>Only after the laptop-scale thesis is stronger should the project expand into distributed coordination and heterogeneous nodes.</p>
-          </article>
+        <div id="setup" class="mt-6 panel rounded-3xl p-7">
+          <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-blue-200/80">Try it in 2 minutes</p>
+              <h3 class="mt-2 text-2xl font-semibold tracking-[-0.03em] text-white">Start the local runtime with three commands.</h3>
+            </div>
+            <a class="font-mono text-sm text-blue-300 transition hover:text-white" href="https://github.com/manishklach/gemma4-wdc">Open the repo →</a>
+          </div>
+          <div class="code-block mt-5 overflow-hidden rounded-2xl border border-white/10 bg-slate-950/70 p-5 font-mono text-sm text-blue-50">
+            <code>cd runtime/shared_execution/backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload</code>
+          </div>
         </div>
       </section>
     </main>
 
-    <footer class="site-footer">
-      <div class="container footer-grid">
-        <div>
-          <strong>gemma4-wdc</strong>
-          <p>Laptop-first prototype for local multi-agent execution with middleware-level deduplication, shared execution units, and runtime observability.</p>
+    <footer class="mx-auto mt-10 w-full max-w-7xl px-6 pb-10 pt-6 lg:px-8">
+      <div class="flex flex-col gap-5 rounded-3xl border border-white/10 bg-white/[0.03] px-6 py-5 text-sm text-slate-400 lg:flex-row lg:items-center lg:justify-between">
+        <div class="font-mono">© 2026 gemma4-wdc — MIT License</div>
+        <div class="flex flex-wrap gap-5">
+          <a class="transition hover:text-white" href="./architecture/">Architecture</a>
+          <a class="transition hover:text-white" href="./benchmarks/">Benchmarks</a>
+          <a class="transition hover:text-white" href="./examples/">Examples</a>
+          <a class="transition hover:text-white" href="https://github.com/manishklach/gemma4-wdc">Repository</a>
         </div>
-        <nav aria-label="Footer">
-          <a href="https://github.com/manishklach/gemma4-wdc">Repository</a>
-          <a href="https://github.com/manishklach/gemma4-wdc/tree/main/docs">Docs</a>
-          <a href="https://github.com/manishklach/gemma4-wdc/tree/main/benchmarks">Benchmarks</a>
-          <a href="https://github.com/manishklach/gemma4-wdc/tree/main/examples">Examples</a>
-        </nav>
-        <p class="copyright">Copyright <span data-year></span> Gemma4-WDC.</p>
       </div>
     </footer>
-    <script src="./script.js"></script>
   </body>
 </html>
