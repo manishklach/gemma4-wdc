@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I built a middleware layer that stops local agents from doing the same work twice — gemma4-wdc</title>
+  <meta name="description" content="A laptop-first prototype for local multi-agent execution with shared execution units and middleware-level deduplication." />
+  <link rel="canonical" href="https://manishklach.github.io/gemma4-wdc/blog/" />
+  <meta property="og:title" content="I built a middleware layer that stops local agents from doing the same work twice" />
+  <meta property="og:description" content="gemma4-wdc: local multi-agent runtime with WDC-style deduplication, bounded admission windows, and zero false collapses." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://manishklach.github.io/gemma4-wdc/blog/" />
+  <meta property="og:image" content="https://manishklach.github.io/gemma4-wdc/assets/og/agent-runtime-lab-og.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="gemma4-wdc blog preview showing shared execution units, admission windows, and result fan-out." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="I built a middleware layer that stops local agents from doing the same work twice" />
+  <meta name="twitter:description" content="gemma4-wdc: local multi-agent runtime with WDC-style deduplication, bounded admission windows, and zero false collapses." />
+  <meta name="twitter:image" content="https://manishklach.github.io/gemma4-wdc/assets/og/agent-runtime-lab-og.svg" />
+  <meta name="twitter:site" content="@manishklach" />
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --bg2: #0f1218;
+      --bg3: #151820;
+      --border: #1e2430;
+      --border2: #252d3d;
+      --text: #e2e8f4;
+      --muted: #6b7a96;
+      --accent: #3b82f6;
+      --accent2: #06b6d4;
+      --accent-glow: rgba(59, 130, 246, 0.15);
+      --green: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --serif: 'Instrument Serif', Georgia, serif;
+      --mono: 'IBM Plex Mono', 'Fira Code', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 15px;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 18px 0;
+      position: sticky;
+      top: 0;
+      background: rgba(10, 12, 16, 0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .site-tag {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .site-tag:hover { color: var(--accent2); }
+    .header-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .header-links a {
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .header-links a:hover, .header-links a.active { color: var(--text); }
+
+    #progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      z-index: 200;
+      transition: width 0.1s linear;
+    }
+
+    .hero {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 72px 24px 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+    .tag-systems { background: rgba(59,130,246,0.12); color: var(--accent); border: 1px solid rgba(59,130,246,0.25); }
+    .tag-ai { background: rgba(6,182,212,0.1); color: var(--accent2); border: 1px solid rgba(6,182,212,0.2); }
+    .tag-oss { background: rgba(16,185,129,0.1); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
+    .meta-date { font-size: 12px; color: var(--muted); }
+
+    h1.post-title {
+      font-family: var(--serif);
+      font-size: clamp(28px, 5vw, 42px);
+      line-height: 1.2;
+      color: #f0f4ff;
+      margin-bottom: 20px;
+      font-weight: 400;
+      font-style: italic;
+    }
+    h1.post-title em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .post-subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 620px;
+      margin-bottom: 32px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .stat-pill .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+    }
+    .stat-pill .dot.blue { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+    .stat-pill .dot.cyan { background: var(--accent2); box-shadow: 0 0 6px var(--accent2); }
+
+    article {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 52px 24px 80px;
+    }
+
+    p { margin-bottom: 24px; color: #c8d3e8; }
+
+    h2 {
+      font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 400;
+      color: #f0f4ff;
+      margin: 52px 0 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    h2::before {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0;
+      width: 40px; height: 1px;
+      background: var(--accent);
+    }
+
+    h3 {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin: 36px 0 12px;
+      font-weight: 500;
+    }
+
+    strong { color: var(--text); font-weight: 600; }
+    em { font-style: italic; color: #a0b0cc; }
+
+    a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(59,130,246,0.3); transition: border-color 0.2s, color 0.2s; }
+    a:hover { color: var(--accent2); border-color: var(--accent2); }
+
+    code {
+      font-family: var(--mono);
+      font-size: 13px;
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      padding: 2px 7px;
+      border-radius: 3px;
+      color: var(--accent2);
+    }
+
+    pre {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 24px;
+      overflow-x: auto;
+      margin: 28px 0;
+      position: relative;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 13px;
+      color: #a8c0e0;
+      line-height: 1.7;
+    }
+    .pre-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .callout {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-left: 3px solid var(--accent2);
+      border-radius: 6px;
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+    .callout.warn { border-left-color: var(--amber); }
+    .callout.insight { border-left-color: var(--green); }
+    .callout p { margin: 0; font-size: 14px; color: #b0c0da; }
+    .callout-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .flow {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 28px;
+      margin: 28px 0;
+      overflow-x: auto;
+    }
+    .flow-steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: nowrap;
+      min-width: max-content;
+    }
+    .flow-step {
+      text-align: center;
+      padding: 12px 16px;
+    }
+    .flow-step .step-num {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .flow-step .step-label {
+      font-size: 12px;
+      color: var(--text);
+      white-space: nowrap;
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      padding: 6px 12px;
+      border-radius: 4px;
+    }
+    .flow-step.highlight .step-label {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-glow);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+    .flow-arrow {
+      color: var(--muted);
+      font-size: 16px;
+      padding: 0 4px;
+      flex-shrink: 0;
+    }
+
+    .bench-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 28px 0;
+      font-size: 13px;
+    }
+    .bench-table th {
+      text-align: left;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border2);
+    }
+    .bench-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      color: #b0c0da;
+    }
+    .bench-table tr:last-child td { border-bottom: none; }
+    .bench-table tr:hover td { background: var(--bg3); }
+    .bench-table .saved { color: var(--green); font-weight: 600; }
+    .bench-table .ratio { color: var(--accent2); }
+    .bench-table .zero { color: var(--muted); }
+    .bench-table-wrap {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 28px 0;
+    }
+
+    blockquote {
+      border-left: 2px solid var(--accent);
+      padding: 4px 24px;
+      margin: 28px 0;
+      font-family: var(--serif);
+      font-size: 20px;
+      font-style: italic;
+      color: #c0d0e8;
+      line-height: 1.5;
+    }
+
+    .cta-block {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 36px;
+      margin: 52px 0 0;
+      text-align: center;
+    }
+    .cta-block h3 {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      color: #f0f4ff;
+      text-transform: none;
+      letter-spacing: 0;
+      margin-bottom: 12px;
+    }
+    .cta-block p { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+    .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      border: none;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border-bottom: none;
+    }
+    .btn-primary:hover { background: #2563eb; color: #fff; border-bottom: none; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border2);
+      border-bottom: 1px solid var(--border2);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-inner span { font-size: 12px; color: var(--muted); }
+    .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: var(--muted); border-bottom: none; }
+    .footer-links a:hover { color: var(--text); }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 48px 20px 36px; }
+      article { padding: 40px 20px 60px; }
+      .flow-steps { gap: 0; }
+      .cta-block { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<header>
+  <div class="header-inner">
+    <a class="site-tag" href="../">← gemma4-wdc</a>
+    <nav class="header-links">
+      <a href="../architecture/">Architecture</a>
+      <a href="../benchmarks/">Benchmarks</a>
+      <a href="../examples/">Examples</a>
+      <a class="active" href="../blog/">Blog</a>
+      <a href="https://github.com/manishklach/gemma4-wdc">Repository</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="post-meta">
+    <span class="tag tag-systems">Systems</span>
+    <span class="tag tag-ai">Local AI</span>
+    <span class="tag tag-oss">Open Source</span>
+    <span class="meta-date">April 2026 · gemma4-wdc v0.2.0</span>
+  </div>
+
+  <h1 class="post-title">I built a middleware layer that stops local agents from doing the <em>same work twice</em></h1>
+
+  <p class="post-subtitle">
+    As local multi-agent systems get practical, the next bottleneck isn't the models — it's the duplicated downstream work underneath them. Here's what I built to fix it, how it works, and what I learned.
+  </p>
+
+  <div class="hero-stats">
+    <div class="stat-pill"><span class="dot blue"></span> 0.00 false-collapse rate</div>
+    <div class="stat-pill"><span class="dot"></span> 4 executions saved in current harness</div>
+    <div class="stat-pill"><span class="dot cyan"></span> Runs on a laptop, offline</div>
+  </div>
+</div>
+
+<article>
+
+  <p class="reveal">
+    Something clicked for me about six months ago when I was watching a local agent setup run three parallel branches — planner, coder, reviewer — and noticed that all three were independently scanning the same repo to understand the codebase. Three identical backend operations. Zero shared state between them. The models were fine. The middleware was the problem.
+  </p>
+
+  <p class="reveal">
+    That observation turned into <a href="https://github.com/manishklach/gemma4-wdc">gemma4-wdc</a> — a laptop-first runtime that detects semantically overlapping tool tasks from concurrent agents and collapses them into a single shared execution unit before any backend work is duplicated. The results fan back out to every agent that submitted a matching task.
+  </p>
+
+  <blockquote class="reveal">
+    The models weren't the problem. The wasted backend work underneath them was.
+  </blockquote>
+
+  <h2 class="reveal">The problem, concretely</h2>
+
+  <p class="reveal">
+    Local multi-agent systems branch. A planner spawns a coder and a reviewer. A research agent forks into three parallel extraction paths. A coding agent runs a diff pipeline alongside a test-validation pipeline. Each branch is locally rational — it asks for the information it needs. But neighboring branches often need the same information.
+  </p>
+
+  <p class="reveal">
+    On cloud infrastructure, this is annoying but survivable — you pay a bit more, latency spikes, and you move on. On consumer hardware running local models, it's a real problem. Duplicated repo scans, redundant document extraction passes, repeated API calls — these stack up fast and they're entirely avoidable.
+  </p>
+
+  <div class="callout reveal">
+    <div class="callout-label">The thesis</div>
+    <p>This is a middleware problem as much as a model problem. You can't prompt your way out of it. The runtime layer needs to handle it.</p>
+  </div>
+
+  <h2 class="reveal">How the runtime works</h2>
+
+  <p class="reveal">
+    The core primitive is a <strong>Shared Execution Unit (SEU)</strong>. When a task arrives, the runtime fingerprints it — computing a canonical key, an exact structural hash, and a semantic comparison vector. It then checks whether a compatible SEU is already open.
+  </p>
+
+  <p class="reveal">
+    If one is, the incoming task attaches as a subscriber. If not, a new SEU opens and starts a <strong>bounded admission window</strong>. This is the key timing primitive: the window is non-resetting, meaning it doesn't extend when new tasks arrive. It closes, the SEU executes once, and the result fans out to every subscriber.
+  </p>
+
+  <div class="flow reveal">
+    <span class="pre-label">Runtime flow</span>
+    <div class="flow-steps">
+      <div class="flow-step"><div class="step-num">1</div><div class="step-label">Task ingress</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">2</div><div class="step-label">Fingerprinting</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight"><div class="step-num">3</div><div class="step-label">Admission window</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight"><div class="step-num">4</div><div class="step-label">Execute once (SEU)</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">5</div><div class="step-label">Fan-out</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">6</div><div class="step-label">Metrics</div></div>
+    </div>
+  </div>
+
+  <p class="reveal">
+    Matching uses two passes: exact structural overlap first (fast, zero false positives), then lightweight near-duplicate similarity where it's safe. The two-pass approach means the system doesn't over-collapse — tasks that look similar but aren't materially the same stay separate.
+  </p>
+
+  <h2 class="reveal">The admission window design</h2>
+
+  <p class="reveal">
+    The non-resetting window is a deliberate choice and worth explaining. A resetting window — one that extends each time a new task arrives — sounds appealing because it maximizes collapse. But it creates unbounded latency: a steady stream of similar tasks would keep the window open indefinitely. Nothing executes.
+  </p>
+
+  <p class="reveal">
+    The bounded non-resetting window trades some collapse opportunity for predictable execution timing. The first arrival opens the window. Matching tasks attach. The window closes at a fixed deadline regardless of what's happened since. This is the kind of decision that only makes sense once you've thought about the failure modes — a resetting window feels obviously better until you reason about the steady-state behavior.
+  </p>
+
+  <div class="callout insight reveal">
+    <div class="callout-label">Design note</div>
+    <p>The admission window is non-resetting by design. A resetting window maximizes collapse but creates unbounded latency under load. Fixed deadline, predictable execution.</p>
+  </div>
+
+  <h2 class="reveal">The safety case matters as much as the savings</h2>
+
+  <p class="reveal">
+    The benchmark suite includes a <code>false_collapse_safety</code> scenario explicitly for this reason. It constructs tasks that look semantically similar — same resource type, overlapping keywords, structurally close — but differ in ways that make shared execution wrong. The runtime should keep those apart.
+  </p>
+
+  <div class="bench-table-wrap reveal">
+    <table class="bench-table">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Tasks</th>
+          <th>Executions</th>
+          <th>Saved</th>
+          <th>Dedup ratio</th>
+          <th>False collapses</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>coding_repo_scan</code></td>
+          <td>4</td>
+          <td>2</td>
+          <td class="saved">2</td>
+          <td class="ratio">2.0x</td>
+          <td class="zero">0.00</td>
+        </tr>
+        <tr>
+          <td><code>document_research</code></td>
+          <td>3</td>
+          <td>2</td>
+          <td class="saved">1</td>
+          <td class="ratio">1.5x</td>
+          <td class="zero">0.00</td>
+        </tr>
+        <tr>
+          <td><code>api_fanout</code></td>
+          <td>3</td>
+          <td>2</td>
+          <td class="saved">1</td>
+          <td class="ratio">1.5x</td>
+          <td class="zero">0.00</td>
+        </tr>
+        <tr>
+          <td><code>false_collapse_safety</code></td>
+          <td>4</td>
+          <td>4</td>
+          <td class="zero">0</td>
+          <td class="zero">1.0x</td>
+          <td class="zero">0.00</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="reveal">
+    These are local harness numbers from mock executors. I've been upfront about that throughout the project. The goal isn't to claim production throughput — it's to make the middleware behavior visible and auditable on a single laptop.
+  </p>
+
+  <h2 class="reveal">Simulation-first is a first-class design choice</h2>
+
+  <p class="reveal">
+    gemma4-wdc defaults to simulation mode, where agents are lightweight processes emitting structured tool tasks. No real local model required. This is intentional — the thesis is about the middleware layer, not about how many Gemma instances you can cram onto a MacBook Pro.
+  </p>
+
+  <p class="reveal">
+    Hybrid mode exists for one optional real model adapter to participate alongside simulated agents, keeping the demo laptop-friendly while still demonstrating the full integration path. But simulation mode is the product, not a fallback. It's the mode that makes the systems thesis legible.
+  </p>
+
+  <h3 class="reveal">Run it yourself</h3>
+
+  <pre class="reveal"><code><span class="pre-label">backend</span>cd runtime/shared_execution/backend
+python -m venv .venv && .\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+uvicorn app.main:app --reload</code></pre>
+
+  <pre class="reveal"><code><span class="pre-label">frontend (second terminal)</span>cd runtime/shared_execution/frontend
+python -m http.server 4173
+# open http://localhost:4173</code></pre>
+
+  <h2 class="reveal">What I'd do differently</h2>
+
+  <p class="reveal">
+    The "Gemma" in the name is partly aspirational right now. The middleware works independently of the model family, which is actually the right property — but it means the branding slightly misrepresents the current state. I'd either lean harder into the real model integration path, or reframe it as a model-agnostic middleware layer and let that be the story. Both are honest. The current middle ground is the weakest position.
+  </p>
+
+  <p class="reveal">
+    I'd also build richer explainability earlier. The dashboard shows <em>that</em> tasks collapsed, but not deeply <em>why</em> — what similarity score triggered it, which fingerprint matched, what the admission window state was at each step. That audit trail would make the safety case much stronger and make the runtime more useful as a debugging tool.
+  </p>
+
+  <h2 class="reveal">Where this is going</h2>
+
+  <p class="reveal">
+    The roadmap has three honest next steps: a stronger real-model adapter path, better replay and explainability (annotated collapse reasoning, replayable scenario logs), and — only after the single-machine thesis is solid — early work on multi-node coordination.
+  </p>
+
+  <p class="reveal">
+    The broader bet is that as agentic workflows become a default pattern rather than an experimental one, the middleware layer between models and backends becomes genuinely important infrastructure. gemma4-wdc is a proof of concept for one slice of that — deduplication and shared execution — but the design surface is much larger.
+  </p>
+
+  <p class="reveal">
+    If you're building in this space, thinking about agent runtimes, or just want to poke at the code, <a href="https://github.com/manishklach/gemma4-wdc">the repo is open</a>. Issues, feedback, and pull requests all welcome.
+  </p>
+
+  <div class="cta-block reveal">
+    <h3>Try gemma4-wdc</h3>
+    <p>Laptop-scale, simulation-first, offline. No API key required.</p>
+    <div class="cta-buttons">
+      <a href="https://github.com/manishklach/gemma4-wdc" class="btn btn-primary">View on GitHub →</a>
+      <a href="../architecture/" class="btn btn-ghost">Architecture docs</a>
+      <a href="../benchmarks/" class="btn btn-ghost">Benchmarks</a>
+    </div>
+  </div>
+
+</article>
+
+<footer>
+  <div class="footer-inner">
+    <span>© 2026 gemma4-wdc — MIT License</span>
+    <nav class="footer-links">
+      <a href="https://github.com/manishklach/gemma4-wdc">GitHub</a>
+      <a href="../">Site</a>
+      <a href="../architecture/">Docs</a>
+      <a href="../blog/">Blog</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  const bar = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    bar.style.width = pct + '%';
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
